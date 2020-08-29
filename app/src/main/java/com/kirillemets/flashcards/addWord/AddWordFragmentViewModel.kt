@@ -1,16 +1,18 @@
 package com.kirillemets.flashcards.addWord
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
+import com.kirillemets.flashcards.database.CardDatabaseDao
+import com.kirillemets.flashcards.database.FlashCard
 import com.kirillemets.flashcards.network.JishoApi
 import com.kirillemets.flashcards.network.QueryData
 import kotlinx.coroutines.*
 import java.lang.Exception
 
 class AddWordFragmentViewModel: ViewModel() {
+    lateinit var database: CardDatabaseDao
+
     private val job = Job()
     private var coroutineScope = CoroutineScope(job + Dispatchers.Main)
 
@@ -23,7 +25,7 @@ class AddWordFragmentViewModel: ViewModel() {
 
 
 
-    fun search(word: String) {
+    private fun search(word: String) {
         searchJob.cancel(CancellationException())
         searchJob = coroutineScope.launch {
             try {
@@ -41,6 +43,18 @@ class AddWordFragmentViewModel: ViewModel() {
 
     fun onSearchInputTextChanged(word: String) {
         search(word)
+    }
+
+    fun onAddButtonClicked(resultCard: SearchResultCard, id: Int) {
+        coroutineScope.launch {
+            insert(resultCard.flashCard(id))
+        }
+    }
+
+    private suspend fun insert(flashCard: FlashCard) {
+        withContext(Dispatchers.IO) {
+            database.insert(flashCard)
+        }
     }
 
     private suspend fun getSearchQueryAsync(word: String): QueryData {

@@ -23,7 +23,6 @@ class MyDictionaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
 
         return binding.root

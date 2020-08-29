@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kirillemets.flashcards.databinding.ItemSearchedFlashcardBinding
 
-class AddWordFragmentAdapter: RecyclerView.Adapter<AddWordFragmentAdapter.FlashCardViewHolder>() {
+class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallback): RecyclerView.Adapter<AddWordFragmentAdapter.FlashCardViewHolder>() {
     var searchResultCards: List<SearchResultCard> = listOf()
         set(value) {
             field = value
@@ -15,7 +15,8 @@ class AddWordFragmentAdapter: RecyclerView.Adapter<AddWordFragmentAdapter.FlashC
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlashCardViewHolder {
         val binding = ItemSearchedFlashcardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.expandable.adapter = FlashcardExpandableAdapter()
+        binding.expandable.adapter = FlashcardExpandableAdapter(callback)
+
         val holder = FlashCardViewHolder(binding)
         binding.card.setOnClickListener {
             if(holder.visible) {
@@ -36,14 +37,23 @@ class AddWordFragmentAdapter: RecyclerView.Adapter<AddWordFragmentAdapter.FlashC
 
     override fun getItemCount(): Int = searchResultCards.size
 
-    class FlashCardViewHolder(private val binding: ItemSearchedFlashcardBinding): RecyclerView.ViewHolder(binding.root) {
+    class FlashCardViewHolder(
+        private val binding: ItemSearchedFlashcardBinding,
+    ): RecyclerView.ViewHolder(binding.root) {
 
         var visible: Boolean = false
 
         fun bind(flashCard: SearchResultCard) {
             binding.flashCard = flashCard
-            (binding.expandable.adapter as FlashcardExpandableAdapter).definitions = flashCard.englishMeanings
+
+            val expandableAdapter = (binding.expandable.adapter as FlashcardExpandableAdapter)
+            expandableAdapter.definitions = flashCard.englishMeanings
+            expandableAdapter.searchResultCard = flashCard
             binding.expandable.visibility = View.GONE
         }
+    }
+
+    class AddWordFragmentAdapterCallback(private val cb: (SearchResultCard, Int) -> Unit) {
+        fun call(card: SearchResultCard, definitionId: Int) = cb(card, definitionId)
     }
 }

@@ -22,7 +22,11 @@ class AddWordFragment : Fragment() {
     ): View? {
         val binding = FragmentAddWordBinding.inflate(inflater)
 
-        val adapter = AddWordFragmentAdapter()
+        val adapter = AddWordFragmentAdapter(AddWordFragmentAdapter.AddWordFragmentAdapterCallback {
+            searchResult, id ->
+            viewModel.onAddButtonClicked(searchResult, id)
+        })
+
         binding.recyclerView.adapter = adapter
         binding.lifecycleOwner = this
 
@@ -34,7 +38,6 @@ class AddWordFragment : Fragment() {
             text, _, _, _ -> viewModel.onSearchInputTextChanged(text?.toString() ?: "")
         }
 
-        viewModel.search("make")
         return binding.root
     }
 }

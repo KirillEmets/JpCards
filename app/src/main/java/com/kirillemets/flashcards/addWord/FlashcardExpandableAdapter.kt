@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kirillemets.flashcards.databinding.ItemWordDefinitionBinding
 
-class FlashcardExpandableAdapter(): RecyclerView.Adapter<FlashcardExpandableAdapter.ExpandableViewHolder>() {
+class FlashcardExpandableAdapter(
+    private val callback: AddWordFragmentAdapter.AddWordFragmentAdapterCallback):
+    RecyclerView.Adapter<FlashcardExpandableAdapter.ExpandableViewHolder>() {
 
+    lateinit var searchResultCard: SearchResultCard
     var definitions: List<String> = listOf()
         set(value) {
             field = value
@@ -21,14 +24,20 @@ class FlashcardExpandableAdapter(): RecyclerView.Adapter<FlashcardExpandableAdap
     }
 
     override fun onBindViewHolder(holder: ExpandableViewHolder, position: Int) {
-        holder.bind(definitions[position], position)
+        holder.bind(position, searchResultCard, callback)
     }
 
     override fun getItemCount(): Int = definitions.size
 
     class ExpandableViewHolder(private val binding: ItemWordDefinitionBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(definition: String, index: Int) {
-            binding.definition = (index + 1).toString() + ". " + definition
+        fun bind(
+            index: Int, searchResultCard: SearchResultCard,
+            callback:AddWordFragmentAdapter.AddWordFragmentAdapterCallback
+        ) {
+
+            binding.definitionId = index
+            binding.searchResult = searchResultCard
+            binding.callback = callback
         }
     }
 }
