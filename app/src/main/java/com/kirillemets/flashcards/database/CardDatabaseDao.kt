@@ -1,11 +1,12 @@
 package com.kirillemets.flashcards.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface CardDatabaseDao {
     @Query("SELECT * FROM flashcard")
-    fun getAll(): List<FlashCard>
+    fun getAll(): LiveData<List<FlashCard>>
 
     @Insert
     fun insert(card: FlashCard)

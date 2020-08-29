@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kirillemets.flashcards.database.CardDatabase
 
 
 lateinit var bottomNavigation: BottomNavigationView
@@ -19,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.bottom_navigation)
 
         val navController = this.findNavController(R.id.nav_host_fragment)
-
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             if(bottomNavigation.selectedItemId == item.itemId)

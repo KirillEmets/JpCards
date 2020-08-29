@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
+import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
 
 
@@ -15,16 +16,20 @@ class MyDictionaryFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    val viewModel: MyDictionaryFragmentViewModel by lazy {
-        ViewModelProvider(this).get(MyDictionaryFragmentViewModel::class.java)
-    }
+    private lateinit var viewModel: MyDictionaryFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
-
+        val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
+        viewModel = ViewModelProvider(
+            this,
+            MyDictionaryFragmentViewModelFactory(database)
+        ).get(MyDictionaryFragmentViewModel::class.java)
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
         return binding.root
     }
 

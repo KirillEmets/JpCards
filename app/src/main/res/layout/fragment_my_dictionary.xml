@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,9 +14,10 @@
         tools:context=".myDictionary.MyDictionaryFragment">
 
         <TextView
+            android:id="@+id/textViewDictionary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:text="@{vm.text}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentAddWordBinding
 
 class AddWordFragment : Fragment() {
@@ -21,7 +22,7 @@ class AddWordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentAddWordBinding.inflate(inflater)
-
+        viewModel.database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val adapter = AddWordFragmentAdapter(AddWordFragmentAdapter.AddWordFragmentAdapterCallback {
             searchResult, id ->
             viewModel.onAddButtonClicked(searchResult, id)
