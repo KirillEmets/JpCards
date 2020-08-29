@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
+import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
 
 
 class MyDictionaryFragment : Fragment() {
@@ -23,8 +24,9 @@ class MyDictionaryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
 
-        return inflater.inflate(R.layout.fragment_my_dictionary, container, false)
+        return binding.root
     }
 
 }
