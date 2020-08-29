@@ -10,4 +10,9 @@
         android:name="com.kirillemets.flashcards.addWord.AddWordFragment"
         android:label="fragment_add_word"
         tools:layout="@layout/fragment_add_word" />
+    <fragment
+        android:id="@+id/myDictionaryFragment"
+        android:name="com.kirillemets.flashcards.myDictionary.MyDictionaryFragment"
+        android:label="fragment_my_dictionary"
+        tools:layout="@layout/fragment_my_dictionary" />
 </navigation>
