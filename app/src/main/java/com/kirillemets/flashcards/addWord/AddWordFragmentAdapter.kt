@@ -44,7 +44,7 @@ class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallbac
         var visible: Boolean = false
 
         fun bind(flashCard: SearchResultCard) {
-            binding.flashCard = flashCard
+            binding.resultCard = flashCard
 
             val expandableAdapter = (binding.expandable.adapter as FlashcardExpandableAdapter)
             expandableAdapter.definitions = flashCard.englishMeanings

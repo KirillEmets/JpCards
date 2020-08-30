@@ -24,11 +24,18 @@ class MyDictionaryFragment : Fragment() {
     ): View? {
         val binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
+
         viewModel = ViewModelProvider(
             this,
             MyDictionaryFragmentViewModelFactory(database)
         ).get(MyDictionaryFragmentViewModel::class.java)
-        binding.vm = viewModel
+
+        val adapter = MyDictionaryFragmentAdapter()
+        binding.recyclerView.adapter = adapter
+        viewModel.allCards.observe(this, {
+            adapter.cards = it
+        })
+
         binding.lifecycleOwner = this
         return binding.root
     }

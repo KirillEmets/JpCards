@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="flashCard"
+            name="resultCard"
             type="com.kirillemets.flashcards.addWord.SearchResultCard"/>
     </data>
 
@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{flashCard.japanese}"
+                        android:text="@{resultCard.japanese}"
                         android:textColor="#000000"
                         android:textSize="24sp"
                         tools:text="Japanese" />
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="@{flashCard.reading}"
+                        android:text="@{resultCard.reading}"
                         android:textSize="18sp"
                         tools:text="Reading" />
 
@@ -62,7 +62,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="@{flashCard.meaningsString}"
+                        android:text="@{resultCard.meaningsString}"
                         android:textColor="#000000"
                         android:textSize="18sp"
                         android:singleLine="true"

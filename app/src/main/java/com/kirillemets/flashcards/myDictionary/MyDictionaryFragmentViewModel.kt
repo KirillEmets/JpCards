@@ -11,7 +11,4 @@ class MyDictionaryFragmentViewModel(val database: CardDatabaseDao): ViewModel() 
     val allCards: LiveData<List<FlashCard>> =
         database.getAll()
 
-    val text = Transformations.map(allCards) {allCards ->
-            allCards[0].japanese
-        }
 }
