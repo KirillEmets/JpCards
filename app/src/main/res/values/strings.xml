@@ -2,6 +2,8 @@
     <string name="app_name">flashcards</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="searchHint">type to search...</string>
+    <string name="searchHint">type to search…</string>
     <string name="buttonAddText">add</string>
+    <string name="daysRemainingText">remaining: %dd</string>
+
 </resources>
