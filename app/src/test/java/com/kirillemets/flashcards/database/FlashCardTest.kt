@@ -1,5 +1,7 @@
 package com.kirillemets.flashcards.database
 
+import java.util.concurrent.TimeUnit
+
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -19,16 +21,20 @@ class FlashCardTest {
     @Test
     fun getRemainingTime() {
         var card: FlashCard
+        var nextReviewTime: Long
         var lastRepeatTime: Long
+        var currentTime: Long
 
         tests.forEachIndexed { i, test ->
+            currentTime = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.currentTimeString)?.time ?: 0
+
             lastRepeatTime = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.lastRepeatDateString)?.time ?: 0
-            card = FlashCard(0, "", "", "", test.lastDelay, lastRepeatTime)
 
-            val currentTime: Long =
-                SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.currentTimeString)?.time ?: 0
+            nextReviewTime = lastRepeatTime + TimeUnit.MILLISECONDS.convert(test.lastDelay.toLong(), TimeUnit.DAYS)
 
-            val remaining: Int = card.getRemainingTime(currentTime)
+            card = FlashCard(0, "", "", "", test.lastDelay, nextReviewTime)
+
+            val remaining: Int = card.getRemainingTime(currentTime).first
             assertEquals("test $i:", test.expectedValue, remaining)
         }
     }

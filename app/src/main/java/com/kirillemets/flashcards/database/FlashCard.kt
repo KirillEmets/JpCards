@@ -3,9 +3,6 @@ package com.kirillemets.flashcards.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -15,11 +12,15 @@ data class FlashCard(
     val japanese: String,
     val reading: String,
     val english: String,
-    @ColumnInfo(name = "last_delay") val lastDelay: Int = 1,
-    @ColumnInfo(name = "last_repeat_time") val lastRepeatTime: Long = GregorianCalendar().timeInMillis
+    @ColumnInfo(name = "last_delay") val lastDelay: Int = 0,
+    @ColumnInfo(name = "next_review_time") val nextReviewTime: Long = GregorianCalendar().timeInMillis,
+    @ColumnInfo(name = "last_delay_reversed") val lastDelayReversed: Int = 0,
+    @ColumnInfo(name = "next_review_time_reversed") val nextReviewTimeReversed: Long = GregorianCalendar().timeInMillis
     ) {
-    fun getRemainingTime(currentDate: Long = GregorianCalendar().timeInMillis): Int {
-        return (lastDelay - TimeUnit.DAYS.convert(currentDate - lastRepeatTime, TimeUnit.MILLISECONDS)
-            .toInt()).coerceAtLeast(0)
+    fun getRemainingTime(currentDate: Long = GregorianCalendar().timeInMillis): Pair<Int, Int> {
+        return TimeUnit.DAYS.convert(nextReviewTime - currentDate,TimeUnit.MILLISECONDS)
+            .toInt().coerceAtLeast(0) to
+                TimeUnit.DAYS.convert(nextReviewTimeReversed - currentDate, TimeUnit.MILLISECONDS)
+                    .toInt().coerceAtLeast(0)
     }
 }

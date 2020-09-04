@@ -15,14 +15,13 @@ abstract class CardDatabase: RoomDatabase() {
             synchronized(this) {
                 var instance = Instance
 
-                if(instance == null) {
+                if (instance == null) {
                     instance = Room.databaseBuilder(
                         context,
                         CardDatabase::class.java,
                         "flashcards_database"
                     )
                         .fallbackToDestructiveMigration()
-                        .fallbackToDestructiveMigrationOnDowngrade()
                         .build()
                 }
                 return instance

@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="searchHint">type to search…</string>
     <string name="buttonAddText">add</string>
-    <string name="daysRemainingText">delay: %dd</string>
+    <string name="daysRemainingText">delay: %1$dd/%2$dd</string>
     <string name="item_remove_string">Remove selected</string>
     <string name="item_reset_string">Reset selected</string>
 

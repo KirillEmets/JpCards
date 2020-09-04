@@ -61,7 +61,9 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
         var cardId: Int = 0
         fun bind(card: FlashCard, checkedCards: Set<Int>) {
             binding.flashCard = card
-            binding.daysRemaining.text = binding.root.resources.getString(R.string.daysRemainingText, card.getRemainingTime())
+            val remainingTime = card.getRemainingTime()
+            binding.daysRemaining.text =
+                binding.root.resources.getString(R.string.daysRemainingText, remainingTime.first, remainingTime.second)
             cardId = card.cardId
             binding.card.isChecked = checkedCards.contains(cardId)
         }
