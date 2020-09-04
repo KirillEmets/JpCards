@@ -36,7 +36,7 @@ class AddWordFragmentViewModel: ViewModel() {
 
             }
             catch (e: Exception) {
-                _flashCards.value = listOf(SearchResultCard(e.message?:"", "a", listOf()))
+                _flashCards.value = listOf(SearchResultCard(e.message?:"", "error", listOf()))
             }
         }
     }
@@ -82,7 +82,7 @@ class AddWordFragmentViewModel: ViewModel() {
                 japanese,
                 reading,
                 englishMeanings
-            )
+                )
             )
         }
         if(list.size > 10)
