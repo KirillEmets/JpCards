@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnNavigationItemSelectedListener false
             when(item.itemId) {
                 R.id.page_1 -> {
-                    Log.i("HELLO", "1")
+                    navController.navigate(R.id.action_global_reviewFragment)
                     true
                 }
                 R.id.page_2 -> {
