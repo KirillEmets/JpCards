@@ -16,13 +16,10 @@ data class FlashCard(
     val reading: String,
     val english: String,
     @ColumnInfo(name = "last_delay") val lastDelay: Int = 1,
-    @ColumnInfo(name = "last_repeat_date") val lastRepeatDate: String =
-        SimpleDateFormat("dd-MM-yyyy", Locale.US).format(GregorianCalendar().time)
-) {
-    fun getRemainingTime(currentDate: Long = GregorianCalendar().time.time): Int {
-        val lastRepeatDate: Long = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(lastRepeatDate)?.time ?: 0
-
-        return (lastDelay - TimeUnit.DAYS.convert(currentDate - lastRepeatDate, TimeUnit.MILLISECONDS)
+    @ColumnInfo(name = "last_repeat_time") val lastRepeatTime: Long = GregorianCalendar().timeInMillis
+    ) {
+    fun getRemainingTime(currentDate: Long = GregorianCalendar().timeInMillis): Int {
+        return (lastDelay - TimeUnit.DAYS.convert(currentDate - lastRepeatTime, TimeUnit.MILLISECONDS)
             .toInt()).coerceAtLeast(0)
     }
 }

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [FlashCard::class], version = 2)
+@Database(entities = [FlashCard::class], version = 1)
 abstract class CardDatabase: RoomDatabase() {
     companion object {
         private var Instance: CardDatabase? = null
@@ -22,7 +22,7 @@ abstract class CardDatabase: RoomDatabase() {
                         "flashcards_database"
                     )
                         .fallbackToDestructiveMigration()
-
+                        .fallbackToDestructiveMigrationOnDowngrade()
                         .build()
                 }
                 return instance

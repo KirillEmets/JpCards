@@ -19,9 +19,11 @@ class FlashCardTest {
     @Test
     fun getRemainingTime() {
         var card: FlashCard
+        var lastRepeatTime: Long = 0
 
         tests.forEachIndexed { i, test ->
-            card = FlashCard(0, "", "", "", test.lastDelay, test.lastRepeatDateString)
+            lastRepeatTime = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.lastRepeatDateString)?.time ?: 0
+            card = FlashCard(0, "", "", "", test.lastDelay, lastRepeatTime)
 
             val currentTime: Long =
                 SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.currentTimeString)?.time ?: 0

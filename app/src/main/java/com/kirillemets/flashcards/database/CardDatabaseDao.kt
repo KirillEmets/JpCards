@@ -11,6 +11,12 @@ interface CardDatabaseDao {
     @Query("SELECT * FROM flashcard WHERE cardId = :id")
     fun get(id: Int): FlashCard?
 
+    @Query("DELETE FROM flashcard WHERE cardId IN (:ids)")
+    fun deleteByIndexes(ids: Set<Int>)
+
+    @Query("UPDATE flashcard SET last_delay = 0 WHERE cardId IN (:ids)")
+    fun resetDelayByIndexes(ids: Set<Int>)
+
     @Insert
     fun insert(card: FlashCard)
 
