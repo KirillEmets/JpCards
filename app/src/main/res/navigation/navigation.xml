@@ -15,4 +15,10 @@
         android:name="com.kirillemets.flashcards.myDictionary.MyDictionaryFragment"
         android:label="fragment_my_dictionary"
         tools:layout="@layout/fragment_my_dictionary" /><action android:id="@+id/action_global_myDictionaryFragment" app:destination="@id/myDictionaryFragment"/><action android:id="@+id/action_global_addWordFragment" app:destination="@id/addWordFragment"/>
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.kirillemets.flashcards.review.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review" />
+    <action android:id="@+id/action_global_reviewFragment" app:destination="@id/reviewFragment" />
 </navigation>
