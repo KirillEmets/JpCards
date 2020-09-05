@@ -7,5 +7,9 @@
     <string name="daysRemainingText">delay: %1$dd/%2$dd</string>
     <string name="item_remove_string">Remove selected</string>
     <string name="item_reset_string">Reset selected</string>
+    <string name="btn_review">Review</string>
+    <string name="show_answer_button">show answer</string>
+    <string name="countOfWordsToReview">You currently have %d words to review</string>
+
 
 </resources>
