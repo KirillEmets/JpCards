@@ -8,5 +8,4 @@ class MyDictionaryFragmentViewModelFactory(val database: CardDatabaseDao) : View
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(CardDatabaseDao::class.java).newInstance(database)
     }
-
 }
