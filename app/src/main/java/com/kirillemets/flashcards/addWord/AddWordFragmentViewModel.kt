@@ -92,6 +92,6 @@ class AddWordFragmentViewModel: ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        job.cancel()
+        job.cancel(CancellationException("Cancelled on onCleared"))
     }
 }
