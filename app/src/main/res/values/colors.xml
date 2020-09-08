@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimary">#9b59b6</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="MainTextColor">#000000</color>
     <color name="words_in_review">#000000</color>
+    <color name="background">#ecf0f1</color>
+    <color name="button_miss">#c0392b</color>
+    <color name="button_hard">#e74c3c</color>
+    <color name="button_normal">#e67e22</color>
+    <color name="button_easy">#27ae60</color>
 </resources>

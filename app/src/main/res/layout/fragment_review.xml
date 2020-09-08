@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         tools:context=".review.ReviewFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,14 +25,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="0.4"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_start_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onBtnReviewClick()}"
+                android:onClick="@{() -> viewModel.onButtonReviewClick()}"
                 android:text="@string/btn_review"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -64,32 +65,191 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="0.6"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
-            <TextView
-                android:id="@+id/word"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/word_frame_layout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/words_in_review"
-                android:textSize="24sp"
+                android:background="@android:drawable/gallery_thumb"
+                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTintMode="src_in"
+                android:orientation="vertical"
+                android:padding="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2"
-                tools:text="Word" />
+                app:layout_constraintVertical_bias="0.15">
+
+                <TextView
+                    android:id="@+id/word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{viewModel.currentCard.wordReading}"
+                    android:textSize="18sp"
+                    android:visibility="@{viewModel.wordReadingVisibility}"
+                    tools:text="Word" />
+
+                <TextView
+                    android:id="@+id/word_reading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@{viewModel.currentCard.word}"
+                    android:textColor="@color/words_in_review"
+                    android:textSize="30sp"
+                    tools:text="Word reading" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/answer_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/word_frame_layout"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/answer_frame_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/gallery_thumb"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTintMode="src_in"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.25">
+
+                    <TextView
+                        android:id="@+id/answer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@{viewModel.currentCard.answerReading}"
+                        android:textSize="18sp"
+                        android:visibility="@{viewModel.answerReadingVisibility}"
+                        tools:text="Answer" />
+
+                    <TextView
+                        android:id="@+id/answer_reading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@{viewModel.currentCard.answer}"
+                        android:textColor="@color/words_in_review"
+                        android:textSize="30sp"
+                        tools:text="Answer reading" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_miss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(0)}"
+                    android:text="@string/miss"
+                    app:backgroundTint="@color/button_miss"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button_hard"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintHorizontal_weight="0.4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/answer_frame_layout"
+                    app:layout_constraintVertical_bias="0.7" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_hard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(1)}"
+                    android:text="@string/hard"
+                    app:backgroundTint="@color/button_hard"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
+                    app:layout_constraintEnd_toStartOf="@+id/button_normal"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    app:layout_constraintStart_toEndOf="@+id/button_miss"
+                    app:layout_constraintTop_toTopOf="@+id/button_miss" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(2)}"
+                    android:text="@string/normal"
+                    app:backgroundTint="@color/button_normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
+                    app:layout_constraintEnd_toStartOf="@+id/button_easy"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    app:layout_constraintStart_toEndOf="@+id/button_hard"
+                    app:layout_constraintTop_toTopOf="@+id/button_miss" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_easy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(3)}"
+                    android:text="@string/easy"
+                    app:backgroundTint="@color/button_easy"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    app:layout_constraintStart_toEndOf="@+id/button_normal"
+                    app:layout_constraintTop_toTopOf="@+id/button_miss" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/incorrect"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/button_miss"
+                    app:layout_constraintEnd_toEndOf="@+id/button_miss"
+                    app:layout_constraintStart_toStartOf="@+id/button_miss" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/correct"
+                    app:layout_constraintBottom_toTopOf="@+id/button_normal"
+                    app:layout_constraintEnd_toEndOf="@+id/button_easy"
+                    app:layout_constraintStart_toStartOf="@+id/button_hard" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_show_answer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onButtonShowAnswerClick()}"
                 android:text="@string/show_answer_button"
+
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.372" />
+                app:layout_constraintVertical_bias="0.8"
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

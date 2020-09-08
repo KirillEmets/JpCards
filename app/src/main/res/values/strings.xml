@@ -10,6 +10,12 @@
     <string name="btn_review">Review</string>
     <string name="show_answer_button">show answer</string>
     <string name="countOfWordsToReview">You currently have %d words to review</string>
+    <string name="normal">normal</string>
+    <string name="hard">hard</string>
+    <string name="miss">miss</string>
+    <string name="easy">easy</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="correct"><b>CORRECT</b>, AND THE QUESTION FELT:</string>
 
 
 </resources>
