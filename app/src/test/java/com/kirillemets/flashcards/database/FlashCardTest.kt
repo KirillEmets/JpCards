@@ -25,6 +25,7 @@ class FlashCardTest {
         var lastRepeatTime: Long
         var currentTime: Long
 
+
         tests.forEachIndexed { i, test ->
             currentTime = SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(test.currentTimeString)?.time ?: 0
 
@@ -34,7 +35,7 @@ class FlashCardTest {
 
             card = FlashCard(0, "", "", "", test.lastDelay, nextReviewTime)
 
-            val remaining: Int = card.getRemainingTime(currentTime).first
+            val remaining: Int = card.getRemainingTimes(currentTime).first
             assertEquals("test $i:", test.expectedValue, remaining)
         }
     }

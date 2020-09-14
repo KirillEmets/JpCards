@@ -10,6 +10,8 @@ import com.kirillemets.flashcards.databinding.ItemDictionaryFlashcardBinding
 
 class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {
 
+    var currentTimeMillis: Long = 0
+
     var cards: List<FlashCard> = listOf()
         set(value) {
             field = value
@@ -51,7 +53,7 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
     }
 
     override fun onBindViewHolder(holder: MyDictionaryFragmentViewHolder, position: Int) {
-        holder.bind(cards[position], checkedCards)
+        holder.bind(cards[position], checkedCards, currentTimeMillis)
     }
 
     override fun getItemCount(): Int = cards.size
@@ -59,9 +61,9 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
     class MyDictionaryFragmentViewHolder(val binding: ItemDictionaryFlashcardBinding):
         RecyclerView.ViewHolder(binding.root) {
         var cardId: Int = 0
-        fun bind(card: FlashCard, checkedCards: Set<Int>) {
+        fun bind(card: FlashCard, checkedCards: Set<Int>, currentTimeMillis: Long) {
             binding.flashCard = card
-            val remainingTime = card.getRemainingTime()
+            val remainingTime = card.getRemainingTimes(currentTimeMillis)
             binding.daysRemaining.text =
                 binding.root.resources.getString(R.string.daysRemainingText, remainingTime.first, remainingTime.second)
             cardId = card.cardId

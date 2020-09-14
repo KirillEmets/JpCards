@@ -21,7 +21,6 @@ abstract class CardDatabase: RoomDatabase() {
                         CardDatabase::class.java,
                         "flashcards_database"
                     )
-                        .fallbackToDestructiveMigration()
                         .build()
                 }
                 return instance

@@ -49,7 +49,7 @@ dependencies {
     // lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle_extensions"
-    kapt "androidx.lifecycle:lifecycle-compiler:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
 
     // Navigation
@@ -85,7 +85,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
 
     //Material
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    //Joda Time
+    implementation 'net.danlew:android.joda:2.10.6.1'
+
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

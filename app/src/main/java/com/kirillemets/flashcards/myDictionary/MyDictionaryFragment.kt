@@ -6,8 +6,10 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
+import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
+import org.joda.time.LocalDate
 
 
 class MyDictionaryFragment : Fragment() {
@@ -26,6 +28,7 @@ class MyDictionaryFragment : Fragment() {
     ): View? {
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
+        adapter.currentTimeMillis = TimeUtil.todayMillis
 
         viewModel = ViewModelProvider(
             this,

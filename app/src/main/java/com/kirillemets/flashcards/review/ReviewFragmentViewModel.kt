@@ -1,19 +1,14 @@
 package com.kirillemets.flashcards.review
 
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
 import kotlinx.coroutines.*
-import java.util.*
+import org.joda.time.LocalDate
 
 class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
-
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(job + Dispatchers.Main)
 
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
 
@@ -47,40 +42,43 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     }
 
     private fun makeCardsToReview() {
-        coroutineScope.launch {
-            val cards = getRelevantCardsFromDatabaseAsync().await()
+        viewModelScope.launch {
+            val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
+            val cards = getRelevantCardsFromDatabaseAsync(currentTime).await()
             val newList = mutableListOf<ReviewCard>()
             cards.forEach { card ->
-                newList.add(
-                    ReviewCard(
-                        card.japanese,
-                        card.reading,
-                        card.english,
-                        "",
-                        false,
-                        card.lastDelay,
-                        card.cardId
+                if(card.nextReviewTime <= currentTime)
+                    newList.add(
+                        ReviewCard(
+                            card.japanese,
+                            card.reading,
+                            card.english,
+                            "",
+                            false,
+                            card.lastDelay,
+                            card.cardId
+                        )
                     )
-                )
-                newList.add(
-                    ReviewCard(
-                        card.english,
-                        "",
-                        card.japanese,
-                        card.reading,
-                        true,
-                        card.lastDelayReversed,
-                        card.cardId
+                if(card.nextReviewTimeReversed <= currentTime)
+                    newList.add(
+                        ReviewCard(
+                            card.english,
+                            "",
+                            card.japanese,
+                            card.reading,
+                            true,
+                            card.lastDelayReversed,
+                            card.cardId
+                        )
                     )
-                )
             }
             reviewCards.value = newList.shuffled()
             _currentCard.value = reviewCardsIterator.next()
         }
     }
 
-    private fun getRelevantCardsFromDatabaseAsync(): Deferred<List<FlashCard>> =
-        coroutineScope.async(Dispatchers.IO) { database.getRelevantCards(GregorianCalendar().timeInMillis) }
+    private fun getRelevantCardsFromDatabaseAsync(time: Long): Deferred<List<FlashCard>> =
+        viewModelScope.async(Dispatchers.IO) { database.getRelevantCards(time) }
 
     fun onButtonReviewClick() {
         onButtonReviewClicked.value = true
@@ -91,17 +89,36 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     }
 
     fun onButtonAnswerClick(buttonType: Int) {
+        val card: ReviewCard = _currentCard.value!!
+        if (buttonType == 0) {
+            viewModelScope.launch(Dispatchers.IO) {
+                database.resetDelayByIds(setOf(card.cardId), TimeUtil.todayMillis)
+            }
+        }
+        else {
+            val newDelay = when (buttonType) {
+                1 -> card.lastDelay + 1
+                2 -> card.lastDelay + 2
+                3 -> card.lastDelay + 4
+                else -> 0
+            }
 
-        if(reviewCardsIterator.hasNext())
+            val nextRepeatTime: Long =
+                LocalDate.now().toDateTimeAtStartOfDay().plusDays(newDelay).millis
+
+            viewModelScope.launch(Dispatchers.IO) {
+                if (!card.reversed)
+                    database.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+                else
+                    database.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+            }
+        }
+
+        if (reviewCardsIterator.hasNext())
             _currentCard.value = reviewCardsIterator.next()
         else
             onRunOutOfWords.value = true
 
         onNextWord.value = true
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel(CancellationException("Cancelled on onCleared"))
     }
 }

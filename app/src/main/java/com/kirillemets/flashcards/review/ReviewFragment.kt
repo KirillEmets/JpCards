@@ -11,7 +11,6 @@ import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
 import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModelFactory
 
-
 class ReviewFragment : Fragment() {
 
     private lateinit var viewModel: ReviewFragmentViewModel

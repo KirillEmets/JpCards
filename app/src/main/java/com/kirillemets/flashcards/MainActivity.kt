@@ -6,15 +6,17 @@ import android.util.Log
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kirillemets.flashcards.database.CardDatabase
+import net.danlew.android.joda.JodaTimeAndroid
 
 
 lateinit var bottomNavigation: BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        JodaTimeAndroid.init(this)
         setContentView(R.layout.activity_main)
 
         bottomNavigation = findViewById(R.id.bottom_navigation)

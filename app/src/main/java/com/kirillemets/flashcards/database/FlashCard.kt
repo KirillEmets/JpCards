@@ -3,6 +3,8 @@ package com.kirillemets.flashcards.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kirillemets.flashcards.TimeUtil
+import org.joda.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -13,11 +15,11 @@ data class FlashCard(
     val reading: String,
     val english: String,
     @ColumnInfo(name = "last_delay") val lastDelay: Int = 0,
-    @ColumnInfo(name = "next_review_time") val nextReviewTime: Long = GregorianCalendar().timeInMillis,
+    @ColumnInfo(name = "next_review_time") val nextReviewTime: Long = TimeUtil.todayMillis,
     @ColumnInfo(name = "last_delay_reversed") val lastDelayReversed: Int = 0,
-    @ColumnInfo(name = "next_review_time_reversed") val nextReviewTimeReversed: Long = GregorianCalendar().timeInMillis
+    @ColumnInfo(name = "next_review_time_reversed") val nextReviewTimeReversed: Long = TimeUtil.todayMillis
     ) {
-    fun getRemainingTime(currentDate: Long = GregorianCalendar().timeInMillis): Pair<Int, Int> {
+    fun getRemainingTimes(currentDate: Long = LocalDate.now().toDateTimeAtStartOfDay().millis): Pair<Int, Int> {
         return TimeUnit.DAYS.convert(nextReviewTime - currentDate,TimeUnit.MILLISECONDS)
             .toInt().coerceAtLeast(0) to
                 TimeUnit.DAYS.convert(nextReviewTimeReversed - currentDate, TimeUnit.MILLISECONDS)
