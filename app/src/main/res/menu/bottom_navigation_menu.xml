@@ -3,16 +3,16 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="review" />
+        android:icon="@drawable/ic_star_24px"
+        android:title="@string/menu_review" />
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@android:drawable/checkbox_on_background"
-        android:title="tetle2" />
+        android:icon="@drawable/ic_library_add_24px"
+        android:title="@string/menu_search" />
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@android:drawable/checkbox_on_background"
-        android:title="tetle3" />
+        android:icon="@drawable/ic_library_books_24px"
+        android:title="@string/menu_my_words" />
 </menu>

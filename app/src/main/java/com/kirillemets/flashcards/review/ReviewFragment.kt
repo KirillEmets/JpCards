@@ -62,11 +62,11 @@ class ReviewFragment : Fragment() {
             binding.countOfCardsTextView.text = resources.getString(R.string.countOfWordsToReview, it.size)
         })
 
-
-//        binding.wordFrameLayout.background = LayerDrawable(arrayOf(
-//            resources.newTheme().getDrawable(R.drawable.ic_square_border),
-//            resources.newTheme().getDrawable(android.R.drawable.gallery_thumb)
-//        ))
+        viewModel.currentCard.observe(this, {
+            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 1, it.lastDelay + 1)
+            binding.normalButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 2, it.lastDelay + 2)
+            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 4, it.lastDelay + 4)
+        })
 
         binding.lifecycleOwner = this
 

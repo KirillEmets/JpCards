@@ -27,8 +27,9 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     val currentCard: LiveData<ReviewCard>
         get() = _currentCard
 
+    private var wordReadingVisible: Boolean = false
     val wordReadingVisibility = Transformations.map(_currentCard) {
-        if(it.wordReading.isNotEmpty()) View.VISIBLE
+        if(it.wordReading.isNotEmpty() && wordReadingVisible) View.VISIBLE
         else View.GONE
     }
 
@@ -36,6 +37,13 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         if(it.answerReading.isNotEmpty()) View.VISIBLE
         else View.GONE
     }
+
+    val buttonReviewClickable = Transformations.map(reviewCards){
+        it.isNotEmpty()
+    }
+
+
+
 
     init {
         makeCardsToReview()
@@ -73,7 +81,8 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
                     )
             }
             reviewCards.value = newList.shuffled()
-            _currentCard.value = reviewCardsIterator.next()
+            if(newList.isNotEmpty())
+                _currentCard.value = reviewCardsIterator.next()
         }
     }
 
@@ -86,13 +95,19 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
     fun onButtonShowAnswerClick() {
         onButtonShowAnswerClicked.value = true
+        wordReadingVisible = true
+        _currentCard.value = _currentCard.value
     }
 
     fun onButtonAnswerClick(buttonType: Int) {
         val card: ReviewCard = _currentCard.value!!
         if (buttonType == 0) {
             viewModelScope.launch(Dispatchers.IO) {
-                database.resetDelayByIds(setOf(card.cardId), TimeUtil.todayMillis)
+                if(!card.reversed)
+                    database.resetDelayByIds(setOf(card.cardId), TimeUtil.todayMillis)
+                else
+                    database.resetDelayByIdsReversed(setOf(card.cardId), TimeUtil.todayMillis)
+
             }
         }
         else {
@@ -113,6 +128,8 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
                     database.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
             }
         }
+
+        wordReadingVisible = false
 
         if (reviewCardsIterator.hasNext())
             _currentCard.value = reviewCardsIterator.next()

@@ -16,6 +16,9 @@
     <string name="easy">easy</string>
     <string name="incorrect">Incorrect</string>
     <string name="correct"><b>CORRECT</b>, AND THE QUESTION FELT:</string>
+    <string name="menu_review">review</string>
+    <string name="menu_search">search</string>
+    <string name="menu_my_words">my words</string>
 
 
 </resources>
