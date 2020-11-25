@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
@@ -63,9 +64,17 @@ class ReviewFragment : Fragment() {
         })
 
         viewModel.currentCard.observe(this, {
-            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 1, it.lastDelay + 1)
-            binding.normalButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 2, it.lastDelay + 2)
-            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + 4, it.lastDelay + 4)
+            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_EASY, it.lastDelay + ReviewFragmentViewModel.DELAY_EASY)
+            binding.normalButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_NORMAL, it.lastDelay + ReviewFragmentViewModel.DELAY_NORMAL)
+            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_HARD, it.lastDelay + ReviewFragmentViewModel.DELAY_HARD)
+        })
+
+        viewModel.onRunOutOfWords.observe(this, {
+            if(it) {
+                viewModel.onRunOutOfWords.value = false
+
+                findNavController().navigate(R.id.action_global_reviewFragment);
+            }
         })
 
         binding.lifecycleOwner = this
