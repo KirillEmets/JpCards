@@ -10,6 +10,12 @@ import org.joda.time.LocalDate
 
 class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
+    companion object {
+        const val DELAY_EASY = 1
+        const val DELAY_NORMAL = 3
+        const val DELAY_HARD = 5
+    }
+
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
 
 
@@ -112,9 +118,9 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         }
         else {
             val newDelay = when (buttonType) {
-                1 -> card.lastDelay + 1
-                2 -> card.lastDelay + 2
-                3 -> card.lastDelay + 4
+                1 -> card.lastDelay + DELAY_EASY
+                2 -> card.lastDelay + DELAY_NORMAL
+                3 -> card.lastDelay + DELAY_NORMAL
                 else -> 0
             }
 
