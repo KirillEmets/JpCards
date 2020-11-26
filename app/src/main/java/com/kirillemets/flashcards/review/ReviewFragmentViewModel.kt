@@ -7,13 +7,21 @@ import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
 import kotlinx.coroutines.*
 import org.joda.time.LocalDate
+import kotlin.math.roundToInt
 
 class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
     companion object {
-        const val DELAY_EASY = 1
-        const val DELAY_NORMAL = 3
-        const val DELAY_HARD = 5
+        private const val DELAY_EASY_MULTIPLIER = 1.8
+        private const val DELAY_HARD_MULTIPLIER = 1.3
+
+        // 1 - easy, 2 - hard
+        fun getNewDelay(lastDelay: Int, difficulty: Int): Int =
+             (lastDelay * when(difficulty) {
+                 1 -> DELAY_EASY_MULTIPLIER
+                 2 -> DELAY_HARD_MULTIPLIER
+                 else -> 1.0
+             }).roundToInt()
     }
 
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
@@ -47,9 +55,6 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     val buttonReviewClickable = Transformations.map(reviewCards){
         it.isNotEmpty()
     }
-
-
-
 
     init {
         makeCardsToReview()
@@ -117,12 +122,7 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
             }
         }
         else {
-            val newDelay = when (buttonType) {
-                1 -> card.lastDelay + DELAY_EASY
-                2 -> card.lastDelay + DELAY_NORMAL
-                3 -> card.lastDelay + DELAY_NORMAL
-                else -> 0
-            }
+            val newDelay: Int = getNewDelay(card.lastDelay, buttonType)
 
             val nextRepeatTime: Long =
                 LocalDate.now().toDateTimeAtStartOfDay().plusDays(newDelay).millis

@@ -10,16 +10,16 @@ import java.util.*
 
 data class RemainingTimeTestData(val lastDelay: Int, val lastRepeatDateString: String, val currentTimeString: String, val expectedValue: Int)
 class FlashCardTest {
-    private val tests = listOf(
-        RemainingTimeTestData(4, "01-06-2020", "05-06-2020", 0),
-        RemainingTimeTestData(6, "01-06-2020", "07-06-2020", 0),
-        RemainingTimeTestData(5, "01-06-2020", "01-06-2020", 5),
-        RemainingTimeTestData(1, "01-06-2020", "03-06-2020", 0),
-        RemainingTimeTestData(1, "01-06-2020", "02-06-2020", 0),
-    )
-
     @Test
     fun getRemainingTime() {
+        val tests = listOf(
+            RemainingTimeTestData(4, "01-06-2020", "05-06-2020", 0),
+            RemainingTimeTestData(6, "01-06-2020", "07-06-2020", 0),
+            RemainingTimeTestData(5, "01-06-2020", "01-06-2020", 5),
+            RemainingTimeTestData(1, "01-06-2020", "03-06-2020", 0),
+            RemainingTimeTestData(1, "01-06-2020", "02-06-2020", 0),
+        )
+
         var card: FlashCard
         var nextReviewTime: Long
         var lastRepeatTime: Long
