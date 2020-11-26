@@ -2,6 +2,7 @@ package com.kirillemets.flashcards.myDictionary
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
 import kotlinx.coroutines.*
@@ -23,7 +24,8 @@ class MyDictionaryFragmentViewModel(val database: CardDatabaseDao): ViewModel() 
 
     fun resetWords(ids: Set<Int>) {
         coroutineScope.launch(Dispatchers.IO) {
-            database.resetDelayByIds(ids, LocalDate.now().toDateTimeAtStartOfDay().millis)
+            database.resetDelayByIds(ids, TimeUtil.todayMillis)
+            database.resetDelayByIdsReversed(ids, TimeUtil.todayMillis)
         }
     }
 
