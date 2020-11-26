@@ -176,44 +176,29 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_hard"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginEnd="2dp"
-                    android:onClick="@{() -> viewModel.onButtonAnswerClick(1)}"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(2)}"
                     android:text="@string/hard"
                     android:textSize="@dimen/Buttons_text_size"
                     app:backgroundTint="@color/button_hard"
                     app:layout_constraintBottom_toBottomOf="@+id/button_miss"
-                    app:layout_constraintEnd_toStartOf="@+id/button_normal"
+                    app:layout_constraintEnd_toStartOf="@+id/button_easy"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintHorizontal_weight="0.2"
                     app:layout_constraintStart_toEndOf="@+id/button_miss"
                     app:layout_constraintTop_toTopOf="@+id/button_miss" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:onClick="@{() -> viewModel.onButtonAnswerClick(2)}"
-                    android:text="@string/normal"
-                    android:textSize="@dimen/Buttons_text_size"
-                    app:backgroundTint="@color/button_normal"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
-                    app:layout_constraintEnd_toStartOf="@+id/button_easy"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="0.2"
-                    app:layout_constraintStart_toEndOf="@+id/button_hard"
-                    app:layout_constraintTop_toTopOf="@+id/button_miss" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_easy"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:onClick="@{() -> viewModel.onButtonAnswerClick(3)}"
+                    android:onClick="@{() -> viewModel.onButtonAnswerClick(1)}"
                     android:text="@string/easy"
                     android:textSize="@dimen/Buttons_text_size"
                     app:backgroundTint="@color/button_easy"
@@ -221,10 +206,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="0.2"
-                    app:layout_constraintStart_toEndOf="@+id/button_normal"
+                    app:layout_constraintStart_toEndOf="@+id/button_hard"
                     app:layout_constraintTop_toTopOf="@+id/button_miss" />
 
                 <TextView
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -238,9 +224,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:text="@string/correct"
-                    app:layout_constraintBottom_toTopOf="@+id/button_normal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintEnd_toEndOf="@+id/button_easy"
                     app:layout_constraintStart_toStartOf="@+id/button_hard" />
 
@@ -248,7 +233,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="discard"
+                    android:text="@string/discard"
                     app:layout_constraintEnd_toEndOf="@+id/button_miss"
                     app:layout_constraintStart_toStartOf="@+id/button_miss"
                     app:layout_constraintTop_toBottomOf="@+id/button_miss" />
@@ -263,16 +248,6 @@
                     app:layout_constraintStart_toStartOf="@+id/button_hard"
                     app:layout_constraintTop_toBottomOf="@+id/button_hard"
                     tools:text="+1 day" />
-
-                <TextView
-                    android:id="@+id/normal_button_delay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintEnd_toEndOf="@+id/button_normal"
-                    app:layout_constraintStart_toStartOf="@+id/button_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/button_normal"
-                    tools:text="+2 days" />
 
                 <TextView
                     android:id="@+id/easy_button_delay"

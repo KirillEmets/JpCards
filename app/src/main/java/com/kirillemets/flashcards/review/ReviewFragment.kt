@@ -19,7 +19,7 @@ class ReviewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val binding = FragmentReviewBinding.inflate(inflater)
@@ -64,16 +64,15 @@ class ReviewFragment : Fragment() {
         })
 
         viewModel.currentCard.observe(this, {
-            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_EASY, it.lastDelay + ReviewFragmentViewModel.DELAY_EASY)
-            binding.normalButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_NORMAL, it.lastDelay + ReviewFragmentViewModel.DELAY_NORMAL)
-            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, it.lastDelay + ReviewFragmentViewModel.DELAY_HARD, it.lastDelay + ReviewFragmentViewModel.DELAY_HARD)
+            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, ReviewFragmentViewModel.getNewDelay(it.lastDelay, 1), ReviewFragmentViewModel.getNewDelay(it.lastDelay, 1))
+            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, ReviewFragmentViewModel.getNewDelay(it.lastDelay, 2), ReviewFragmentViewModel.getNewDelay(it.lastDelay, 2))
         })
 
         viewModel.onRunOutOfWords.observe(this, {
             if(it) {
                 viewModel.onRunOutOfWords.value = false
 
-                findNavController().navigate(R.id.action_global_reviewFragment);
+                findNavController().navigate(R.id.action_global_reviewFragment)
             }
         })
 

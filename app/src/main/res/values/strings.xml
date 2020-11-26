@@ -19,6 +19,7 @@
     <string name="menu_review">review</string>
     <string name="menu_search">search</string>
     <string name="menu_my_words">my words</string>
+    <string name="discard">discard</string>
 
 
 </resources>
