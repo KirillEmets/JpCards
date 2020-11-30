@@ -46,6 +46,7 @@ class ReviewFragment : Fragment() {
                 viewModel.onButtonShowAnswerClicked.value = false
 
                 binding.buttonShowAnswer.visibility = View.GONE
+                binding.answerFrameLayout.visibility = View.VISIBLE
                 binding.answerLayout.visibility = View.VISIBLE
             }
         })
@@ -55,7 +56,8 @@ class ReviewFragment : Fragment() {
                 viewModel.onNextWord.value = false
 
                 binding.buttonShowAnswer.visibility = View.VISIBLE
-                binding.answerLayout.visibility = View.GONE
+                binding.answerFrameLayout.visibility = View.INVISIBLE
+                binding.answerLayout.visibility = View.INVISIBLE
             }
         })
 
