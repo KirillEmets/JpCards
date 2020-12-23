@@ -56,6 +56,11 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         it.isNotEmpty()
     }
 
+    var wordCounter = MutableLiveData<Int>(0)
+    val counterText = Transformations.map(wordCounter) {
+        "$it / ${reviewCards.value?.size ?: 0}"
+    }
+
     init {
         makeCardsToReview()
     }
@@ -92,8 +97,10 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
                     )
             }
             reviewCards.value = newList.shuffled()
-            if(newList.isNotEmpty())
+            if(newList.isNotEmpty()) {
                 _currentCard.value = reviewCardsIterator.next()
+                wordCounter.value = 1
+            }
         }
     }
 
@@ -137,8 +144,10 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
         wordReadingVisible = false
 
-        if (reviewCardsIterator.hasNext())
+        if (reviewCardsIterator.hasNext()) {
             _currentCard.value = reviewCardsIterator.next()
+            wordCounter.value = wordCounter.value?.plus(1)
+        }
         else
             onRunOutOfWords.value = true
 
