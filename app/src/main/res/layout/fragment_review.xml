@@ -82,7 +82,7 @@
                 android:backgroundTint="@color/review_border"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="24dp"
+                android:padding="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/answer_frame_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -92,24 +92,27 @@
 
                 <TextView
                     android:id="@+id/word_reading"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.currentCard.wordReading}"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     android:visibility="@{viewModel.wordReadingVisibility}"
+                    app:autoSizeMaxTextSize="18sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
                     tools:text="Word reading" />
 
                 <TextView
                     android:id="@+id/word"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.currentCard.word}"
                     android:textAlignment="center"
                     android:textColor="@color/words_in_review"
                     android:textSize="30sp"
                     app:autoSizeMaxTextSize="30sp"
-                    app:autoSizeMinTextSize="14sp"
+                    app:autoSizeMinTextSize="16sp"
                     app:autoSizeTextType="uniform"
                     tools:text="Word" />
             </LinearLayout>
@@ -126,7 +129,7 @@
                 android:backgroundTint="@color/review_border"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="24dp"
+                android:padding="16dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/answer_layout"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -137,18 +140,21 @@
 
                 <TextView
                     android:id="@+id/answer_reading"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@{viewModel.currentCard.answerReading}"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     android:visibility="@{viewModel.answerReadingVisibility}"
+                    app:autoSizeMaxTextSize="18sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
                     tools:text="Answer reading" />
 
                 <TextView
                     android:id="@+id/answer"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@{viewModel.currentCard.answer}"
@@ -156,7 +162,7 @@
                     android:textColor="@color/words_in_review"
                     android:textSize="30sp"
                     app:autoSizeMaxTextSize="30sp"
-                    app:autoSizeMinTextSize="14sp"
+                    app:autoSizeMinTextSize="16sp"
                     app:autoSizeTextType="uniform"
                     tools:text="Answer" />
             </LinearLayout>
