@@ -14,5 +14,5 @@ class SearchResultCard(
 
     fun meaningString(id: Int) = (id+1).toString() + ". " + englishMeanings[id]
     fun flashCard(translationId: Int) =
-        FlashCard(0, japanese, reading, englishMeanings[translationId], 0)
+        FlashCard(0, japanese, reading, englishMeanings[translationId])
 }
