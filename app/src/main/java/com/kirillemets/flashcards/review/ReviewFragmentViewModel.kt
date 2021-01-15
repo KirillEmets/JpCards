@@ -5,12 +5,13 @@ import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import kotlin.math.roundToInt
 
 class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
-
     companion object {
         private const val DELAY_EASY_MULTIPLIER = 1.8
         private const val DELAY_HARD_MULTIPLIER = 1.3
@@ -68,7 +69,7 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     private fun makeCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
-            val cards = getRelevantCardsFromDatabaseAsync(currentTime).await()
+            val cards = getRelevantCardsFromDatabase(currentTime)
             val newList = mutableListOf<ReviewCard>()
             cards.forEach { card ->
                 if(card.nextReviewTime <= currentTime)
@@ -104,8 +105,10 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         }
     }
 
-    private fun getRelevantCardsFromDatabaseAsync(time: Long): Deferred<List<FlashCard>> =
-        viewModelScope.async(Dispatchers.IO) { database.getRelevantCards(time) }
+    private suspend fun getRelevantCardsFromDatabase(time: Long): List<FlashCard> =
+        withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+            database.getRelevantCards(time)
+        }
 
     fun onButtonReviewClick() {
         onButtonReviewClicked.value = true

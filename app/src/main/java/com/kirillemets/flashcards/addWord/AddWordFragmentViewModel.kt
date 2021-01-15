@@ -23,13 +23,11 @@ class AddWordFragmentViewModel: ViewModel() {
     val flashCards: LiveData<List<SearchResultCard>>
         get() = _flashCards
 
-
-
     private fun search(word: String) {
         searchJob.cancel(CancellationException())
         searchJob = coroutineScope.launch {
             try {
-                val queryData = getSearchQueryAsync(word)
+                val queryData = getSearchQuery(word)
                 _flashCards.value = createFlashCards(queryData)
             }
             catch (e: CancellationException) {
@@ -57,7 +55,7 @@ class AddWordFragmentViewModel: ViewModel() {
         }
     }
 
-    private suspend fun getSearchQueryAsync(word: String): QueryData {
+    private suspend fun getSearchQuery(word: String): QueryData {
         return JishoApi.retrofitService.getDataObjectAsync(word).await()
     }
 
