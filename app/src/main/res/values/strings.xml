@@ -20,6 +20,8 @@
     <string name="menu_search">search</string>
     <string name="menu_my_words">my words</string>
     <string name="discard">discard</string>
+    <string name="my_dictionary_title">My dictionary</string>
+    <string name="search">search</string>
 
 
 </resources>

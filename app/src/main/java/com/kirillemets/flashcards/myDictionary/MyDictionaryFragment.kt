@@ -9,7 +9,6 @@ import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
-import org.joda.time.LocalDate
 
 
 class MyDictionaryFragment : Fragment() {
@@ -17,7 +16,6 @@ class MyDictionaryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
     private lateinit var viewModel: MyDictionaryFragmentViewModel
     lateinit var binding: FragmentMyDictionaryBinding
     private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter()
@@ -25,7 +23,7 @@ class MyDictionaryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
         adapter.currentTimeMillis = TimeUtil.todayMillis
@@ -40,17 +38,14 @@ class MyDictionaryFragment : Fragment() {
             adapter.cards = it
         })
 
+
+        binding.topAppBar.setOnMenuItemClickListener(::onMenuItemSelected)
+
         binding.lifecycleOwner = this
         return binding.root
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.my_dictionaty_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    private fun onMenuItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.item_remove -> {
                 viewModel.deleteWords(adapter.checkedCards.toSet())
@@ -66,7 +61,7 @@ class MyDictionaryFragment : Fragment() {
         }
     }
 
-    fun uncheckAllWords() {
+    private fun uncheckAllWords() {
         adapter.checkedCards.clear()
 
         binding.recyclerView.children.forEach { view ->
