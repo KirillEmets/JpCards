@@ -2,6 +2,7 @@ package com.kirillemets.flashcards.myDictionary
 
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -34,12 +35,29 @@ class MyDictionaryFragment : Fragment() {
         ).get(MyDictionaryFragmentViewModel::class.java)
 
         binding.recyclerView.adapter = adapter
-        viewModel.allCards.observe(this, {
+        viewModel.allCards.observe(this) {
             adapter.cards = it
-        })
+        }
 
 
         binding.topAppBar.setOnMenuItemClickListener(::onMenuItemSelected)
+
+        val searchItem = binding.topAppBar.menu?.findItem(R.id.item_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.allCards.value?.filter { card ->
+                    card.english.contains(newText, true)
+                            || card.japanese.contains(newText, true)
+                            || card.reading.contains(newText, true)
+                }?.let { adapter.cards = it }
+                return false
+            }
+        })
 
         binding.lifecycleOwner = this
         return binding.root
