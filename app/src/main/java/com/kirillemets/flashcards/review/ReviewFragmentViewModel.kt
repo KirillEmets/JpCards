@@ -1,6 +1,5 @@
 package com.kirillemets.flashcards.review
 
-import android.view.View
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
@@ -28,9 +27,7 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
 
 
-    val onButtonReviewClicked = MutableLiveData(false)
-    val onButtonShowAnswerClicked = MutableLiveData(false)
-    val onNextWord = MutableLiveData(false)
+
     val onRunOutOfWords = MutableLiveData(false)
 
 
@@ -42,22 +39,14 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     val currentCard: LiveData<ReviewCard>
         get() = _currentCard
 
-    private var wordReadingVisible: Boolean = false
-    val wordReadingVisibility = Transformations.map(_currentCard) {
-        if(it.wordReading.isNotEmpty() && wordReadingVisible) View.VISIBLE
-        else View.GONE
-    }
-
-    val answerReadingVisibility = Transformations.map(_currentCard) {
-        if(it.answerReading.isNotEmpty()) View.VISIBLE
-        else View.GONE
-    }
+    val reviewStarted = MutableLiveData(false)
+    val answerShown = MutableLiveData(false)
 
     val buttonReviewClickable = Transformations.map(reviewCards){
         it.isNotEmpty()
     }
 
-    var wordCounter = MutableLiveData<Int>(0)
+    var wordCounter = MutableLiveData(0)
     val counterText = Transformations.map(wordCounter) {
         "$it / ${reviewCards.value?.size ?: 0}"
     }
@@ -111,13 +100,11 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         }
 
     fun onButtonReviewClick() {
-        onButtonReviewClicked.value = true
+        reviewStarted.value = true
     }
 
     fun onButtonShowAnswerClick() {
-        onButtonShowAnswerClicked.value = true
-        wordReadingVisible = true
-        _currentCard.value = _currentCard.value
+        answerShown.value = true
     }
 
     fun onButtonAnswerClick(buttonType: Int) {
@@ -145,8 +132,6 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
             }
         }
 
-        wordReadingVisible = false
-
         if (reviewCardsIterator.hasNext()) {
             _currentCard.value = reviewCardsIterator.next()
             wordCounter.value = wordCounter.value?.plus(1)
@@ -154,6 +139,6 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
         else
             onRunOutOfWords.value = true
 
-        onNextWord.value = true
+        answerShown.value = false
     }
 }

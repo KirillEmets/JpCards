@@ -51,7 +51,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle_extensions"
     implementation "androidx.lifecycle:lifecycle-common-java8:$version_lifecycle_extensions"
 
-
     // Navigation
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
@@ -67,9 +66,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
-
-
-
+    
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"

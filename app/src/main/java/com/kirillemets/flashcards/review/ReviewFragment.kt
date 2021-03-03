@@ -32,34 +32,6 @@ class ReviewFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.onButtonReviewClicked.observe(this, {
-            if(it) {
-                viewModel.onButtonReviewClicked.value = false
-
-                binding.mainLayout.visibility = View.GONE
-                binding.reviewLayout.visibility = View.VISIBLE
-            }
-        })
-
-        viewModel.onButtonShowAnswerClicked.observe(this, {
-            if(it) {
-                viewModel.onButtonShowAnswerClicked.value = false
-
-                binding.buttonShowAnswer.visibility = View.GONE
-                binding.answerFrameLayout.visibility = View.VISIBLE
-                binding.answerLayout.visibility = View.VISIBLE
-            }
-        })
-
-        viewModel.onNextWord.observe(this, {
-            if(it) {
-                viewModel.onNextWord.value = false
-
-                binding.buttonShowAnswer.visibility = View.VISIBLE
-                binding.answerFrameLayout.visibility = View.INVISIBLE
-                binding.answerLayout.visibility = View.INVISIBLE
-            }
-        })
 
         viewModel.reviewCards.observe(this, {
             binding.countOfCardsTextView.text = resources.getString(R.string.countOfWordsToReview, it.size)
