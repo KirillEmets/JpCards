@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/item_remove"
-        android:title="@string/item_remove_string" />
-    <item
-        android:id="@+id/item_reset"
-        android:title="@string/item_reset_string" />
-
-    <item android:id="@+id/item_search_my_dictionary"
+    <item android:id="@+id/item_search_add_word"
         android:title="@string/search"
         android:icon="@drawable/ic_search_24px"
         app:showAsAction="ifRoom"
