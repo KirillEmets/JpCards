@@ -40,8 +40,8 @@ android {
 
 dependencies {
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.32"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
 
     // Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
@@ -79,6 +79,7 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:$version_room"
+    implementation 'androidx.preference:preference:1.1.1'
     kapt "androidx.room:room-compiler:$version_room"
 
     //Material
@@ -87,6 +88,7 @@ dependencies {
     //Joda Time
     implementation 'net.danlew:android.joda:2.10.6.1'
 
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
