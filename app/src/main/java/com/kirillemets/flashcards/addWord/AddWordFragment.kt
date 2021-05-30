@@ -41,11 +41,7 @@ class AddWordFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.add_word_menu, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
         (menu.findItem(R.id.item_search_add_word)?.actionView as SearchView).apply {
-            setQuery("", false)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     if (query.isBlank())
@@ -63,6 +59,15 @@ class AddWordFragment : Fragment() {
                     return true
                 }
             })
+        }
+    }
+
+    var clearQuery = true
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if(clearQuery) {
+            (menu.findItem(R.id.item_search_add_word)?.actionView as SearchView)
+                .setQuery("", false)
+            clearQuery = false
         }
     }
 }

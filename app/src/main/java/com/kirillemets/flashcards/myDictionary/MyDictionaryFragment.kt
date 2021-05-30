@@ -45,11 +45,7 @@ class MyDictionaryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.my_dictionary_menu, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
         (menu.findItem(R.id.item_search_my_dictionary)?.actionView as SearchView).apply {
-            setQuery("", false)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return false
@@ -64,7 +60,17 @@ class MyDictionaryFragment : Fragment() {
                     return false
                 }
             })
-        }    }
+        }
+    }
+
+    var clearQuery = true
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if(clearQuery) {
+            (menu.findItem(R.id.item_search_my_dictionary)?.actionView as SearchView)
+                .setQuery("", false)
+            clearQuery = false
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return onMenuItemSelected(item)
