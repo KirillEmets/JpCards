@@ -23,9 +23,11 @@ class AddWordFragmentViewModel: ViewModel() {
     val flashCards: LiveData<List<SearchResultCard>>
         get() = _flashCards
 
-    private fun search(word: String) {
+    fun startSearch(word: String, withDelay: Boolean = true) {
         searchJob.cancel(CancellationException())
         searchJob = coroutineScope.launch {
+            if(withDelay)
+                delay(1000)
             try {
                 val queryData = getSearchQuery(word)
                 _flashCards.value = createFlashCards(queryData)
@@ -37,10 +39,6 @@ class AddWordFragmentViewModel: ViewModel() {
                 _flashCards.value = listOf(SearchResultCard(e.message?:"", "error", listOf()))
             }
         }
-    }
-
-    fun onSearchInputTextChanged(word: String) {
-        search(word)
     }
 
     fun onAddButtonClicked(resultCard: SearchResultCard, id: Int) {
