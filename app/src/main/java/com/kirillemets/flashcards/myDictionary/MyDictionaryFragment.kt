@@ -35,32 +35,39 @@ class MyDictionaryFragment : Fragment() {
         ).get(MyDictionaryFragmentViewModel::class.java)
 
         binding.recyclerView.adapter = adapter
-        viewModel.allCards.observe(this) {
+        viewModel.allCards.observe(viewLifecycleOwner) {
             adapter.cards = it
         }
 
-
-        binding.topAppBar.setOnMenuItemClickListener(::onMenuItemSelected)
-
-        val searchItem = binding.topAppBar.menu?.findItem(R.id.item_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.allCards.value?.filter { card ->
-                    card.english.contains(newText, true)
-                            || card.japanese.contains(newText, true)
-                            || card.reading.contains(newText, true)
-                }?.let { adapter.cards = it }
-                return false
-            }
-        })
-
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.my_dictionary_menu, menu)
+
+        (menu.findItem(R.id.item_search)?.actionView)?.let {
+            it as SearchView
+            it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    viewModel.allCards.value?.filter { card ->
+                        card.english.contains(newText, true)
+                                || card.japanese.contains(newText, true)
+                                || card.reading.contains(newText, true)
+                    }?.let { adapter.cards = it }
+                    return false
+                }
+            })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return onMenuItemSelected(item)
     }
 
     private fun onMenuItemSelected(item: MenuItem): Boolean {
