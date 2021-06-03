@@ -2,10 +2,9 @@ package com.kirillemets.flashcards
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.kirillemets.flashcards.database.CardDatabase
 import net.danlew.android.joda.JodaTimeAndroid
 
 
@@ -26,6 +25,12 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             if(bottomNavigation.selectedItemId == item.itemId)
                 return@setOnNavigationItemSelectedListener false
+
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+
             when(item.itemId) {
                 R.id.page_1 -> {
                     navController.navigate(R.id.action_global_reviewFragment)
@@ -37,6 +42,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.page_3 -> {
                     navController.navigate(R.id.action_global_myDictionaryFragment)
+                    true
+                }
+                R.id.page_4 -> {
+                    navController.navigate(R.id.action_global_settingsFragment)
                     true
                 }
                 else -> false
