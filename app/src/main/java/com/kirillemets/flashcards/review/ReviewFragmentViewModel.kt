@@ -11,25 +11,11 @@ import org.joda.time.LocalDate
 import kotlin.math.roundToInt
 
 class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
-    companion object {
-        private const val DELAY_EASY_MULTIPLIER = 1.8
-        private const val DELAY_HARD_MULTIPLIER = 1.3
-
-        // 1 - easy, 2 - hard
-        fun getNewDelay(lastDelay: Int, difficulty: Int): Int =
-             (lastDelay * when(difficulty) {
-                 1 -> DELAY_EASY_MULTIPLIER
-                 2 -> DELAY_HARD_MULTIPLIER
-                 else -> 1.0
-             }).roundToInt()
-    }
+    var delayEasyMultiplier = 1f
+    var delayHardMultiplier = 1f
 
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
-
-
-
     val onRunOutOfWords = MutableLiveData(false)
-
 
     private val reviewCardsIterator: Iterator<ReviewCard> by lazy {
         (reviewCards.value?: listOf()).iterator()
@@ -41,6 +27,9 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
     val reviewStarted = MutableLiveData(false)
     val answerShown = MutableLiveData(false)
+
+    val fontSizeBig = MutableLiveData(30)
+    val fontSizeSmall = MutableLiveData(30)
 
     val buttonReviewClickable = Transformations.map(reviewCards){
         it.isNotEmpty()
@@ -62,29 +51,9 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
             val newList = mutableListOf<ReviewCard>()
             cards.forEach { card ->
                 if(card.nextReviewTime <= currentTime)
-                    newList.add(
-                        ReviewCard(
-                            card.japanese,
-                            card.reading,
-                            card.english,
-                            "",
-                            false,
-                            card.lastDelay,
-                            card.cardId
-                        )
-                    )
+                    newList.add(ReviewCard.fromDataBaseFlashCardDefault(card))
                 if(card.nextReviewTimeReversed <= currentTime)
-                    newList.add(
-                        ReviewCard(
-                            card.english,
-                            "",
-                            card.japanese,
-                            card.reading,
-                            true,
-                            card.lastDelayReversed,
-                            card.cardId
-                        )
-                    )
+                    newList.add(ReviewCard.fromDataBaseFlashCardReversed(card))
             }
             reviewCards.value = newList.shuffled()
             if(newList.isNotEmpty()) {
@@ -141,4 +110,13 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
         answerShown.value = false
     }
+
+    // 1 - easy, 2 - hard
+    fun getNewDelay(lastDelay: Int, difficulty: Int): Int =
+        (lastDelay * when(difficulty) {
+            1 -> delayEasyMultiplier
+            2 -> delayHardMultiplier
+            else -> 1f
+        }).roundToInt()
+
 }
