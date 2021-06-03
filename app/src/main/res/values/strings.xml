@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">flashcards</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="searchHint">type to search…</string>
+    <string name="searchHint">Search words…</string>
     <string name="buttonAddText">add</string>
     <string name="daysRemainingText">delay: %1$dd/%2$dd</string>
     <string name="item_remove_string">Remove selected</string>
@@ -22,6 +21,10 @@
     <string name="discard">discard</string>
     <string name="my_dictionary_title">My dictionary</string>
     <string name="search">search</string>
-
-
+    <string name="settings">settings</string>
+    <string name="review_header">Review</string>
+    <string name="hard_multiplier">Hard button multiplier</string>
+    <string name="easy_multiplier">Easy button multiplier</string>
+    <string name="review_font_size">Font size in review</string>
+    <string name="filterHint">Filter words…</string>
 </resources>
