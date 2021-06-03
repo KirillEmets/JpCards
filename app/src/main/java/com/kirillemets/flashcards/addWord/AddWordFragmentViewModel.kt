@@ -27,7 +27,7 @@ class AddWordFragmentViewModel: ViewModel() {
         searchJob.cancel(CancellationException())
         searchJob = coroutineScope.launch {
             if(withDelay)
-                delay(1000)
+                delay(500)
             try {
                 val queryData = getSearchQuery(word)
                 _flashCards.value = createFlashCards(queryData)
@@ -36,6 +36,7 @@ class AddWordFragmentViewModel: ViewModel() {
 
             }
             catch (e: Exception) {
+                // TODO
                 _flashCards.value = listOf(SearchResultCard(e.message?:"", "error", listOf()))
             }
         }
