@@ -2,15 +2,14 @@ package com.kirillemets.flashcards.myDictionary
 
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
 import androidx.core.view.children
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
-
 
 class MyDictionaryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,28 +38,24 @@ class MyDictionaryFragment : Fragment() {
             adapter.cards = it
         }
 
+        binding.textField.editText?.doAfterTextChanged {
+            filterCards((it ?: "").toString())
+        }
+
         binding.lifecycleOwner = this
         return binding.root
     }
 
+    private fun filterCards(query: String) {
+        viewModel.allCards.value?.filter { card ->
+            card.english.contains(query, true)
+                    || card.japanese.contains(query, true)
+                    || card.reading.contains(query, true)
+        }?.let { adapter.cards = it }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.my_dictionary_menu, menu)
-        (menu.findItem(R.id.item_search_my_dictionary)?.actionView as SearchView).apply {
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String): Boolean {
-                    viewModel.allCards.value?.filter { card ->
-                        card.english.contains(newText, true)
-                                || card.japanese.contains(newText, true)
-                                || card.reading.contains(newText, true)
-                    }?.let { adapter.cards = it }
-                    return false
-                }
-            })
-        }
     }
 
     var clearQuery = true
@@ -100,7 +95,5 @@ class MyDictionaryFragment : Fragment() {
                     as MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder)
                 .binding.card.isChecked = false
         }
-
     }
-
 }
