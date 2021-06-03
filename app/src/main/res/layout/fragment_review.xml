@@ -110,7 +110,8 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentCard.wordReading}"
                             android:textAlignment="center"
-                            android:textSize="18sp"
+                            android:textSize="@{viewModel.fontSizeSmall}"
+                            tools:textSize="18sp"
                             android:visibility='@{(viewModel.answerShown &amp;&amp; !viewModel.currentCard.wordReading.empty) ? View.VISIBLE : View.GONE}'
                             tools:text="Word reading" />
 
@@ -121,7 +122,8 @@
                             android:text="@{viewModel.currentCard.word}"
                             android:textAlignment="center"
                             android:textColor="@color/words_in_review"
-                            android:textSize="30sp"
+                            android:textSize="@{viewModel.fontSizeBig}"
+                            tools:textSize="30sp"
                             tools:text="Word" />
                     </LinearLayout>
                 </ScrollView>
@@ -164,7 +166,8 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentCard.answerReading}"
                             android:textAlignment="center"
-                            android:textSize="18sp"
+                            android:textSize="@{viewModel.fontSizeSmall}"
+                            tools:textSize="18sp"
                             android:visibility='@{!viewModel.currentCard.answerReading.empty ? View.VISIBLE : View.GONE}'
                             tools:text="Answer reading" />
 
@@ -175,7 +178,8 @@
                             android:text="@{viewModel.currentCard.answer}"
                             android:textAlignment="center"
                             android:textColor="@color/words_in_review"
-                            android:textSize="30sp"
+                            android:textSize="@{viewModel.fontSizeBig}"
+                            tools:textSize="30sp"
                             tools:text="Answer" />
                     </LinearLayout>
                 </ScrollView>
