@@ -15,4 +15,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_library_books_24px"
         android:title="@string/menu_my_words" />
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_24px"
+        android:title="@string/settings" />
 </menu>
