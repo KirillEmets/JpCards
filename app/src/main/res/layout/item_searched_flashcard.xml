@@ -42,7 +42,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@{resultCard.japanese}"
-                        android:textColor="@color/MainTextColor"
+                        android:textColor="?attr/colorMainText"
                         android:textSize="24sp"
                         tools:text="Japanese" />
 
@@ -64,7 +64,7 @@
                         android:layout_marginBottom="8dp"
                         android:singleLine="true"
                         android:text="@{resultCard.meaningsString}"
-                        android:textColor="@color/MainTextColor"
+                        android:textColor="?attr/colorMainText"
                         android:textSize="18sp"
                         tools:text="English" />
 

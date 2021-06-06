@@ -14,20 +14,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         tools:context=".review.ReviewFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="@{viewModel.reviewStarted ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="0.4"
-            android:visibility="@{viewModel.reviewStarted ? View.GONE : View.VISIBLE}"
             tools:visibility="gone">
 
 
@@ -49,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:textColor="#000000"
+                android:textColor="?attr/colorMainText"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/button_start_review"
@@ -75,7 +74,6 @@
 
             <RelativeLayout
                 android:id="@+id/word_frame_layout"
-                android:visibility="@{viewModel.reviewStarted ? View.VISIBLE : View.GONE}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
@@ -85,6 +83,7 @@
                 android:background="@android:drawable/gallery_thumb"
                 android:backgroundTint="@color/review_border"
                 android:padding="16dp"
+                android:visibility="@{viewModel.reviewStarted ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toTopOf="@+id/answer_frame_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -99,10 +98,10 @@
                     tools:ignore="UselessParent">
 
                     <LinearLayout
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/word_reading"
@@ -111,20 +110,20 @@
                             android:text="@{viewModel.currentCard.wordReading}"
                             android:textAlignment="center"
                             android:textSize="@{viewModel.fontSizeSmall}"
-                            tools:textSize="18sp"
                             android:visibility='@{(viewModel.answerShown &amp;&amp; !viewModel.currentCard.wordReading.empty) ? View.VISIBLE : View.GONE}'
-                            tools:text="Word reading" />
+                            tools:text="Word reading"
+                            tools:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/word"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentCard.word}"
+                            android:textColor="?attr/colorMainText"
                             android:textAlignment="center"
-                            android:textColor="@color/words_in_review"
                             android:textSize="@{viewModel.fontSizeBig}"
-                            tools:textSize="30sp"
-                            tools:text="Word" />
+                            tools:text="Word"
+                            tools:textSize="30sp" />
                     </LinearLayout>
                 </ScrollView>
             </RelativeLayout>
@@ -141,24 +140,25 @@
                 android:backgroundTint="@color/review_border"
                 android:padding="16dp"
                 android:visibility="@{(viewModel.reviewStarted &amp;&amp; viewModel.answerShown) ? View.VISIBLE : View.INVISIBLE}"
-                tools:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/answer_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/word_frame_layout"
-                app:layout_constraintVertical_chainStyle="spread">
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:visibility="visible">
 
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     tools:ignore="UselessParent">
+
                     <LinearLayout
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/answer_reading"
@@ -167,20 +167,20 @@
                             android:text="@{viewModel.currentCard.answerReading}"
                             android:textAlignment="center"
                             android:textSize="@{viewModel.fontSizeSmall}"
-                            tools:textSize="18sp"
                             android:visibility='@{!viewModel.currentCard.answerReading.empty ? View.VISIBLE : View.GONE}'
-                            tools:text="Answer reading" />
+                            tools:text="Answer reading"
+                            tools:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/answer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentCard.answer}"
+                            android:textColor="?attr/colorMainText"
                             android:textAlignment="center"
-                            android:textColor="@color/words_in_review"
                             android:textSize="@{viewModel.fontSizeBig}"
-                            tools:textSize="30sp"
-                            tools:text="Answer" />
+                            tools:text="Answer"
+                            tools:textSize="30sp" />
                     </LinearLayout>
                 </ScrollView>
             </RelativeLayout>
@@ -197,51 +197,39 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_miss"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/answer_button_height"
+                    style="@style/ReviewButton.Miss"
+                    android:layout_width="0dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginBottom="48dp"
                     android:onClick="@{() -> viewModel.onButtonAnswerClick(0)}"
                     android:text="@string/miss"
-                    android:textSize="@dimen/Buttons_text_size"
-                    app:backgroundTint="@color/button_miss"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintHorizontal_weight="0.4"
+                    app:layout_constraintEnd_toStartOf="@+id/button_hard"
+                    app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_hard"
+                    style="@style/ReviewButton.Hard"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:onClick="@{() -> viewModel.onButtonAnswerClick(2)}"
                     android:text="@string/hard"
-                    android:textSize="@dimen/Buttons_text_size"
-                    app:backgroundTint="@color/button_hard"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
                     app:layout_constraintEnd_toStartOf="@+id/button_easy"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintHorizontal_weight="0.2"
                     app:layout_constraintStart_toEndOf="@+id/button_miss"
                     app:layout_constraintTop_toTopOf="@+id/button_miss" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_easy"
+                    style="@style/ReviewButton.Easy"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:onClick="@{() -> viewModel.onButtonAnswerClick(1)}"
                     android:text="@string/easy"
-                    android:textSize="@dimen/Buttons_text_size"
-                    app:backgroundTint="@color/button_easy"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_miss"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="0.2"
                     app:layout_constraintStart_toEndOf="@+id/button_hard"
                     app:layout_constraintTop_toTopOf="@+id/button_miss" />
 
@@ -310,12 +298,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_show_answer"
-                android:visibility="@{(viewModel.reviewStarted &amp;&amp; !viewModel.answerShown) ? View.VISIBLE : View.GONE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.onButtonShowAnswerClick()}"
                 android:text="@string/show_answer_button"
                 android:textSize="18sp"
+                android:visibility="@{(viewModel.reviewStarted &amp;&amp; !viewModel.answerShown) ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -333,7 +321,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text = "122 / 357"/>
+                tools:text="122 / 357" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
