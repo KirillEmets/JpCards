@@ -9,6 +9,7 @@
 
         <item name="backgroundColor">@color/white</item>
         <item name="colorSurface">@color/white</item>
+        <item name="colorReviewBorder">#CACACA</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeParent">

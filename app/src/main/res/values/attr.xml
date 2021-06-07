@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="colorReviewBorder" format="color"/>
     <attr name="colorMainText" format="color"/>
     <attr name="colorButtonMiss" format="color"/>
     <attr name="colorButtonHard" format="color"/>

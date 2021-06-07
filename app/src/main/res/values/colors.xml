@@ -2,7 +2,6 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="background">#ecf0f1</color>
     <color name="button_miss">#c0392b</color>
     <color name="button_hard">#e74c3c</color>
     <color name="button_normal">#e67e22</color>
