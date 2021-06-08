@@ -120,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentCard.word}"
                             android:textAlignment="center"
-                            android:textColor="#FFFFFF"
+                            android:textColor="?attr/colorMainText"
                             android:textSize="@{viewModel.fontSizeBig}"
                             tools:text="Word"
                             tools:textSize="30sp" />
