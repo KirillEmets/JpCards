@@ -3,9 +3,9 @@
         <item name="colorPrimary">#9b59b6</item>
         <item name="colorPrimaryDark">#6b2c86</item>
         <item name="colorAccent">#03DAC5</item>
-
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorMainText">@color/black</item>
+
+        <item name="colorMainText">#0C0C0C</item>
 
         <item name="backgroundColor">@color/white</item>
         <item name="colorSurface">@color/white</item>
