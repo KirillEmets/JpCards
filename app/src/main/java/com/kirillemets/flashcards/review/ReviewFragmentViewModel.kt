@@ -3,6 +3,7 @@ package com.kirillemets.flashcards.review
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
+import com.kirillemets.flashcards.database.DatabaseRepository
 import com.kirillemets.flashcards.database.FlashCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -10,7 +11,8 @@ import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import kotlin.math.roundToInt
 
-class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
+class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
+    val database: CardDatabaseDao = repository.cardDatabaseDao
     var delayEasyMultiplier = 1f
     var delayHardMultiplier = 1f
 
