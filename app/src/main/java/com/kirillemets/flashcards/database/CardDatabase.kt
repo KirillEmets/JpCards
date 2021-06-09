@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import org.jetbrains.annotations.TestOnly
 
 @Database(entities = [FlashCard::class], version = 1)
 abstract class CardDatabase: RoomDatabase() {
@@ -25,6 +26,11 @@ abstract class CardDatabase: RoomDatabase() {
                 }
                 return instance
             }
+        }
+
+        @TestOnly
+        fun setInstance(database: CardDatabase) {
+            Instance = database
         }
     }
     abstract fun flashCardsDao(): CardDatabaseDao
