@@ -24,4 +24,9 @@
     <style name="ReviewButton.Easy" parent="ReviewButton">
         <item name="android:textColor">?attr/colorButtonEasy</item>
     </style>
+
+    <style name="ShowAnswerButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
 </resources>
