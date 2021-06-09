@@ -31,23 +31,33 @@ class ReviewFragment : Fragment() {
         ).get(ReviewFragmentViewModel::class.java)
 
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        viewModel.delayHardMultiplier = preferenceManager.getFloat("hard_multiplier", 1f)
-        viewModel.delayEasyMultiplier = preferenceManager.getFloat("easy_multiplier", 1f)
+        viewModel.apply {
+            delayHardMultiplier = preferenceManager.getFloat("hard_multiplier", 1f)
+            delayEasyMultiplier = preferenceManager.getFloat("easy_multiplier", 1f)
 
-        val size = preferenceManager.getFloat("review_font_size", 30f).toInt()
-        viewModel.fontSizeBig.value = (size * resources.displayMetrics.scaledDensity).toInt()
-        viewModel.fontSizeSmall.value = ((size - 12) * resources.displayMetrics.scaledDensity).toInt()
-
+            val size = preferenceManager.getFloat("review_font_size", 30f).toInt()
+            fontSizeBig.value = (size * resources.displayMetrics.scaledDensity).toInt()
+            fontSizeSmall.value = ((size - 12) * resources.displayMetrics.scaledDensity).toInt()
+        }
 
         binding.viewModel = viewModel
 
         viewModel.reviewCards.observe(viewLifecycleOwner, {
-            binding.countOfCardsTextView.text = resources.getString(R.string.countOfWordsToReview, it.size)
+            binding.countOfCardsTextView.text =
+                resources.getString(R.string.countOfWordsToReview, it.size)
         })
 
         viewModel.currentCard.observe(viewLifecycleOwner, {
-            binding.easyButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, viewModel.getNewDelay(it.lastDelay, 1), viewModel.getNewDelay(it.lastDelay, 1))
-            binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, viewModel.getNewDelay(it.lastDelay, 2), viewModel.getNewDelay(it.lastDelay, 2))
+            binding.easyButtonDelay.text = resources.getQuantityString(
+                R.plurals.daysToDelay,
+                viewModel.getNewDelay(it.lastDelay, 1),
+                viewModel.getNewDelay(it.lastDelay, 1)
+            )
+            binding.hardButtonDelay.text = resources.getQuantityString(
+                R.plurals.daysToDelay,
+                viewModel.getNewDelay(it.lastDelay, 2),
+                viewModel.getNewDelay(it.lastDelay, 2)
+            )
         })
 
         viewModel.loadCardsToReview()
