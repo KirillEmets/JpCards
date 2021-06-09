@@ -15,11 +15,6 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
     var delayHardMultiplier = 1f
 
     val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
-    val onRunOutOfWords = MutableLiveData(false)
-
-    private val reviewCardsIterator: Iterator<ReviewCard> by lazy {
-        (reviewCards.value?: listOf()).iterator()
-    }
 
     private val _currentCard: MutableLiveData<ReviewCard> = MutableLiveData()
     val currentCard: LiveData<ReviewCard>
@@ -37,14 +32,10 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
 
     var wordCounter = MutableLiveData(0)
     val counterText = Transformations.map(wordCounter) {
-        "$it / ${reviewCards.value?.size ?: 0}"
+        "${it + 1} / ${reviewCards.value?.size ?: 0}"
     }
 
-    init {
-        makeCardsToReview()
-    }
-
-    private fun makeCardsToReview() {
+    fun loadCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
             val cards = getRelevantCardsFromDatabase(currentTime)
@@ -57,10 +48,15 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
             }
             reviewCards.value = newList.shuffled()
             if(newList.isNotEmpty()) {
-                _currentCard.value = reviewCardsIterator.next()
-                wordCounter.value = 1
+                wordCounter.value = 0
+                _currentCard.value = reviewCards.value!![0]
             }
         }
+    }
+
+    private fun onRunOutOfWords() {
+        reviewStarted.value = false
+        loadCardsToReview()
     }
 
     private suspend fun getRelevantCardsFromDatabase(time: Long): List<FlashCard> =
@@ -101,12 +97,12 @@ class ReviewFragmentViewModel(val database: CardDatabaseDao): ViewModel() {
             }
         }
 
-        if (reviewCardsIterator.hasNext()) {
-            _currentCard.value = reviewCardsIterator.next()
-            wordCounter.value = wordCounter.value?.plus(1)
-        }
+        wordCounter.value = wordCounter.value?.plus(1)
+        if (wordCounter.value!! < reviewCards.value!!.size)
+            _currentCard.value = reviewCards.value!![wordCounter.value!!]
+
         else
-            onRunOutOfWords.value = true
+            onRunOutOfWords()
 
         answerShown.value = false
     }

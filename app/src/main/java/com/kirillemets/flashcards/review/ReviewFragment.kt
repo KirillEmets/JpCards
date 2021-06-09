@@ -49,12 +49,7 @@ class ReviewFragment : Fragment() {
             binding.hardButtonDelay.text = resources.getQuantityString(R.plurals.daysToDelay, viewModel.getNewDelay(it.lastDelay, 2), viewModel.getNewDelay(it.lastDelay, 2))
         })
 
-        viewModel.onRunOutOfWords.observe(viewLifecycleOwner, {
-            if(it) {
-                viewModel.onRunOutOfWords.value = false
-                findNavController().navigate(R.id.action_global_reviewFragment)
-            }
-        })
+        viewModel.loadCardsToReview()
 
         binding.lifecycleOwner = this
 
