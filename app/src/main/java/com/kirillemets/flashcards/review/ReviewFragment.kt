@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
+import com.kirillemets.flashcards.database.DatabaseRepository
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
 import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModelFactory
 
@@ -26,7 +27,7 @@ class ReviewFragment : Fragment() {
 
         viewModel = ViewModelProvider(
             this,
-            MyDictionaryFragmentViewModelFactory(database)
+            ReviewFragmentViewModelFactory(DatabaseRepository(database))
         ).get(ReviewFragmentViewModel::class.java)
 
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
