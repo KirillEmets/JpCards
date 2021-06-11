@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/page_review"
         android:enabled="true"
         android:icon="@drawable/ic_star_24px"
         android:title="@string/menu_review" />
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/page_search"
         android:enabled="true"
         android:icon="@drawable/ic_library_add_24px"
         android:title="@string/menu_search" />
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/page_my_words"
         android:enabled="true"
         android:icon="@drawable/ic_library_books_24px"
         android:title="@string/menu_my_words" />
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/page_settings"
         android:enabled="true"
         android:icon="@drawable/ic_settings_24px"
         android:title="@string/settings" />

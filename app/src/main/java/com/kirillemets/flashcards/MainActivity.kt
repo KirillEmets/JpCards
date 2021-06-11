@@ -43,19 +43,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             when(item.itemId) {
-                R.id.page_1 -> {
+                R.id.page_review -> {
                     navController.navigate(R.id.action_global_reviewFragment)
                     true
                 }
-                R.id.page_2 -> {
+                R.id.page_search -> {
                     navController.navigate(R.id.action_global_addWordFragment)
                     true
                 }
-                R.id.page_3 -> {
+                R.id.page_my_words -> {
                     navController.navigate(R.id.action_global_myDictionaryFragment)
                     true
                 }
-                R.id.page_4 -> {
+                R.id.page_settings -> {
                     navController.navigate(R.id.action_global_settingsFragment)
                     true
                 }
