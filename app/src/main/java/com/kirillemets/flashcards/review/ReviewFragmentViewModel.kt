@@ -37,7 +37,11 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         "${it + 1} / ${reviewCards.value?.size ?: 0}"
     }
 
-    fun loadCardsToReview() {
+    init {
+        loadCardsToReview()
+    }
+
+    private fun loadCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
             val cards = getRelevantCardsFromDatabase(currentTime)

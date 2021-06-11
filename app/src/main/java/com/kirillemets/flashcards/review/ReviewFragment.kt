@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.database.DatabaseRepository
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
-import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModelFactory
 
 class ReviewFragment : Fragment() {
     private lateinit var viewModel: ReviewFragmentViewModel
@@ -59,8 +57,6 @@ class ReviewFragment : Fragment() {
                 viewModel.getNewDelay(it.lastDelay, 2)
             )
         })
-
-        viewModel.loadCardsToReview()
 
         binding.lifecycleOwner = this
 
