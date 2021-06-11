@@ -14,7 +14,7 @@
     <string name="miss">miss</string>
     <string name="easy">easy</string>
     <string name="incorrect">Incorrect</string>
-    <string name="correct"><b>CORRECT</b>, AND THE QUESTION FELT:</string>
+    <string name="correct"><b>CORRECT</b>, AND IT WAS:</string>
     <string name="menu_review">review</string>
     <string name="menu_search">search</string>
     <string name="menu_my_words">my words</string>
@@ -27,4 +27,5 @@
     <string name="easy_multiplier">Easy button multiplier</string>
     <string name="review_font_size">Font size in review</string>
     <string name="filterHint">Filter words…</string>
+    <string name="appearance_header">Appearance</string>
 </resources>
