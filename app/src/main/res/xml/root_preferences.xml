@@ -14,8 +14,19 @@
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
             app:key="review_font_size"
             app:title="@string/review_font_size"
-            app:defaultValue="36"/>
+            app:defaultValue="30"/>
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/appearance_header">
+        <ListPreference
+            app:key="theme"
+            app:title="Theme"
+            app:entries="@array/entries"
+            app:entryValues="@array/values"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="Auto"/>
+    </PreferenceCategory>
+
 
 
 

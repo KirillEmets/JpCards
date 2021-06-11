@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries">
+        <item>Auto</item>
+        <item>Light</item>
+        <item>Black</item>
+    </string-array>
+
+    <string-array name="values">
+        <item>Auto</item>
+        <item>Light</item>
+        <item>Black</item>
+    </string-array>
+</resources>
