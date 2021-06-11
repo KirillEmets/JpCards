@@ -55,16 +55,8 @@ class MyDictionaryFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.my_dictionary_menu, menu)
-    }
-
-    var clearQuery = true
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        if(clearQuery) {
-            (menu.findItem(R.id.item_search_my_dictionary)?.actionView as SearchView)
-                .setQuery("", false)
-            clearQuery = false
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
