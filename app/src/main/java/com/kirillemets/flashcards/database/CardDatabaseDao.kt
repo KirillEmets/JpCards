@@ -17,6 +17,9 @@ interface CardDatabaseDao {
     @Query("SELECT * FROM flashcard WHERE next_review_time <= :currentTime OR next_review_time_reversed <= :currentTime")
     fun getRelevantCards(currentTime: Long) : List<FlashCard>
 
+    @Query("SELECT * FROM flashcard WHERE :english = english AND :japanese = japanese AND :reading = reading")
+    fun find(english: String, japanese: String, reading: String): List<FlashCard>
+
     @Query("DELETE FROM flashcard WHERE cardId IN (:ids)")
     fun deleteByIndexes(ids: Set<Int>)
 
