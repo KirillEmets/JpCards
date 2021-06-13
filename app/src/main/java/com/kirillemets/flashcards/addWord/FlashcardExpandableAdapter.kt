@@ -1,6 +1,5 @@
 package com.kirillemets.flashcards.addWord
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,10 +33,13 @@ class FlashcardExpandableAdapter(
             index: Int, searchResultCard: SearchResultCard,
             callback:AddWordFragmentAdapter.AddWordFragmentAdapterCallback
         ) {
-
             binding.definitionId = index
             binding.searchResult = searchResultCard
-            binding.callback = callback
+
+            binding.buttonAddWord.setOnClickListener {
+                binding.buttonAddWord.isClickable = false
+                callback.call(searchResultCard, index)
+            }
         }
     }
 }
