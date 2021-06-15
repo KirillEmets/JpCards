@@ -30,4 +30,5 @@
     <string name="appearance_header">Appearance</string>
     <string name="insertion_success">Word added</string>
     <string name="insertion_failure">Word already exists</string>
+    <string name="delete_card">Delete this card</string>
 </resources>

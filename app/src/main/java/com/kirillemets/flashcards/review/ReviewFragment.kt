@@ -1,10 +1,8 @@
 package com.kirillemets.flashcards.review
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.kirillemets.flashcards.R
@@ -19,6 +17,8 @@ class ReviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        setHasOptionsMenu(true)
 
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val binding = FragmentReviewBinding.inflate(inflater)
@@ -61,5 +61,19 @@ class ReviewFragment : Fragment() {
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.review_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.delete_card -> {
+                viewModel.deleteCurrentCard()
+                return true
+            }
+        }
+        return false
     }
 }
