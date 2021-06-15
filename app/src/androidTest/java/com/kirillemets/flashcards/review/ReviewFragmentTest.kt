@@ -1,36 +1,27 @@
 package com.kirillemets.flashcards.review
 
-import android.content.Context
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.kirillemets.flashcards.MainActivity
+import com.kirillemets.flashcards.MockDaoTest
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
 import org.hamcrest.CoreMatchers.not
-import org.junit.Before
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class ReviewFragmentTest {
-    private lateinit var dao: CardDatabaseDao
-
-    @Before
-    fun mockDatabase() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val db = Room.inMemoryDatabaseBuilder(context, CardDatabase::class.java).build()
-        CardDatabase.setInstance(db)
-        dao = db.flashCardsDao()
-    }
-
+class ReviewFragmentTest: MockDaoTest() {
     @Test
     fun recreate() {
         val scenario = launchFragmentInContainer<ReviewFragment>(themeResId = R.style.AppTheme)
@@ -122,5 +113,82 @@ class ReviewFragmentTest {
         onView(withId(R.id.button_start_review))
             .check(matches(not(isClickable())))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun removeCardImmediately() {
+        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.button_start_review))
+            .check(matches(isClickable()))
+            .perform(click())
+
+        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
+        onView(withText(R.string.delete_card))
+            .perform(click())
+
+        repeat(2) {
+            onView(withId(R.id.button_show_answer))
+                .check(matches(isDisplayed()))
+                .perform(click())
+
+            onView(withId(R.id.button_miss))
+                .perform(click())
+        }
+
+        Assert.assertEquals(1, dao.getAllBlocking().size)
+        onView(withId(R.id.button_start_review))
+            .check(matches(isClickable()))
+    }
+
+    @Test
+    fun removeAllCards() {
+        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.button_start_review))
+            .check(matches(isClickable()))
+            .perform(click())
+
+        repeat(2) {
+            Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
+            onView(withText(R.string.delete_card))
+                .perform(click())
+        }
+
+        Assert.assertEquals(0, dao.getAllBlocking().size)
+        onView(withId(R.id.button_start_review))
+            .check(matches(not(isClickable())))
+    }
+
+    @Test
+    fun removeLastCard() {
+        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.button_start_review))
+            .check(matches(isClickable()))
+            .perform(click())
+
+        repeat(3) {
+            onView(withId(R.id.button_show_answer))
+                .check(matches(isDisplayed()))
+                .perform(click())
+
+            onView(withId(R.id.button_miss))
+                .perform(click())
+        }
+
+        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().targetContext)
+        onView(withText(R.string.delete_card))
+            .perform(click())
+
+        Assert.assertEquals(1, dao.getAllBlocking().size)
+        onView(withId(R.id.button_start_review))
+            .check(matches(isClickable()))
     }
 }
