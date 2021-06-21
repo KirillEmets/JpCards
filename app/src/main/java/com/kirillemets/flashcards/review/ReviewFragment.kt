@@ -17,7 +17,9 @@ class ReviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val binding = FragmentReviewBinding.inflate(inflater)
 
@@ -57,8 +59,7 @@ class ReviewFragment : Fragment() {
         })
 
         viewModel.reviewStarted.observe(viewLifecycleOwner) { reviewStarted ->
-            setHasOptionsMenu(reviewStarted)
-            requireActivity().invalidateOptionsMenu()
+            setMenuVisibility(reviewStarted)
         }
 
         binding.lifecycleOwner = this
