@@ -18,13 +18,11 @@ class ReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        setHasOptionsMenu(true)
-
         val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val binding = FragmentReviewBinding.inflate(inflater)
 
         viewModel = ViewModelProvider(
-            this,
+            requireActivity(),
             ReviewFragmentViewModelFactory(DatabaseRepository(database))
         ).get(ReviewFragmentViewModel::class.java)
 
@@ -57,6 +55,11 @@ class ReviewFragment : Fragment() {
                 viewModel.getNewDelay(it.lastDelay, 2)
             )
         })
+
+        viewModel.reviewStarted.observe(viewLifecycleOwner) { reviewStarted ->
+            setHasOptionsMenu(reviewStarted)
+            requireActivity().invalidateOptionsMenu()
+        }
 
         binding.lifecycleOwner = this
 
