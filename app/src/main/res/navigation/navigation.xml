@@ -3,42 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/reviewFragment">
+    app:startDestination="@id/reviewStarterFragment">
 
     <fragment
         android:id="@+id/addWordFragment"
         android:name="com.kirillemets.flashcards.addWord.AddWordFragment"
-        android:label="fragment_add_word"
+        android:label="Search Online"
         tools:layout="@layout/fragment_add_word" />
     <fragment
         android:id="@+id/myDictionaryFragment"
         android:name="com.kirillemets.flashcards.myDictionary.MyDictionaryFragment"
-        android:label="fragment_my_dictionary"
+        android:label="My Dictionary"
         tools:layout="@layout/fragment_my_dictionary" />
     <action
         android:id="@+id/action_global_myDictionaryFragment"
         app:destination="@id/myDictionaryFragment"
-        app:popUpTo="@id/navigation" />
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_global_addWordFragment"
         app:destination="@id/addWordFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
     <fragment
-        android:id="@+id/reviewFragment"
-        android:name="com.kirillemets.flashcards.review.ReviewFragment"
-        android:label="fragment_review"
-        tools:layout="@layout/fragment_review" />
+        android:id="@+id/reviewStarterFragment"
+        android:name="com.kirillemets.flashcards.review.ReviewStarterFragment"
+        android:label="Review"
+        tools:layout="@layout/fragment_review_starter">
+        <action
+            android:id="@+id/action_reviewStarterFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
+    </fragment>
     <action
-        android:id="@+id/action_global_reviewFragment"
-        app:destination="@id/reviewFragment"
-        app:popUpTo="@id/navigation" />
+        android:id="@+id/action_global_reviewStarterFragment"
+        app:destination="@id/reviewStarterFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kirillemets.flashcards.preference.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Settings" />
     <action
         android:id="@+id/action_global_settingsFragment"
         app:destination="@id/settingsFragment"
-        app:popUpTo="@id/navigation" />
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.kirillemets.flashcards.review.ReviewFragment"
+        android:label="Review"
+        tools:layout="@layout/fragment_review" />
 </navigation>

@@ -3,16 +3,30 @@ package com.kirillemets.flashcards
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kirillemets.flashcards.database.CardDatabase
+import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.review.ReviewFragmentViewModel
+import com.kirillemets.flashcards.review.ReviewFragmentViewModelFactory
 import net.danlew.android.joda.JodaTimeAndroid
 
 
 lateinit var bottomNavigation: BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var viewModel:ReviewFragmentViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +47,15 @@ class MainActivity : AppCompatActivity() {
 
         val navController = this.findNavController(R.id.nav_host_fragment)
 
+        appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.reviewStarterFragment,
+            R.id.addWordFragment,
+            R.id.myDictionaryFragment,
+            R.id.settingsFragment
+        ).build()
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             if(bottomNavigation.selectedItemId == item.itemId)
                 return@setOnNavigationItemSelectedListener false
@@ -44,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
             when(item.itemId) {
                 R.id.page_review -> {
-                    navController.navigate(R.id.action_global_reviewFragment)
+                    navController.navigate(R.id.action_global_reviewStarterFragment)
                     true
                 }
                 R.id.page_search -> {
@@ -63,8 +86,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val database = CardDatabase.getInstance(this).flashCardsDao()
+        viewModel = ViewModelProvider(
+            this,
+            ReviewFragmentViewModelFactory(DatabaseRepository(database))
+        ).get(ReviewFragmentViewModel::class.java)
+    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        onUpNavigation()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
 
+    override fun onBackPressed() {
+        onUpNavigation()
+        super.onBackPressed()
+    }
+
+    private fun onUpNavigation() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if(navController.currentDestination?.id == R.id.reviewFragment) {
+            if(viewModel.reviewGoing) {
+                viewModel.restart()
+            }
+        }
     }
 }
 

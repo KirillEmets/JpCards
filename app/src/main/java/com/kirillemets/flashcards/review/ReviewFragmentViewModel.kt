@@ -28,8 +28,8 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         reviewCards.value!![it]
     }
 
-    val reviewStarted = MutableLiveData(false)
     val answerShown = MutableLiveData(false)
+    var reviewGoing = false
 
     val fontSizeBig = MutableLiveData(30)
     val fontSizeSmall = MutableLiveData(30)
@@ -37,6 +37,8 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
     val buttonReviewClickable = Transformations.map(reviewCards) {
         it.isNotEmpty()
     }
+
+    val onRunOutOfWords = MutableLiveData(false)
 
     init {
         loadCardsToReview()
@@ -59,20 +61,10 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         }
     }
 
-    private fun onRunOutOfWords() {
-        reviewStarted.value = false
-        answerShown.value = false
-        loadCardsToReview()
-    }
-
     private suspend fun getRelevantCardsFromDatabase(time: Long): List<FlashCard> =
         withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
             database.getRelevantCards(time)
         }
-
-    fun onButtonReviewClick() {
-        reviewStarted.value = true
-    }
 
     fun onButtonShowAnswerClick() {
         answerShown.value = true
@@ -141,5 +133,20 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             database.deleteByIndexes(setOf(deleteId))
         }
+    }
+
+    fun startReview() {
+        reviewGoing = true
+    }
+
+    fun restart() {
+        answerShown.value = false
+        reviewGoing = false
+        loadCardsToReview()
+    }
+
+    private fun onRunOutOfWords() {
+        restart()
+        onRunOutOfWords.value = true
     }
 }
