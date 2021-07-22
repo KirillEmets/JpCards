@@ -1,13 +1,11 @@
 package com.kirillemets.flashcards
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,7 +16,6 @@ import com.kirillemets.flashcards.database.DatabaseRepository
 import com.kirillemets.flashcards.review.ReviewFragmentViewModel
 import com.kirillemets.flashcards.review.ReviewFragmentViewModelFactory
 import net.danlew.android.joda.JodaTimeAndroid
-
 
 lateinit var bottomNavigation: BottomNavigationView
 
@@ -34,12 +31,13 @@ class MainActivity : AppCompatActivity() {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
         val theme = preferenceManager.getString("theme", "Auto")
         AppCompatDelegate.setDefaultNightMode(
-        when (theme) {
-            "Auto" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            "Light" -> AppCompatDelegate.MODE_NIGHT_NO
-            "Black" -> AppCompatDelegate.MODE_NIGHT_YES
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        })
+            when (theme) {
+                "Auto" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                "Light" -> AppCompatDelegate.MODE_NIGHT_NO
+                "Black" -> AppCompatDelegate.MODE_NIGHT_YES
+                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+        )
 
         setContentView(R.layout.activity_main)
 
