@@ -13,27 +13,39 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reviewLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
 
-        <ScrollView
-            android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_weight="0.6">
+
+        <RelativeLayout
+            android:id="@+id/word_frame_layout"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/answer_layout"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:background="@android:drawable/gallery_thumb"
+            android:backgroundTint="?attr/colorReviewBorder"
+            android:padding="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/answer_frame_layout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_counter">
+            app:layout_constraintTop_toBottomOf="@+id/text_counter"
+            app:layout_constraintVertical_chainStyle="spread">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@android:color/darker_gray" />
+                android:layout_centerVertical="true"
+                tools:ignore="UselessParent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -49,7 +61,7 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/review_reading_text_size"
                         android:visibility='@{(viewModel.answerShown &amp;&amp; !viewModel.currentCard.wordReading.empty) ? View.VISIBLE : View.GONE}'
-                        tools:text="Word reading" />
+                        tools:text="Word reading"/>
 
                     <TextView
                         android:id="@+id/word"
@@ -60,21 +72,41 @@
                         android:textColor="?attr/colorMainText"
                         android:textSize="@dimen/review_word_text_size"
                         tools:text="Word"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="2dp"
-                        android:background="@android:color/darker_gray" />
                 </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/answer_frame_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/gallery_thumb"
+            android:backgroundTint="?attr/colorReviewBorder"
+            android:padding="8dp"
+            android:visibility="@{viewModel.answerShown ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/answer_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/word_frame_layout"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:visibility="visible">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                tools:ignore="UselessParent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.answerShown ? View.VISIBLE : View.INVISIBLE}"
-                    tools:visibility="visible">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/answer_reading"
@@ -95,14 +127,9 @@
                         android:textColor="?attr/colorMainText"
                         android:textSize="@dimen/review_word_text_size"
                         tools:text="Answer"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="2dp"
-                        android:background="@android:color/darker_gray" />
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
+        </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/answer_layout"
@@ -150,6 +177,35 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/button_hard"
                 app:layout_constraintTop_toTopOf="@+id/button_miss" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/incorrect"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/button_miss"
+                app:layout_constraintEnd_toEndOf="@+id/button_miss"
+                app:layout_constraintStart_toStartOf="@+id/button_miss" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="2"
+                android:minLines="1"
+                android:text="@string/correct"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="@+id/button_easy"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/button_hard"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView2"
