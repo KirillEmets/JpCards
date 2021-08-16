@@ -11,10 +11,19 @@
             app:title="@string/easy_multiplier"
             app:defaultValue="2.2"/>
 
+        <ListPreference
+            app:key="export_to_file"
+            app:title="Export cards to file"
+            app:entryValues="@array/export_preference_values"
+            app:entries="@array/export_preference_entries"
+            />
+
+        <!--invisible-->
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
             app:key="review_font_size"
             app:title="@string/review_font_size"
-            app:defaultValue="30"/>
+            app:defaultValue="30"
+            app:isPreferenceVisible="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/appearance_header">
