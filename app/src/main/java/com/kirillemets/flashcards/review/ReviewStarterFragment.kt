@@ -42,6 +42,8 @@ class ReviewStarterFragment : Fragment() {
 
         if (viewModel.reviewGoing) {
             navigateToReviewFragment()
+        } else {
+            viewModel.loadCardsToReview()
         }
         return binding.root
     }

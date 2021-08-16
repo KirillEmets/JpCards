@@ -44,7 +44,7 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         loadCardsToReview()
     }
 
-    private fun loadCardsToReview() {
+    fun loadCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
             val cards = getRelevantCardsFromDatabase(currentTime)
@@ -139,14 +139,13 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         reviewGoing = true
     }
 
-    fun restart() {
+    fun endReview() {
         answerShown.value = false
         reviewGoing = false
-        loadCardsToReview()
     }
 
     private fun onRunOutOfWords() {
-        restart()
+        endReview()
         onRunOutOfWords.value = true
     }
 }

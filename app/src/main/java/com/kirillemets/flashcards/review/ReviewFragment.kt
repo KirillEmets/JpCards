@@ -3,6 +3,7 @@ package com.kirillemets.flashcards.review
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
@@ -41,7 +42,7 @@ class ReviewFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.currentCard.observe(viewLifecycleOwner, {
+        viewModel.currentCard.observe(viewLifecycleOwner, Observer {
             binding.easyButtonDelay.text = resources.getQuantityString(
                 R.plurals.daysToDelay,
                 viewModel.getNewDelay(it.lastDelay, 1),
@@ -54,12 +55,12 @@ class ReviewFragment : Fragment() {
             )
         })
 
-        viewModel.onRunOutOfWords.observe(viewLifecycleOwner) {
+        viewModel.onRunOutOfWords.observe(viewLifecycleOwner, Observer {
             if(it) {
                 findNavController().navigateUp()
                 viewModel.onRunOutOfWords.value = false
             }
-        }
+        })
 
         binding.lifecycleOwner = this
 
