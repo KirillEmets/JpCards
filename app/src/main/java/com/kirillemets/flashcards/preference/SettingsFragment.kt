@@ -39,7 +39,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        
+
+        findPreference<MaterialSliderPreference>("miss_multiplier")!!.apply {
+            provideFragmentManager(requireActivity().supportFragmentManager)
+            setBounds(0.0f, 0.4f, 0.1f)
+        }
+
         findPreference<MaterialSliderPreference>("hard_multiplier")!!.apply {
             provideFragmentManager(requireActivity().supportFragmentManager)
             setBounds(0.1f, 5f, 0.1f)

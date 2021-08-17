@@ -32,6 +32,7 @@ class ReviewFragment : Fragment() {
 
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
         viewModel.apply {
+            delayMissMultiplier = preferenceManager.getFloat("miss_multiplier", 0f)
             delayHardMultiplier = preferenceManager.getFloat("hard_multiplier", 1f)
             delayEasyMultiplier = preferenceManager.getFloat("easy_multiplier", 1f)
 
@@ -42,17 +43,22 @@ class ReviewFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.currentCard.observe(viewLifecycleOwner, Observer {
-            binding.easyButtonDelay.text = resources.getQuantityString(
-                R.plurals.daysToDelay,
-                viewModel.getNewDelay(it.lastDelay, 1),
-                viewModel.getNewDelay(it.lastDelay, 1)
-            )
-            binding.hardButtonDelay.text = resources.getQuantityString(
-                R.plurals.daysToDelay,
-                viewModel.getNewDelay(it.lastDelay, 2),
-                viewModel.getNewDelay(it.lastDelay, 2)
-            )
+        viewModel.currentCard.observe(viewLifecycleOwner, Observer { card ->
+            viewModel.getNewDelay(card.lastDelay, 0).let {
+                binding.missButtonDelay.text = if(it == 0) "discard" else resources.getQuantityString(
+                    R.plurals.daysToDelay, it, it
+                )
+            }
+            viewModel.getNewDelay(card.lastDelay, 1).let {
+                binding.easyButtonDelay.text = resources.getQuantityString(
+                    R.plurals.daysToDelay, it, it
+                )
+            }
+            viewModel.getNewDelay(card.lastDelay, 2).let {
+                binding.hardButtonDelay.text = resources.getQuantityString(
+                    R.plurals.daysToDelay, it, it
+                )
+            }
         })
 
         viewModel.onRunOutOfWords.observe(viewLifecycleOwner, Observer {

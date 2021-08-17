@@ -149,7 +149,7 @@
                 android:layout_marginEnd="24dp"
                 android:onClick="@{() -> viewModel.onButtonAnswerClick(0)}"
                 android:text="@string/miss"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintBottom_toTopOf="@+id/miss_button_delay"
                 app:layout_constraintEnd_toStartOf="@+id/button_hard"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -208,14 +208,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/miss_button_delay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@string/discard"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/button_miss"
-                app:layout_constraintStart_toStartOf="@+id/button_miss" />
+                app:layout_constraintStart_toStartOf="@+id/button_miss"
+                tools:text="+0 days"/>
+
 
             <TextView
                 android:id="@+id/hard_button_delay"
@@ -224,7 +225,7 @@
                 android:text="@{}"
                 app:layout_constraintEnd_toEndOf="@+id/button_hard"
                 app:layout_constraintStart_toStartOf="@+id/button_hard"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/miss_button_delay"
                 tools:text="+1 day" />
 
             <TextView
@@ -234,7 +235,7 @@
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/button_easy"
                 app:layout_constraintStart_toStartOf="@+id/button_easy"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/miss_button_delay"
                 tools:text="+4 days" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

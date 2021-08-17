@@ -14,6 +14,7 @@ import kotlin.math.roundToInt
 
 class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
     val database: CardDatabaseDao = repository.cardDatabaseDao
+    var delayMissMultiplier = 1f
     var delayEasyMultiplier = 1f
     var delayHardMultiplier = 1f
 
@@ -72,26 +73,20 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
     fun onButtonAnswerClick(buttonType: Int) {
         val card: ReviewCard = currentCard.value!!
-        if (buttonType == 0) {
-            viewModelScope.launch(Dispatchers.IO) {
-                if (!card.reversed)
-                    database.resetDelayByIds(setOf(card.cardId), TimeUtil.todayMillis)
-                else
-                    database.resetDelayByIdsReversed(setOf(card.cardId), TimeUtil.todayMillis)
 
-            }
-        } else {
-            val newDelay: Int = getNewDelay(card.lastDelay, buttonType)
+        var newDelay: Int = getNewDelay(card.lastDelay, buttonType)
 
-            val nextRepeatTime: Long =
-                LocalDate.now().toDateTimeAtStartOfDay().plusDays(newDelay).millis
+        val nextRepeatTime: Long =
+            LocalDate.now().toDateTimeAtStartOfDay().plusDays(newDelay).millis
 
-            viewModelScope.launch(Dispatchers.IO) {
-                if (!card.reversed)
-                    database.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
-                else
-                    database.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
-            }
+        if (newDelay == 0)
+            newDelay = 1
+
+        viewModelScope.launch(Dispatchers.IO) {
+            if (!card.reversed)
+                database.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+            else
+                database.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
         }
 
         if (wordCounter.value!! + 1 == reviewCards.value!!.size)
@@ -101,9 +96,10 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         answerShown.value = false
     }
 
-    // 1 - easy, 2 - hard
+    // 0 - miss, 1 - easy, 2 - hard
     fun getNewDelay(lastDelay: Int, difficulty: Int): Int =
         (lastDelay * when (difficulty) {
+            0 -> delayMissMultiplier
             1 -> delayEasyMultiplier
             2 -> delayHardMultiplier
             else -> 1f

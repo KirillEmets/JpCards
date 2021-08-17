@@ -23,6 +23,7 @@
     <string name="search">search</string>
     <string name="settings">settings</string>
     <string name="review_header">Review</string>
+    <string name="miss_multiplier">Miss button multiplier</string>
     <string name="hard_multiplier">Hard button multiplier</string>
     <string name="easy_multiplier">Easy button multiplier</string>
     <string name="review_font_size">Font size in review</string>

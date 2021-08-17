@@ -2,6 +2,11 @@
 
     <PreferenceCategory app:title="@string/review_header">
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
+            app:key="miss_multiplier"
+            app:title="@string/miss_multiplier"
+            app:defaultValue="0.0"/>
+
+        <com.kirillemets.flashcards.preference.MaterialSliderPreference
             app:key="hard_multiplier"
             app:title="@string/hard_multiplier"
             app:defaultValue="0.8"/>
