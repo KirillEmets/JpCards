@@ -2,9 +2,9 @@ package com.kirillemets.flashcards.myDictionary
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.children
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.TimeUtil
@@ -33,25 +33,21 @@ class MyDictionaryFragment : Fragment() {
             MyDictionaryFragmentViewModelFactory(database)
         ).get(MyDictionaryFragmentViewModel::class.java)
 
+        binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
-        viewModel.allCards.observe(viewLifecycleOwner) {
+
+        viewModel.displayedCards.observe(viewLifecycleOwner, Observer {
             adapter.cards = it
-        }
+        })
 
         binding.textField.editText?.doAfterTextChanged {
-            filterCards((it ?: "").toString())
+            it?.let {
+                viewModel.filterWords(it.toString())
+            }
         }
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
-    }
-
-    private fun filterCards(query: String) {
-        viewModel.allCards.value?.filter { card ->
-            card.english.contains(query, true)
-                    || card.japanese.contains(query, true)
-                    || card.reading.contains(query, true)
-        }?.let { adapter.cards = it }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,25 +63,15 @@ class MyDictionaryFragment : Fragment() {
         return when(item.itemId) {
             R.id.item_remove -> {
                 viewModel.deleteWords(adapter.checkedCards.toSet())
-                uncheckAllWords()
+                adapter.uncheckAllCards()
                 true
             }
             R.id.item_reset -> {
                 viewModel.resetWords(adapter.checkedCards.toSet())
-                uncheckAllWords()
+                adapter.uncheckAllCards()
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun uncheckAllWords() {
-        adapter.checkedCards.clear()
-
-        binding.recyclerView.children.forEach { view ->
-            (binding.recyclerView.getChildViewHolder(view)
-                    as MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder)
-                .binding.card.isChecked = false
         }
     }
 }

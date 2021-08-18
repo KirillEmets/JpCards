@@ -20,6 +20,9 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
 
     val checkedCards = mutableSetOf<Int>()
 
+    fun uncheckAllCards() {
+        checkedCards.clear()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -3,6 +3,7 @@ package com.kirillemets.flashcards.review
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kirillemets.flashcards.R
@@ -33,7 +34,7 @@ class ReviewStarterFragment : Fragment() {
             startReview()
         }
 
-        viewModel.reviewCards.observe(viewLifecycleOwner, {
+        viewModel.reviewCards.observe(viewLifecycleOwner, Observer {
             binding.countOfCardsTextView.text =
                 resources.getString(R.string.countOfWordsToReview, it.size)
         })
