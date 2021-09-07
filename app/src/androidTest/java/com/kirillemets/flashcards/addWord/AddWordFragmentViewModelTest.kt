@@ -1,8 +1,8 @@
 package com.kirillemets.flashcards.addWord
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ApplicationProvider
 import com.kirillemets.flashcards.MockDaoTest
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import kotlinx.coroutines.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -13,19 +13,19 @@ import org.junit.Test
 class AddWordFragmentViewModelTest: MockDaoTest() {
     private lateinit var viewModel: AddWordFragmentViewModel
 
-    @Rule
-    @JvmField
-    val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
+//    @Rule
+//    @JvmField
+//    val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
 
     @Before
     fun before() {
         mockDatabase()
-        viewModel = AddWordFragmentViewModel(DatabaseRepository(dao))
+        viewModel = AddWordFragmentViewModel(FlashCardRepository(ApplicationProvider.getApplicationContext()))
     }
 
     @Test
-    fun addWordButtonClicked() = runBlocking {
+    fun addWordButtonClicked() = runBlocking(Dispatchers.Main) {
         val card = SearchResultCard("japan", "reading", listOf("eng1", "eng2"))
 
         var d: CompletableDeferred<Boolean> = CompletableDeferred()
@@ -33,20 +33,23 @@ class AddWordFragmentViewModelTest: MockDaoTest() {
             d.complete(it)
         }
 
-        viewModel.onAddButtonClicked(card, 0)
-        assertEquals(true, d.await())
-        d = CompletableDeferred()
+        withContext(Dispatchers.IO) {
 
-        assertEquals(1, dao.getAllBlocking().size)
+            viewModel.onAddButtonClicked(card, 0)
+            assertEquals(true, d.await())
+            d = CompletableDeferred()
 
-        viewModel.onAddButtonClicked(card, 1)
-        assertEquals(true, d.await())
-        d = CompletableDeferred()
+            assertEquals(1, dao.getAllBlocking().size)
 
-        viewModel.onAddButtonClicked(card, 0)
-        assertEquals(false, d.await())
-        d = CompletableDeferred()
+            viewModel.onAddButtonClicked(card, 1)
+            assertEquals(true, d.await())
+            d = CompletableDeferred()
 
-        assertEquals(2, dao.getAllBlocking().size)
+            viewModel.onAddButtonClicked(card, 0)
+            assertEquals(false, d.await())
+            d = CompletableDeferred()
+
+            assertEquals(2, dao.getAllBlocking().size)
+        }
     }
 }
