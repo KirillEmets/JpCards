@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
 
 class ReviewFragment : Fragment() {
@@ -22,12 +22,11 @@ class ReviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-        val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         val binding = FragmentReviewBinding.inflate(inflater)
 
         viewModel = ViewModelProvider(
             requireActivity(),
-            ReviewFragmentViewModelFactory(DatabaseRepository(database))
+            ReviewFragmentViewModelFactory(FlashCardRepository(requireContext()))
         ).get(ReviewFragmentViewModel::class.java)
 
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(requireContext())

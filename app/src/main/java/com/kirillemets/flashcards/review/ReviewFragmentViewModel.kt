@@ -1,9 +1,8 @@
 package com.kirillemets.flashcards.review
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.CardDatabaseDao
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.database.FlashCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,8 +11,7 @@ import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import kotlin.math.roundToInt
 
-class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
-    val database: CardDatabaseDao = repository.cardDatabaseDao
+class ReviewFragmentViewModel(private val flashCardRepository: FlashCardRepository): ViewModel() {
     var delayMissMultiplier = 1f
     var delayEasyMultiplier = 1f
     var delayHardMultiplier = 1f
@@ -41,10 +39,6 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
     val onRunOutOfWords = MutableLiveData(false)
 
-    init {
-        loadCardsToReview()
-    }
-
     fun loadCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
@@ -64,7 +58,7 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
     private suspend fun getRelevantCardsFromDatabase(time: Long): List<FlashCard> =
         withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
-            database.getRelevantCards(time)
+            flashCardRepository.getRelevantCards(time)
         }
 
     fun onButtonShowAnswerClick() {
@@ -84,9 +78,9 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             if (!card.reversed)
-                database.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+                flashCardRepository.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
             else
-                database.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+                flashCardRepository.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
         }
 
         if (wordCounter.value!! + 1 == reviewCards.value!!.size)
@@ -118,7 +112,7 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
         if (new.size <= wc) {
             runBlocking(Dispatchers.IO) {
-                database.deleteByIndexes(setOf(deleteId))
+                flashCardRepository.deleteByIndexes(setOf(deleteId))
             }
             return onRunOutOfWords()
         }
@@ -127,7 +121,7 @@ class ReviewFragmentViewModel(repository: DatabaseRepository): ViewModel() {
         answerShown.postValue(false)
 
         viewModelScope.launch(Dispatchers.IO) {
-            database.deleteByIndexes(setOf(deleteId))
+            flashCardRepository.deleteByIndexes(setOf(deleteId))
         }
     }
 

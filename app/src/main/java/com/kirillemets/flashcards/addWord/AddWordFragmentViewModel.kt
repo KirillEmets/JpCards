@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.database.CardDatabaseDao
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModel
 import com.kirillemets.flashcards.network.JishoApi
 import com.kirillemets.flashcards.network.QueryData
 import kotlinx.coroutines.*
 import java.lang.Exception
 
-class AddWordFragmentViewModel(repository: DatabaseRepository): ViewModel() {
-    val database: CardDatabaseDao = repository.cardDatabaseDao
+class AddWordFragmentViewModel(private val flashCardRepository: FlashCardRepository): ViewModel() {
 
     private val job = Job()
     private var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -55,11 +55,11 @@ class AddWordFragmentViewModel(repository: DatabaseRepository): ViewModel() {
 
     private suspend fun insert(flashCard: FlashCard) {
         withContext(Dispatchers.IO) {
-            if(database.find(flashCard.english, flashCard.japanese, flashCard.reading).isNotEmpty()) {
+            if(flashCardRepository.find(flashCard.english, flashCard.japanese, flashCard.reading).isNotEmpty()) {
                 _insertionResult.postValue(false)
                 return@withContext
             }
-            database.insert(flashCard)
+            flashCardRepository.insert(flashCard)
             _insertionResult.postValue(true)
         }
     }
@@ -103,8 +103,9 @@ class AddWordFragmentViewModel(repository: DatabaseRepository): ViewModel() {
     }
 }
 
-class AddWordFragmentViewModelFactory (private val repository: DatabaseRepository) : ViewModelProvider.Factory {
+class AddWordFragmentViewModelFactory (private val flashCardRepository: FlashCardRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(DatabaseRepository::class.java).newInstance(repository)
-    }
+        if(modelClass.isAssignableFrom(AddWordFragmentViewModel::class.java))
+            return AddWordFragmentViewModel(flashCardRepository = flashCardRepository) as T
+        else throw Exception("${modelClass.name} is not assignable from AddWordFragmentViewModel")    }
 }

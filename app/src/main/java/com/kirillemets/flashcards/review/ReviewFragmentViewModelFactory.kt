@@ -2,11 +2,12 @@ package com.kirillemets.flashcards.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kirillemets.flashcards.database.CardDatabaseDao
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModel
 
-class ReviewFragmentViewModelFactory (val repository: DatabaseRepository) : ViewModelProvider.Factory {
+class ReviewFragmentViewModelFactory (private val flashCardRepository: FlashCardRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(DatabaseRepository::class.java).newInstance(repository)
-    }
+        if(modelClass.isAssignableFrom(ReviewFragmentViewModel::class.java))
+            return ReviewFragmentViewModel(flashCardRepository = flashCardRepository) as T
+        else throw Exception("${modelClass.name} is not assignable from ReviewFragmentViewModel")    }
 }

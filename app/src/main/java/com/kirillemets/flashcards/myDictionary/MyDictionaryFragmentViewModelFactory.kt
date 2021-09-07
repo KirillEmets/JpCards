@@ -3,9 +3,13 @@ package com.kirillemets.flashcards.myDictionary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.database.CardDatabaseDao
+import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.importExport.ImportFragmentViewModel
 
-class MyDictionaryFragmentViewModelFactory(val database: CardDatabaseDao) : ViewModelProvider.Factory {
+class MyDictionaryFragmentViewModelFactory(private val flashCardRepository: FlashCardRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(CardDatabaseDao::class.java).newInstance(database)
+        if(modelClass.isAssignableFrom(MyDictionaryFragmentViewModel::class.java))
+            return MyDictionaryFragmentViewModel(flashCardRepository = flashCardRepository) as T
+        else throw Exception("${modelClass.name} is not assignable from MyDictionaryFragmentViewModel")
     }
 }

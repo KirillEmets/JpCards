@@ -10,7 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.databinding.FragmentAddWordBinding
 
 class AddWordFragment : Fragment() {
@@ -22,10 +22,9 @@ class AddWordFragment : Fragment() {
     ): View {
         val binding = FragmentAddWordBinding.inflate(inflater)
 
-        val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
         viewModel = ViewModelProvider(
             this,
-            AddWordFragmentViewModelFactory(DatabaseRepository(database))
+            AddWordFragmentViewModelFactory(FlashCardRepository(requireContext()))
         ).get(AddWordFragmentViewModel::class.java)
 
         val adapter = AddWordFragmentAdapter(AddWordFragmentAdapter.AddWordFragmentAdapterCallback {

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.databinding.FragmentReviewStarterBinding
 
 class ReviewStarterFragment : Fragment() {
@@ -21,11 +21,10 @@ class ReviewStarterFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val binding = FragmentReviewStarterBinding.inflate(inflater)
-        val database = CardDatabase.getInstance(requireContext()).flashCardsDao()
 
         viewModel = ViewModelProvider(
             requireActivity(),
-            ReviewFragmentViewModelFactory(DatabaseRepository(database))
+            ReviewFragmentViewModelFactory(FlashCardRepository(requireContext()))
         ).get(ReviewFragmentViewModel::class.java)
 
         binding.viewModel = viewModel

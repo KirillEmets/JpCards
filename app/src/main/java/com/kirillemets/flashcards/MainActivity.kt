@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.DatabaseRepository
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.review.ReviewFragmentViewModel
 import com.kirillemets.flashcards.review.ReviewFragmentViewModelFactory
 import net.danlew.android.joda.JodaTimeAndroid
@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        bottomNavigation.setOnItemSelectedListener { item ->
             if(bottomNavigation.selectedItemId == item.itemId)
-                return@setOnNavigationItemSelectedListener false
+                return@setOnItemSelectedListener false
 
             this.currentFocus?.let { view ->
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -84,10 +84,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val database = CardDatabase.getInstance(this).flashCardsDao()
         viewModel = ViewModelProvider(
             this,
-            ReviewFragmentViewModelFactory(DatabaseRepository(database))
+            ReviewFragmentViewModelFactory(FlashCardRepository(this))
         ).get(ReviewFragmentViewModel::class.java)
     }
 
