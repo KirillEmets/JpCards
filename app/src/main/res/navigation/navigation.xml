@@ -42,7 +42,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kirillemets.flashcards.preference.SettingsFragment"
-        android:label="Settings" />
+        android:label="Settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_importFragment"
+            app:destination="@id/importFragment" />
+    </fragment>
     <action
         android:id="@+id/action_global_settingsFragment"
         app:destination="@id/settingsFragment"
@@ -53,4 +57,9 @@
         android:name="com.kirillemets.flashcards.review.ReviewFragment"
         android:label="Review"
         tools:layout="@layout/fragment_review" />
+    <fragment
+        android:id="@+id/importFragment"
+        android:name="com.kirillemets.flashcards.importExport.ImportFragment"
+        android:label="fragment_import"
+        tools:layout="@layout/fragment_import" />
 </navigation>

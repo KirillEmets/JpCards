@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -77,6 +78,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         request.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
                 }
+                true
+            }
+        }
+
+        findPreference<Preference>("import_from_file")!!.apply {
+            setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_settingsFragment_to_importFragment)
                 true
             }
         }
