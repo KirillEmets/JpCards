@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
             type="com.kirillemets.flashcards.importExport.ImportFragmentViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,20 +21,48 @@
             android:id="@+id/btn_choose_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose file" />
+            android:text="Choose file"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.18" />
 
-        <ScrollView
+
+        <TextView
+            android:id="@+id/text_list_size"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.listSizeText}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_choose_file"
+            tools:text="Cards: 7" />
 
-            <TextView
-                android:id="@+id/text_list_size"
-                android:text="@{viewModel.listSizeText}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text = "Cards: 7"/>
-        </ScrollView>
+        <Button
+            android:id="@+id/btn_override"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Override"
+            android:visibility="@{viewModel.importedCards.size() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toStartOf="@+id/btn_add"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_list_size" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Add"
+            android:visibility="@{viewModel.importedCards.size() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_override"
+            app:layout_constraintTop_toBottomOf="@+id/text_list_size" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

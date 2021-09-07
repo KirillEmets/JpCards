@@ -3,8 +3,10 @@ package com.kirillemets.flashcards.importExport
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.database.FlashCard
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ImportFragmentViewModel(flashCardRepository: FlashCardRepository): ViewModel() {
+class ImportFragmentViewModel(private val flashCardRepository: FlashCardRepository): ViewModel() {
     private val _importedCards: MutableLiveData<List<FlashCard>> = MutableLiveData()
 
     val importedCards: LiveData<List<FlashCard>>
@@ -16,6 +18,23 @@ class ImportFragmentViewModel(flashCardRepository: FlashCardRepository): ViewMod
 
     fun setImportedCards(cards: List<FlashCard>) {
         _importedCards.value = cards
+    }
+
+    fun overrideCards() {
+        viewModelScope.launch(Dispatchers.IO) {
+            importedCards.value?.let {
+                flashCardRepository.deleteAll()
+                flashCardRepository.insert(it)
+            }
+        }
+    }
+
+    fun addCards() {
+        viewModelScope.launch(Dispatchers.IO) {
+            importedCards.value?.let {
+                flashCardRepository.insert(it)
+            }
+        }
     }
 }
 
