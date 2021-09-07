@@ -33,7 +33,7 @@ class FlashCardTest {
 
             nextReviewTime = lastRepeatTime + TimeUnit.MILLISECONDS.convert(test.lastDelay.toLong(), TimeUnit.DAYS)
 
-            card = FlashCard(0, "", "", "", test.lastDelay, nextReviewTime)
+            card = FlashCard(0, "", "", "", test.lastDelay, nextReviewTime, 0, 0)
 
             val remaining: Int = card.getRemainingTimes(currentTime).first
             assertEquals("test $i:", test.expectedValue, remaining)
