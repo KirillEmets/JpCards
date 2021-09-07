@@ -37,6 +37,10 @@ open class FlashCardRepository(
 
     fun insert(card: FlashCard) = db.insert(card)
 
+    fun insert(cards: List<FlashCard>) = db.insert(cards)
+
+    fun deleteAll() = db.deleteAll()
+
     fun update(card: FlashCard) = db.update(card)
 
     fun delete(card: FlashCard) = db.delete(card)

@@ -35,8 +35,14 @@ interface CardDatabaseDao {
     @Query("UPDATE flashcard SET last_delay_reversed = :delay, next_review_time_reversed = :time WHERE cardId = :id")
     fun updateReversedDelayAndTime(id: Int, delay: Int, time: Long)
 
+    @Query("DELETE FROM flashcard")
+    fun deleteAll()
+
     @Insert
     fun insert(card: FlashCard)
+
+    @Insert
+    fun insert(cards: List<FlashCard>)
 
     @Update
     fun update(card: FlashCard)
