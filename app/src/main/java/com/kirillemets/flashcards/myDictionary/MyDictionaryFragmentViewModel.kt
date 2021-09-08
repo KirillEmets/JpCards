@@ -1,15 +1,10 @@
 package com.kirillemets.flashcards.myDictionary
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
-import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCard
 import com.kirillemets.flashcards.database.FlashCardRepository
 import kotlinx.coroutines.*
-import org.joda.time.LocalDate
 
 class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository): ViewModel() {
 
@@ -20,11 +15,13 @@ class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository
         flashCardRepository.getAll()
 
     // TODO Make it the normal way
+    private val cardsObserver = Observer<List<FlashCard>> {
+            cards ->
+        _displayedCards.postValue(cards)
+        lastFilter?.let { filterWords(it) }
+    }
     init {
-        allCards.observeForever { cards ->
-            _displayedCards.postValue(cards)
-            lastFilter?.let { filterWords(it) }
-        }
+        allCards.observeForever(cardsObserver)
     }
 
     private val _displayedCards: MutableLiveData<List<FlashCard>> = MutableLiveData()
@@ -63,6 +60,7 @@ class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository
 
     override fun onCleared() {
         super.onCleared()
+        allCards.removeObserver(cardsObserver)
         job.cancel(CancellationException("Cancelled on onCleared"))
     }
 }
