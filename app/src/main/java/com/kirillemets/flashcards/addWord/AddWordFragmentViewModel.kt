@@ -1,9 +1,6 @@
 package com.kirillemets.flashcards.addWord
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.database.FlashCard
@@ -48,21 +45,12 @@ class AddWordFragmentViewModel(private val flashCardRepository: FlashCardReposit
     }
 
     fun onAddButtonClicked(resultCard: SearchResultCard, id: Int) {
-        coroutineScope.launch {
-            insert(resultCard.flashCard(id))
+        viewModelScope.launch {
+            _insertionResult.value = flashCardRepository.insertNew(resultCard.flashCard(id))
         }
     }
 
-    private suspend fun insert(flashCard: FlashCard) {
-        withContext(Dispatchers.IO) {
-            if(flashCardRepository.find(flashCard.english, flashCard.japanese, flashCard.reading).isNotEmpty()) {
-                _insertionResult.postValue(false)
-                return@withContext
-            }
-            flashCardRepository.insert(flashCard)
-            _insertionResult.postValue(true)
-        }
-    }
+
 
     private suspend fun getSearchQuery(word: String): QueryData {
         return JishoApi.retrofitService.getDataObjectAsync(word).await()

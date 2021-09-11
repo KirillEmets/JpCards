@@ -12,41 +12,41 @@ interface CardDatabaseDao {
     fun getAllBlocking(): List<FlashCard>
 
     @Query("SELECT * FROM flashcard WHERE cardId = :id")
-    fun get(id: Int): FlashCard?
+    suspend fun get(id: Int): FlashCard?
 
     @Query("SELECT * FROM flashcard WHERE next_review_time <= :currentTime OR next_review_time_reversed <= :currentTime")
-    fun getRelevantCards(currentTime: Long) : List<FlashCard>
+    suspend fun getRelevantCards(currentTime: Long) : List<FlashCard>
 
     @Query("SELECT * FROM flashcard WHERE :english = english AND :japanese = japanese AND :reading = reading")
-    fun find(english: String, japanese: String, reading: String): List<FlashCard>
+    suspend fun find(english: String, japanese: String, reading: String): List<FlashCard>
 
     @Query("DELETE FROM flashcard WHERE cardId IN (:ids)")
-    fun deleteByIndexes(ids: Set<Int>)
+    suspend fun deleteByIndexes(ids: Set<Int>)
 
     @Query("UPDATE flashcard SET last_delay = 1, next_review_time = :time WHERE cardId IN (:ids)")
-    fun resetDelayByIds(ids: Set<Int>, time: Long)
+    suspend fun resetDelayByIds(ids: Set<Int>, time: Long)
 
     @Query("UPDATE flashcard SET last_delay_reversed = 1, next_review_time_reversed = :time WHERE cardId IN (:ids)")
-    fun resetDelayByIdsReversed(ids: Set<Int>, time: Long)
+    suspend fun resetDelayByIdsReversed(ids: Set<Int>, time: Long)
 
     @Query("UPDATE flashcard SET last_delay = :delay, next_review_time = :time WHERE cardId = :id")
-    fun updateRegularDelayAndTime(id: Int, delay: Int, time: Long)
+    suspend fun updateRegularDelayAndTime(id: Int, delay: Int, time: Long)
 
     @Query("UPDATE flashcard SET last_delay_reversed = :delay, next_review_time_reversed = :time WHERE cardId = :id")
-    fun updateReversedDelayAndTime(id: Int, delay: Int, time: Long)
+    suspend fun updateReversedDelayAndTime(id: Int, delay: Int, time: Long)
 
     @Query("DELETE FROM flashcard")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Insert
-    fun insert(card: FlashCard)
+    suspend fun insert(card: FlashCard)
 
     @Insert
-    fun insert(cards: List<FlashCard>)
+    suspend fun insert(cards: List<FlashCard>)
 
     @Update
-    fun update(card: FlashCard)
+    suspend fun update(card: FlashCard)
 
     @Delete
-    fun delete(card: FlashCard)
+    suspend fun delete(card: FlashCard)
 }

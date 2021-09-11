@@ -4,22 +4,16 @@ import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.FlashCard
 import com.kirillemets.flashcards.database.FlashCardRepository
-import kotlinx.coroutines.*
 
-class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository): ViewModel() {
-
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(job + Dispatchers.Main)
-
+class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository) : ViewModel() {
     private val allCards: LiveData<List<FlashCard>> =
         flashCardRepository.getAll()
 
-    // TODO Make it the normal way
-    private val cardsObserver = Observer<List<FlashCard>> {
-            cards ->
+    private val cardsObserver = Observer<List<FlashCard>> { cards ->
         _displayedCards.postValue(cards)
         lastFilter?.let { filterWords(it) }
     }
+
     init {
         allCards.observeForever(cardsObserver)
     }
@@ -32,7 +26,7 @@ class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository
         "Word count: ${it.size}"
     }
 
-    var lastFilter: String? = null
+    private var lastFilter: String? = null
 
     fun filterWords(query: String) {
         lastFilter = query
@@ -46,21 +40,17 @@ class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository
     }
 
     fun deleteWords(ids: Set<Int>) {
-        coroutineScope.launch(Dispatchers.IO) {
-            flashCardRepository.deleteByIndexes(ids)
-        }
+        flashCardRepository.deleteByIndexes(ids)
+
     }
 
     fun resetWords(ids: Set<Int>) {
-        coroutineScope.launch(Dispatchers.IO) {
-            flashCardRepository.resetDelayByIds(ids, TimeUtil.todayMillis)
-            flashCardRepository.resetDelayByIdsReversed(ids, TimeUtil.todayMillis)
-        }
+        flashCardRepository.resetDelayByIds(ids, TimeUtil.todayMillis)
+        flashCardRepository.resetDelayByIdsReversed(ids, TimeUtil.todayMillis)
     }
 
     override fun onCleared() {
         super.onCleared()
         allCards.removeObserver(cardsObserver)
-        job.cancel(CancellationException("Cancelled on onCleared"))
     }
 }
