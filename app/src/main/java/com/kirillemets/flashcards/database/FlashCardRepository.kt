@@ -1,7 +1,9 @@
 package com.kirillemets.flashcards.database
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import com.kirillemets.flashcards.addWord.SearchResultCard
+import com.kirillemets.flashcards.model.toSearchResultCards
+import com.kirillemets.flashcards.network.JishoApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,7 +11,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 open class FlashCardRepository @Inject constructor(
-    val cardDatabase: CardDatabase
+    val cardDatabase: CardDatabase,
+    val jisho: JishoApiService
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val db = cardDatabase.flashCardsDao()
@@ -59,4 +62,10 @@ open class FlashCardRepository @Inject constructor(
 
     fun deleteAll() =
         coroutineScope.launch { db.deleteAll() }
+
+    suspend fun searchWordsJisho(query: String): List<SearchResultCard> =
+        withContext(coroutineScope.coroutineContext) {
+            jisho.getDataObjectAsync(query).await().toSearchResultCards()
+        }
+
 }
