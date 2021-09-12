@@ -13,21 +13,25 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.CardDatabase
+import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.importExport.CSVExporter
 import com.kirillemets.flashcards.importExport.exportToStorage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDateTime
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var lastExportChoice: String? = null
+    @Inject lateinit var flashCardRepository: FlashCardRepository
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         fun exportToFile(choice: String?) {
-            val db = CardDatabase.getInstance(requireContext()).flashCardsDao()
             requireActivity().lifecycleScope.launch(Dispatchers.IO) {
-                val cards = db.getAllBlocking()
+                val cards = flashCardRepository.getAllBlocking()
                 val withProgress = choice == "with_progress"
                 val exporter = CSVExporter(withProgress)
                 val name = "flashcards-${choice}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"

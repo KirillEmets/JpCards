@@ -1,6 +1,7 @@
 package com.kirillemets.flashcards.di
 
 import android.content.Context
+import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.kirillemets.flashcards.database.CardDatabase
 import com.kirillemets.flashcards.network.JishoApiService
@@ -17,13 +18,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FlashcardModule {
+object FlashcardRepositoryModule {
     private const val BASE_URL = "https://jisho.org/api/v1/search/words/"
 
     @Singleton
     @Provides
     fun provideCardDatabase(@ApplicationContext app: Context): CardDatabase {
-        return CardDatabase.getInstance(app)
+        return Room.databaseBuilder(
+            app,
+            CardDatabase::class.java,
+            "flashcards_database"
+        ).build()
     }
 
     @Singleton
