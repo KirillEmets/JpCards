@@ -10,7 +10,8 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: FlashCardRepository): ViewModel() {
+class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: FlashCardRepository) :
+    ViewModel() {
 
     private val job = Job()
     private var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -28,18 +29,16 @@ class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: Flas
     fun startSearch(word: String, withDelay: Boolean = true) {
         searchJob.cancel(CancellationException())
         searchJob = coroutineScope.launch {
-            if(withDelay)
+            if (withDelay)
                 delay(500)
             try {
                 val queryData = getSearchQuery(word)
                 _flashCards.value = createFlashCards(queryData)
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
 
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 // TODO
-                _flashCards.value = listOf(SearchResultCard(e.message?:"", "error", listOf()))
+                _flashCards.value = listOf(SearchResultCard(e.message ?: "", "error", listOf()))
             }
         }
     }
@@ -49,7 +48,6 @@ class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: Flas
             _insertionResult.value = flashCardRepository.insertNew(resultCard.flashCard(id))
         }
     }
-
 
 
     private suspend fun getSearchQuery(word: String): QueryData {
@@ -62,25 +60,25 @@ class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: Flas
         var reading: String
         var englishMeanings: List<String>
 
-        data.data.forEach {word ->
+        data.data.forEach { word ->
             reading = word.japanese?.get(0)?.reading ?: ""
             japanese = word.japanese?.get(0)?.word ?: reading
-            if(japanese == reading)
+            if (japanese == reading)
                 reading = ""
 
-            englishMeanings = word.senses?.map {
-                    sense -> sense.english_definitions.joinToString()
+            englishMeanings = word.senses?.map { sense ->
+                sense.english_definitions.joinToString()
             } ?: listOf()
 
             list.add(
                 SearchResultCard(
-                japanese,
-                reading,
-                englishMeanings
+                    japanese,
+                    reading,
+                    englishMeanings
                 )
             )
         }
-        if(list.size > 10)
+        if (list.size > 10)
             return list.subList(0, 10)
         return list
     }

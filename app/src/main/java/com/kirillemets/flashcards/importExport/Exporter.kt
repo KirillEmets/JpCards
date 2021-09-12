@@ -16,14 +16,14 @@ abstract class Exporter {
     abstract fun getExtension(): String
 }
 
-class CSVExporter(withProgress: Boolean): Exporter() {
-    val convertToString = if(withProgress) ::cardToString else ::cardToStringSimplified
+class CSVExporter(withProgress: Boolean) : Exporter() {
+    val convertToString = if (withProgress) ::cardToString else ::cardToStringSimplified
 
     override fun exportCards(cards: List<FlashCard>, outputStream: OutputStream) {
-        for(i in cards.indices) {
+        for (i in cards.indices) {
             outputStream.write(convertToString(cards[i]).toByteArray())
             if (i != cards.lastIndex)
-                outputStream.write('\n'.toInt())
+                outputStream.write('\n'.code)
         }
     }
 
@@ -44,11 +44,15 @@ class CSVExporter(withProgress: Boolean): Exporter() {
                 "\"${card.reading}\""
 }
 
-fun exportToStorage(cards: List<FlashCard>, filename: String, exporter: Exporter, context: Context) {
+fun exportToStorage(
+    cards: List<FlashCard>,
+    filename: String,
+    exporter: Exporter,
+    context: Context
+) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         saveFileQ(cards, filename, exporter, context)
-    }
-    else
+    } else
         saveFileLegacy(cards, filename, exporter)
 }
 
@@ -56,8 +60,10 @@ fun exportToStorage(cards: List<FlashCard>, filename: String, exporter: Exporter
 private fun saveFileQ(cards: List<FlashCard>, name: String, exporter: Exporter, context: Context) {
     val values = ContentValues().apply {
         put(MediaStore.Downloads.DISPLAY_NAME, name)
-        put(MediaStore.Downloads.MIME_TYPE,
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(exporter.getExtension()))
+        put(
+            MediaStore.Downloads.MIME_TYPE,
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(exporter.getExtension())
+        )
         put(MediaStore.Downloads.IS_PENDING, 1)
     }
 

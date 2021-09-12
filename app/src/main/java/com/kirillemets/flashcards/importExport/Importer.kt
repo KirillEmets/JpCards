@@ -52,6 +52,6 @@ class CSVImporter : Importer() {
             cards += csvToCard(rawCard)
         }
 
-        return cards;
+        return cards
     }
 }

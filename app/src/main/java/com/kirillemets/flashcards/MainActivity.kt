@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         bottomNavigation.setOnItemSelectedListener { item ->
-            if(bottomNavigation.selectedItemId == item.itemId)
+            if (bottomNavigation.selectedItemId == item.itemId)
                 return@setOnItemSelectedListener false
 
             this.currentFocus?.let { view ->
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
 
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.page_review -> {
                     navController.navigate(R.id.action_global_reviewStarterFragment)
                     true
@@ -97,8 +97,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun onUpNavigation() {
         val navController = findNavController(R.id.nav_host_fragment)
-        if(navController.currentDestination?.id == R.id.reviewFragment) {
-            if(viewModel.reviewGoing) {
+        if (navController.currentDestination?.id == R.id.reviewFragment) {
+            if (viewModel.reviewGoing) {
                 viewModel.endReview()
             }
         }
