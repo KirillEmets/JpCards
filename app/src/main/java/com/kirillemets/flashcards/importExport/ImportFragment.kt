@@ -9,10 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
-import com.kirillemets.flashcards.database.FlashCardRepository
+import androidx.fragment.app.viewModels
 import com.kirillemets.flashcards.databinding.FragmentImportBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ImportFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,11 +21,7 @@ class ImportFragment : Fragment() {
     ): View {
         val binding = FragmentImportBinding.inflate(inflater)
         val importer = CSVImporter()
-        val repository = FlashCardRepository(requireContext())
-        val viewModel = ViewModelProvider(
-            this,
-            ImportFragmentViewModelFactory(repository)
-        ).get(ImportFragmentViewModel::class.java)
+        val viewModel: ImportFragmentViewModel by viewModels()
 
         val openDocument = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
             it?.let onDocument@{ uri ->

@@ -2,27 +2,26 @@ package com.kirillemets.flashcards
 
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.review.ReviewFragmentViewModel
-import com.kirillemets.flashcards.review.ReviewFragmentViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import net.danlew.android.joda.JodaTimeAndroid
 
 lateinit var bottomNavigation: BottomNavigationView
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var appBarConfiguration: AppBarConfiguration
-    lateinit var viewModel:ReviewFragmentViewModel
+    private val viewModel: ReviewFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,11 +82,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-        viewModel = ViewModelProvider(
-            this,
-            ReviewFragmentViewModelFactory(FlashCardRepository(this))
-        ).get(ReviewFragmentViewModel::class.java)
     }
 
     override fun onSupportNavigateUp(): Boolean {

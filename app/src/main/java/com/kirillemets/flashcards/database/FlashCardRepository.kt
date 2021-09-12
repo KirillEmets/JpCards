@@ -6,10 +6,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-open class FlashCardRepository(context: Context) {
+open class FlashCardRepository @Inject constructor(
+    val cardDatabase: CardDatabase
+) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private val db = CardDatabase.getInstance(context).flashCardsDao()
+    private val db = cardDatabase.flashCardsDao()
 
     fun getAll(): LiveData<List<FlashCard>> = db.getAll()
 

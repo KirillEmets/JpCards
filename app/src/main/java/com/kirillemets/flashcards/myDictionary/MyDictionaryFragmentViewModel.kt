@@ -4,8 +4,12 @@ import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.database.FlashCard
 import com.kirillemets.flashcards.database.FlashCardRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MyDictionaryFragmentViewModel(val flashCardRepository: FlashCardRepository) : ViewModel() {
+@HiltViewModel
+class MyDictionaryFragmentViewModel @Inject constructor(val flashCardRepository: FlashCardRepository) :
+    ViewModel() {
     private val allCards: LiveData<List<FlashCard>> =
         flashCardRepository.getAll()
 

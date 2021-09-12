@@ -1,16 +1,16 @@
 package com.kirillemets.flashcards.addWord
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCardRepository
-import com.kirillemets.flashcards.database.FlashCard
-import com.kirillemets.flashcards.myDictionary.MyDictionaryFragmentViewModel
 import com.kirillemets.flashcards.network.JishoApi
 import com.kirillemets.flashcards.network.QueryData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.lang.Exception
+import javax.inject.Inject
 
-class AddWordFragmentViewModel(private val flashCardRepository: FlashCardRepository): ViewModel() {
+@HiltViewModel
+class AddWordFragmentViewModel @Inject constructor(val flashCardRepository: FlashCardRepository): ViewModel() {
 
     private val job = Job()
     private var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -89,11 +89,4 @@ class AddWordFragmentViewModel(private val flashCardRepository: FlashCardReposit
         super.onCleared()
         job.cancel(CancellationException("Cancelled on onCleared"))
     }
-}
-
-class AddWordFragmentViewModelFactory (private val flashCardRepository: FlashCardRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(AddWordFragmentViewModel::class.java))
-            return AddWordFragmentViewModel(flashCardRepository = flashCardRepository) as T
-        else throw Exception("${modelClass.name} is not assignable from AddWordFragmentViewModel")    }
 }

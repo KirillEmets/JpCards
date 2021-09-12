@@ -8,6 +8,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
+        android:name=".FlashcardsApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

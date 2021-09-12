@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.TimeUtil
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyDictionaryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-    private lateinit var viewModel: MyDictionaryFragmentViewModel
+    val viewModel: MyDictionaryFragmentViewModel by viewModels()
     lateinit var binding: FragmentMyDictionaryBinding
     private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter()
 
@@ -27,11 +27,6 @@ class MyDictionaryFragment : Fragment() {
     ): View {
         binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
         adapter.currentTimeMillis = TimeUtil.todayMillis
-
-        viewModel = ViewModelProvider(
-            this,
-            MyDictionaryFragmentViewModelFactory(FlashCardRepository(requireActivity()))
-        ).get(MyDictionaryFragmentViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter

@@ -4,14 +4,19 @@ import androidx.lifecycle.*
 import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.database.FlashCard
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class ReviewFragmentViewModel(private val flashCardRepository: FlashCardRepository): ViewModel() {
+@HiltViewModel
+class ReviewFragmentViewModel @Inject constructor(
+    val flashCardRepository: FlashCardRepository
+) : ViewModel() {
     var delayMissMultiplier = 1f
     var delayEasyMultiplier = 1f
     var delayHardMultiplier = 1f
@@ -80,7 +85,11 @@ class ReviewFragmentViewModel(private val flashCardRepository: FlashCardReposito
             if (!card.reversed)
                 flashCardRepository.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
             else
-                flashCardRepository.updateReversedDelayAndTime(card.cardId, newDelay, nextRepeatTime)
+                flashCardRepository.updateReversedDelayAndTime(
+                    card.cardId,
+                    newDelay,
+                    nextRepeatTime
+                )
         }
 
         if (wordCounter.value!! + 1 == reviewCards.value!!.size)

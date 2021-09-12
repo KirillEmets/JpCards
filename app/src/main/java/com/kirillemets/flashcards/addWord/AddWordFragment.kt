@@ -7,25 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.FlashCardRepository
 import com.kirillemets.flashcards.databinding.FragmentAddWordBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddWordFragment : Fragment() {
-    private lateinit var viewModel: AddWordFragmentViewModel
+    val viewModel: AddWordFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentAddWordBinding.inflate(inflater)
-
-        viewModel = ViewModelProvider(
-            this,
-            AddWordFragmentViewModelFactory(FlashCardRepository(requireContext()))
-        ).get(AddWordFragmentViewModel::class.java)
 
         val adapter = AddWordFragmentAdapter(AddWordFragmentAdapter.AddWordFragmentAdapterCallback {
             searchResult, id ->
