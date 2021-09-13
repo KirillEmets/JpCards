@@ -1,9 +1,9 @@
-package com.kirillemets.flashcards.database
+package com.kirillemets.flashcards.model
 
 import androidx.lifecycle.LiveData
 import com.kirillemets.flashcards.addWord.SearchResultCard
-import com.kirillemets.flashcards.model.toSearchResultCards
-import com.kirillemets.flashcards.network.JishoApiService
+import com.kirillemets.flashcards.model.database.CardDatabaseDao
+import com.kirillemets.flashcards.model.network.JishoApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

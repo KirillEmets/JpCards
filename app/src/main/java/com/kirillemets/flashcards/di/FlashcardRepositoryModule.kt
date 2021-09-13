@@ -3,9 +3,9 @@ package com.kirillemets.flashcards.di
 import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.CardDatabaseDao
-import com.kirillemets.flashcards.network.JishoApiService
+import com.kirillemets.flashcards.model.database.CardDatabase
+import com.kirillemets.flashcards.model.database.CardDatabaseDao
+import com.kirillemets.flashcards.model.network.JishoApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

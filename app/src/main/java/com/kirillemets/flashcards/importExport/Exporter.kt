@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCard
 import java.io.File
 import java.io.OutputStream
 

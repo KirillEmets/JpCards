@@ -1,7 +1,5 @@
 package com.kirillemets.flashcards.myDictionary
 
-import android.content.Context
-import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
@@ -13,8 +11,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.kirillemets.flashcards.MainActivity
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.database.FlashCard
-import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.model.FlashCardRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking

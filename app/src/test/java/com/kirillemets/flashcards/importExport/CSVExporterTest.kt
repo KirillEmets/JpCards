@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.importExport
 
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCard
 import org.junit.Assert.*
 import org.junit.Test
 

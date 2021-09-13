@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.network
+package com.kirillemets.flashcards.model.network
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET

@@ -1,7 +1,6 @@
 package com.kirillemets.flashcards.addWord
 
-import android.util.Log
-import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCardRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.*

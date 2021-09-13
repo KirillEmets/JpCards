@@ -2,11 +2,11 @@ package com.kirillemets.flashcards
 
 import android.content.Context
 import androidx.room.Room
-import com.kirillemets.flashcards.database.CardDatabase
-import com.kirillemets.flashcards.database.CardDatabaseDao
+import com.kirillemets.flashcards.model.database.CardDatabase
+import com.kirillemets.flashcards.model.database.CardDatabaseDao
 import com.kirillemets.flashcards.di.FlashcardRepositoryModule
-import com.kirillemets.flashcards.network.JishoApiService
-import com.kirillemets.flashcards.network.QueryData
+import com.kirillemets.flashcards.model.network.JishoApiService
+import com.kirillemets.flashcards.model.network.QueryData
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext

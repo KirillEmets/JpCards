@@ -1,5 +1,6 @@
-package com.kirillemets.flashcards.database
+package com.kirillemets.flashcards.model.database
 
+import com.kirillemets.flashcards.model.FlashCard
 import java.util.concurrent.TimeUnit
 
 import org.junit.Test

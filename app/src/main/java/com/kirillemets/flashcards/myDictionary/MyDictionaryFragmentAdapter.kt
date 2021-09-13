@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCard
 import com.kirillemets.flashcards.databinding.ItemDictionaryFlashcardBinding
 
 class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {

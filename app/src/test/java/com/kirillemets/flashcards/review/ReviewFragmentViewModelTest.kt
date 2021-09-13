@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.review
 
-import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCardRepository
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock

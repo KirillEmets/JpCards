@@ -1,7 +1,8 @@
-package com.kirillemets.flashcards.database
+package com.kirillemets.flashcards.model.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.kirillemets.flashcards.model.FlashCard
 
 @Dao
 interface CardDatabaseDao {

@@ -1,7 +1,7 @@
 package com.kirillemets.flashcards.addWord
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.lang.Exception

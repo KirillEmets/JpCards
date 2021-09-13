@@ -1,9 +1,8 @@
 package com.kirillemets.flashcards.review
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.database.CardDatabaseDao
-import com.kirillemets.flashcards.database.FlashCardRepository
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

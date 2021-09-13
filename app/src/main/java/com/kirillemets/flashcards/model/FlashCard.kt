@@ -1,11 +1,10 @@
-package com.kirillemets.flashcards.database
+package com.kirillemets.flashcards.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kirillemets.flashcards.TimeUtil
 import org.joda.time.LocalDate
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Entity

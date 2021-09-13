@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.review
 
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCard
 
 data class ReviewCard(
     val word: String,

@@ -12,7 +12,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.database.FlashCardRepository
+import com.kirillemets.flashcards.model.FlashCardRepository
 import com.kirillemets.flashcards.importExport.CSVExporter
 import com.kirillemets.flashcards.importExport.exportToStorage
 import dagger.hilt.android.AndroidEntryPoint

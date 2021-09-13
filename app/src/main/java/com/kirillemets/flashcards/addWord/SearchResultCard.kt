@@ -1,8 +1,6 @@
 package com.kirillemets.flashcards.addWord
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.model.FlashCard
 
 class SearchResultCard(
     val japanese: String,
