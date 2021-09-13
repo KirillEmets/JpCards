@@ -1,55 +1,80 @@
 package com.kirillemets.flashcards.addWord
 
-import androidx.test.core.app.ApplicationProvider
-import com.kirillemets.flashcards.MockDaoTest
+import android.util.Log
 import com.kirillemets.flashcards.database.FlashCardRepository
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
-
-class AddWordFragmentViewModelTest: MockDaoTest() {
+@HiltAndroidTest
+class AddWordFragmentViewModelTest {
     private lateinit var viewModel: AddWordFragmentViewModel
 
-//    @Rule
-//    @JvmField
-//    val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var rule = HiltAndroidRule(this)
 
+    @Inject lateinit var repository: FlashCardRepository
 
     @Before
-    fun before() {
-        mockDatabase()
-        viewModel = AddWordFragmentViewModel(FlashCardRepository(ApplicationProvider.getApplicationContext()))
+    fun init() {
+        rule.inject()
+        viewModel = AddWordFragmentViewModel(repository)
     }
 
     @Test
     fun addWordButtonClicked() = runBlocking(Dispatchers.Main) {
         val card = SearchResultCard("japan", "reading", listOf("eng1", "eng2"))
 
-        var d: CompletableDeferred<Boolean> = CompletableDeferred()
-        viewModel.insertionResult.observeForever {
-            d.complete(it)
+        val cb = iterableCallback<Boolean> {
+            viewModel.insertionResult.observeForever {
+                emit(it)
+            }
         }
 
-        withContext(Dispatchers.IO) {
+        viewModel.onAddButtonClicked(card, 0)
+        assertEquals(true, cb.awaitNext())
+//        repository.getAllSuspend()
+        assertEquals(1, repository.getAllSuspend().size)
 
-            viewModel.onAddButtonClicked(card, 0)
-            assertEquals(true, d.await())
-            d = CompletableDeferred()
 
-            assertEquals(1, dao.getAllBlocking().size)
+        viewModel.onAddButtonClicked(card, 1)
+        assertEquals(true, cb.awaitNext())
 
-            viewModel.onAddButtonClicked(card, 1)
-            assertEquals(true, d.await())
-            d = CompletableDeferred()
 
-            viewModel.onAddButtonClicked(card, 0)
-            assertEquals(false, d.await())
-            d = CompletableDeferred()
+        viewModel.onAddButtonClicked(card, 0)
+        assertEquals(false, cb.awaitNext())
 
-            assertEquals(2, dao.getAllBlocking().size)
-        }
+//        repository.getAllSuspend()
+        assertEquals(2, repository.getAllSuspend().size)
     }
+}
+
+class IterableCallback<T> {
+    private lateinit var d: CompletableDeferred<T>
+    fun putValue(value: T) {
+        d.complete(value)
+    }
+
+    suspend fun awaitNext(): T {
+        d = CompletableDeferred()
+        return d.await()
+    }
+}
+
+class IterableCallbackScope<T>(private val cb: IterableCallback<T>) {
+    fun emit(value: T) {
+        cb.putValue(value)
+    }
+}
+
+fun<T> iterableCallback(body: IterableCallbackScope<T>.() -> Unit): IterableCallback<T> {
+    val cb = IterableCallback<T>()
+    val scope = IterableCallbackScope(cb)
+    body(scope)
+    return cb
 }

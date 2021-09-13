@@ -9,18 +9,36 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.kirillemets.flashcards.MainActivity
-import com.kirillemets.flashcards.MockDaoTest
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.database.FlashCard
+import com.kirillemets.flashcards.database.FlashCardRepository
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 
 
 @RunWith(AndroidJUnit4::class)
-class ReviewFragmentTest: MockDaoTest() {
+@HiltAndroidTest
+class ReviewFragmentTest {
+
+    @get:Rule
+    var rule = HiltAndroidRule(this)
+
+    @Inject lateinit var repository: FlashCardRepository
+
+    @Before
+    fun init() {
+        rule.inject()
+    }
+
     @Test
     fun recreate() {
         val scenario = ActivityScenario.launch(MainActivity::class.java)
@@ -38,7 +56,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun hasWordsClickOnReviewButton() {
-        dao.insert(FlashCard(0, "Japanese", "reading", "English"))
+        repository.insert(FlashCard(0, "Japanese", "reading", "English"))
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
@@ -50,7 +68,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun clickOnMissButton() {
-        dao.insert(FlashCard(0, "Japanese", "reading", "English"))
+        repository.insert(FlashCard(0, "Japanese", "reading", "English"))
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
@@ -72,7 +90,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun clickOnHardButton() {
-        dao.insert(FlashCard(0, "Japanese", "reading", "English"))
+        repository.insert(FlashCard(0, "Japanese", "reading", "English"))
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
@@ -94,7 +112,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun clickOnEasyButton() {
-        dao.insert(FlashCard(0, "Japanese", "reading", "English"))
+        repository.insert(FlashCard(0, "Japanese", "reading", "English"))
         ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
@@ -116,8 +134,8 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun removeCardImmediately() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
-        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap2", "", "eng2"))
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
@@ -137,15 +155,15 @@ class ReviewFragmentTest: MockDaoTest() {
                 .perform(click())
         }
 
-        Assert.assertEquals(1, dao.getAllBlocking().size)
+        runBlocking { Assert.assertEquals(1, repository.getAllSuspend().size) }
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
     }
 
     @Test
     fun removeAllCards() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
-        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap2", "", "eng2"))
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
@@ -158,15 +176,15 @@ class ReviewFragmentTest: MockDaoTest() {
                 .perform(click())
         }
 
-        Assert.assertEquals(0, dao.getAllBlocking().size)
+        runBlocking { Assert.assertEquals(0, repository.getAllSuspend().size) }
         onView(withId(R.id.button_start_review))
             .check(matches(not(isClickable())))
     }
 
     @Test
     fun removeLastCard() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
-        dao.insert(FlashCard(0, "Jap2", "", "eng2"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap2", "", "eng2"))
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
@@ -186,14 +204,14 @@ class ReviewFragmentTest: MockDaoTest() {
         onView(withText(R.string.delete_card))
             .perform(click())
 
-        Assert.assertEquals(1, dao.getAllBlocking().size)
+        runBlocking { Assert.assertEquals(1, repository.getAllSuspend().size) }
         onView(withId(R.id.button_start_review))
             .check(matches(isClickable()))
     }
 
     @Test
     fun pressBackOnReview() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
@@ -208,7 +226,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun startChangePageAndGoBack() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
         ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
@@ -241,7 +259,7 @@ class ReviewFragmentTest: MockDaoTest() {
 
     @Test
     fun restartWhileReview() {
-        dao.insert(FlashCard(0, "Jap", "", "eng"))
+        repository.insert(FlashCard(0, "Jap", "", "eng"))
         val scenario = ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.button_start_review))
