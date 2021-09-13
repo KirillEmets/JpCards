@@ -11,15 +11,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 open class FlashCardRepository @Inject constructor(
-    val cardDatabase: CardDatabase,
-    val jisho: JishoApiService
+    private val db: CardDatabaseDao,
+    private val jisho: JishoApiService
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private val db = cardDatabase.flashCardsDao()
 
     fun getAll(): LiveData<List<FlashCard>> = db.getAll()
 
-    fun getAllBlocking(): List<FlashCard> = db.getAllBlocking()
+    suspend fun getAllSuspend(): List<FlashCard> = withContext(coroutineScope.coroutineContext) { db.getAllBlocking() }
 
     suspend fun get(id: Int): FlashCard? =
         withContext(coroutineScope.coroutineContext) { db.get(id) }
@@ -50,12 +49,15 @@ open class FlashCardRepository @Inject constructor(
             if (find(flashCard.english, flashCard.japanese, flashCard.reading).isNotEmpty()) {
                 return@withContext false
             }
-            insert(flashCard)
+            insertSuspend(flashCard)
             return@withContext true
         }
 
     fun insert(card: FlashCard) =
         coroutineScope.launch { db.insert(card) }
+
+    suspend fun insertSuspend(card: FlashCard) =
+        withContext(coroutineScope.coroutineContext) { db.insert(card) }
 
     fun insert(cards: List<FlashCard>) =
         coroutineScope.launch { db.insert(cards) }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.kirillemets.flashcards.database.CardDatabase
+import com.kirillemets.flashcards.database.CardDatabaseDao
 import com.kirillemets.flashcards.network.JishoApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -29,6 +30,11 @@ object FlashcardRepositoryModule {
             CardDatabase::class.java,
             "flashcards_database"
         ).build()
+    }
+
+    @Provides
+    fun provideCardDatabaseDao(cardDatabase: CardDatabase): CardDatabaseDao {
+        return cardDatabase.flashCardsDao()
     }
 
     @Singleton
