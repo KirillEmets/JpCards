@@ -9,7 +9,7 @@ interface CardDatabaseDao {
     fun getAll(): LiveData<List<FlashCard>>
 
     @Query("SELECT * FROM flashcard ORDER BY cardId DESC")
-    fun getAllBlocking(): List<FlashCard>
+    suspend fun getAllBlocking(): List<FlashCard>
 
     @Query("SELECT * FROM flashcard WHERE cardId = :id")
     suspend fun get(id: Int): FlashCard?
