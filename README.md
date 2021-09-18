@@ -1,4 +1,4 @@
-# JapaneseFlashcards
+# JpCards - Japanese Flashcards
 
 Apllication for learning japanese words with flashcards. Contatins built-in serch page that can add new words.
 
