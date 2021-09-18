@@ -60,6 +60,6 @@
     <fragment
         android:id="@+id/importFragment"
         android:name="com.kirillemets.flashcards.importExport.ImportFragment"
-        android:label="fragment_import"
+        android:label="Import"
         tools:layout="@layout/fragment_import" />
 </navigation>
