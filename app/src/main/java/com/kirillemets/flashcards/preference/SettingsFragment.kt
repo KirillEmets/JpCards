@@ -1,9 +1,16 @@
 package com.kirillemets.flashcards.preference
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -19,13 +26,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDateTime
+import java.net.URL
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var lastExportChoice: String? = null
-    @Inject lateinit var flashCardRepository: FlashCardRepository
+
+    @Inject
+    lateinit var flashCardRepository: FlashCardRepository
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         fun exportToFile(choice: String?) {
@@ -33,7 +43,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val cards = flashCardRepository.getAllSuspend()
                 val withProgress = choice == "with_progress"
                 val exporter = CSVExporter(withProgress)
-                val name = "flashcards-${choice}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
+                val name =
+                    "flashcards-${choice}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
                 exportToStorage(cards, name, exporter, requireContext())
             }
         }
@@ -71,13 +82,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setOnPreferenceChangeListener { _, newValue ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     exportToFile(newValue as String)
-                }
-
-                else {
-                    if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
                         exportToFile(newValue as String)
-                    }
-                    else {
+                    } else {
                         request.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
                 }
@@ -88,6 +100,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>("import_from_file")!!.apply {
             setOnPreferenceClickListener {
                 findNavController().navigate(R.id.action_settingsFragment_to_importFragment)
+                true
+            }
+        }
+
+        findPreference<Preference>("about_developer")!!.apply {
+            setOnPreferenceClickListener {
+
+                val message =
+                    SpannableString("Author: Kirill Yemets" + "\nGitHub: https://github.com/KirillEmets/japaneseflashcards")
+                Linkify.addLinks(message, Linkify.ALL)
+
+                val ad = AlertDialog.Builder(context)
+                    .setTitle("About developer")
+                    .setMessage(message)
+                    .create()
+
+                ad.show()
+                ad.findViewById<TextView>(android.R.id.message).movementMethod = LinkMovementMethod.getInstance()
+                true
+            }
+        }
+
+        findPreference<Preference>("github")!!.apply {
+            setOnPreferenceClickListener {
+                val url = "https://github.com/KirillEmets/japaneseflashcards"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
                 true
             }
         }

@@ -40,6 +40,17 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="About app">
+        <Preference
+            app:title="About developer"
+            app:key="about_developer" />
+
+        <Preference
+            app:title="Github"
+            app:key="github" />
+
+    </PreferenceCategory>
+
 
 
 
