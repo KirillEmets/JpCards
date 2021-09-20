@@ -3,7 +3,7 @@
 Apllication for learning japanese words with flashcards. Contatins built-in serch page that can add new words.
 
 ### Existing features: 
-- [x] Searching words in the Internet and adding them to your dictionary
+- [x] Search words in the Internet and add them to your dictionary
 - [x] Study and review words
 - [x] Import and export dictionary to/from csv file
 
