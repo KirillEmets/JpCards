@@ -7,6 +7,13 @@ Apllication for learning japanese words with flashcards. Contatins built-in serc
 - [x] Study and review words
 - [x] Import and export dictionary to/from csv file
 
+### Used technologies:
+- Most of Jetpack libraries: Lifecycle (ViewModel + LiveData), Navigation, Material UI, Room, Hilt.
+- Constraint Layout
+- Recycler View
+- Retroit2 + Moshi
+- MVVM Architecture
+- Espresso (for UI and Integration tests)
 
 ### Screenshots:
 <details>
