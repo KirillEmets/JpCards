@@ -17,7 +17,8 @@ class AddWordFragmentViewModelTest {
     @get:Rule
     var rule = HiltAndroidRule(this)
 
-    @Inject lateinit var repository: FlashCardRepository
+    @Inject
+    lateinit var repository: FlashCardRepository
 
     @Before
     fun init() {
@@ -28,7 +29,6 @@ class AddWordFragmentViewModelTest {
     @Test
     fun addWordButtonClicked() = runBlocking(Dispatchers.Main) {
         val card = SearchResultCard("japan", "reading", listOf("eng1", "eng2"))
-
         val cb = iterableCallback<Boolean> {
             viewModel.insertionResult.observeForever {
                 emit(it)
@@ -37,7 +37,6 @@ class AddWordFragmentViewModelTest {
 
         viewModel.onAddButtonClicked(card, 0)
         assertEquals(true, cb.awaitNext())
-//        repository.getAllSuspend()
         assertEquals(1, repository.getAllSuspend().size)
 
 
@@ -48,7 +47,6 @@ class AddWordFragmentViewModelTest {
         viewModel.onAddButtonClicked(card, 0)
         assertEquals(false, cb.awaitNext())
 
-//        repository.getAllSuspend()
         assertEquals(2, repository.getAllSuspend().size)
     }
 }
@@ -71,7 +69,7 @@ class IterableCallbackScope<T>(private val cb: IterableCallback<T>) {
     }
 }
 
-fun<T> iterableCallback(body: IterableCallbackScope<T>.() -> Unit): IterableCallback<T> {
+fun <T> iterableCallback(body: IterableCallbackScope<T>.() -> Unit): IterableCallback<T> {
     val cb = IterableCallback<T>()
     val scope = IterableCallbackScope(cb)
     body(scope)
