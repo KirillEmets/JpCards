@@ -3,13 +3,23 @@ package com.kirillemets.flashcards.importExport
 import android.annotation.TargetApi
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.content.FileProvider.getUriForFile
 import com.kirillemets.flashcards.model.FlashCard
 import java.io.File
 import java.io.OutputStream
+
+data class ExportInfo(
+    val cards: List<FlashCard>,
+    val exporter: Exporter,
+    val name: String,
+    val context: Context
+)
 
 abstract class Exporter {
     abstract fun exportCards(cards: List<FlashCard>, outputStream: OutputStream)
@@ -44,35 +54,52 @@ class CSVExporter(withProgress: Boolean) : Exporter() {
                 "\"${card.reading}\""
 }
 
-fun exportToStorage(
+fun saveToLocal(
     cards: List<FlashCard>,
     filename: String,
     exporter: Exporter,
     context: Context
-) {
+): Uri {
+    val exports = File(context.filesDir, "exports")
+    exports.mkdir()
+    val files = exports.listFiles()
+    files?.forEach {
+        it.delete()
+        Log.i("EXPORTER", "Removed ${it.absolutePath}")
+    }
+
+    val file = File(exports, "${filename}.${exporter.getExtension()}")
+    val os: OutputStream = file.outputStream()
+    exporter.exportCards(cards, os)
+    os.close()
+
+    return getUriForFile(context, "com.kirillemets.fileprovider", file)
+}
+
+fun exportToStorage(exportInfo: ExportInfo) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        saveFileQ(cards, filename, exporter, context)
+        saveFileQ(exportInfo)
     } else
-        saveFileLegacy(cards, filename, exporter)
+        saveFileLegacy(exportInfo)
 }
 
 @TargetApi(29)
-private fun saveFileQ(cards: List<FlashCard>, name: String, exporter: Exporter, context: Context) {
+private fun saveFileQ(exportInfo: ExportInfo) {
     val values = ContentValues().apply {
-        put(MediaStore.Downloads.DISPLAY_NAME, name)
+        put(MediaStore.Downloads.DISPLAY_NAME, exportInfo.name)
         put(
             MediaStore.Downloads.MIME_TYPE,
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(exporter.getExtension())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(exportInfo.exporter.getExtension())
         )
         put(MediaStore.Downloads.IS_PENDING, 1)
     }
 
-    val resolver = context.contentResolver
+    val resolver = exportInfo.context.contentResolver
     val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
 
     uri?.let {
-        val os: OutputStream = context.contentResolver.openOutputStream(it)!!
-        exporter.exportCards(cards, os)
+        val os: OutputStream = exportInfo.context.contentResolver.openOutputStream(it)!!
+        exportInfo.exporter.exportCards(exportInfo.cards, os)
         os.close()
 
         values.clear()
@@ -82,12 +109,12 @@ private fun saveFileQ(cards: List<FlashCard>, name: String, exporter: Exporter, 
 }
 
 @Suppress("DEPRECATION")
-private fun saveFileLegacy(cards: List<FlashCard>, name: String, exporter: Exporter) {
+private fun saveFileLegacy(exportInfo: ExportInfo) {
     val file = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-        "$name.${exporter.getExtension()}"
+        "${exportInfo.name}.${exportInfo.exporter.getExtension()}"
     )
     val os: OutputStream = file.outputStream()
-    exporter.exportCards(cards, os)
+    exportInfo.exporter.exportCards(exportInfo.cards, os)
     os.close()
 }

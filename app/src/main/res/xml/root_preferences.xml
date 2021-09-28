@@ -2,38 +2,36 @@
 
     <PreferenceCategory app:title="@string/review_header">
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
+            app:defaultValue="0.0"
             app:key="miss_multiplier"
-            app:title="@string/miss_multiplier"
-            app:defaultValue="0.0"/>
+            app:title="@string/miss_multiplier" />
 
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
+            app:defaultValue="0.8"
             app:key="hard_multiplier"
-            app:title="@string/hard_multiplier"
-            app:defaultValue="0.8"/>
+            app:title="@string/hard_multiplier" />
 
         <com.kirillemets.flashcards.preference.MaterialSliderPreference
+            app:defaultValue="2.2"
             app:key="easy_multiplier"
-            app:title="@string/easy_multiplier"
-            app:defaultValue="2.2"/>
+            app:title="@string/easy_multiplier" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/appearance_header">
         <ListPreference
-            app:key="theme"
-            app:title="Theme"
+            app:defaultValue="Auto"
             app:entries="@array/entries"
             app:entryValues="@array/values"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue="Auto"/>
+            app:key="theme"
+            app:title="Theme"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Import / Export">
-        <ListPreference
+        <Preference
             app:key="export_to_file"
-            app:title="Export cards to file"
-            app:entryValues="@array/export_preference_values"
-            app:entries="@array/export_preference_entries"
-            />
+            app:title="Export cards to file" />
+
         <Preference
             app:key="import_from_file"
             app:title="Import cards from file" />
@@ -42,16 +40,13 @@
 
     <PreferenceCategory app:title="About app">
         <Preference
-            app:title="About developer"
-            app:key="about_developer" />
+            app:key="about_developer"
+            app:title="About developer" />
 
         <Preference
-            app:title="Github"
-            app:key="github" />
+            app:key="github"
+            app:title="Github" />
 
     </PreferenceCategory>
-
-
-
 
 </PreferenceScreen>

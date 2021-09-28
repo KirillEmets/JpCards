@@ -11,14 +11,4 @@
         <item>Light</item>
         <item>Black</item>
     </string-array>
-
-    <string-array name="export_preference_entries">
-        <item>With progress</item>
-        <item>Without progress</item>
-    </string-array>
-
-    <string-array name="export_preference_values">
-        <item>with_progress</item>
-        <item>without_progress</item>
-    </string-array>
 </resources>

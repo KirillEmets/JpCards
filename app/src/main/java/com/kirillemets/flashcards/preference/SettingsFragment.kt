@@ -1,7 +1,9 @@
 package com.kirillemets.flashcards.preference
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,7 +12,11 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
+import android.view.LayoutInflater
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -18,41 +24,138 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.kirillemets.flashcards.R
+import com.kirillemets.flashcards.importExport.*
 import com.kirillemets.flashcards.model.FlashCardRepository
-import com.kirillemets.flashcards.importExport.CSVExporter
-import com.kirillemets.flashcards.importExport.exportToStorage
+import com.kirillemets.flashcards.model.FlashCard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.LocalDateTime
-import java.net.URL
 import javax.inject.Inject
 
+@SuppressLint("InflateParams")
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
-
-    private var lastExportChoice: String? = null
-
     @Inject
     lateinit var flashCardRepository: FlashCardRepository
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        fun exportToFile(choice: String?) {
-            requireActivity().lifecycleScope.launch(Dispatchers.IO) {
-                val cards = flashCardRepository.getAllSuspend()
-                val withProgress = choice == "with_progress"
-                val exporter = CSVExporter(withProgress)
-                val name =
-                    "flashcards-${choice}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
-                exportToStorage(cards, name, exporter, requireContext())
+    private val exportTypes = mapOf(
+        "With progress" to true,
+        "Without progress" to false
+    )
+    private val exportDestinations = mapOf<String, suspend (ExportInfo) -> Unit>(
+        "Share" to ::startExportShare,
+        "To download folder" to ::startExportToFile
+    )
+
+    private val exportAlertDialog by lazy {
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.export_dialog, null)
+
+        val editTextType =
+            view.findViewById<TextInputLayout>(R.id.textInput_export_type).editText as AutoCompleteTextView
+        (editTextType).apply {
+            val items = exportTypes.keys.toList()
+            setText(items[0])
+
+            val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_list_item, items)
+            setAdapter(adapter)
+        }
+
+        val editTextDestination =
+            view.findViewById<TextInputLayout>(R.id.textInput_export_destination).editText as AutoCompleteTextView
+        (editTextDestination).apply {
+            val items = exportDestinations.keys.toList()
+            setText(items[0])
+
+            val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_list_item, items)
+            setAdapter(adapter)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Export")
+            .setView(view)
+            .setPositiveButton("Export") { _, _ ->
+                val withProgress = exportTypes[editTextType.text.toString()] ?: false
+                startExport(withProgress, exportDestinations[editTextDestination.text.toString()]!!)
+            }
+            .setNegativeButton("Cancel") { _, _ -> }
+            .create()
+    }
+
+    private fun startExport(withProgress: Boolean, destination: suspend (ExportInfo) -> Unit) {
+        requireActivity().lifecycleScope.launch(Dispatchers.IO) {
+            val cards = flashCardRepository.getAllSuspend()
+            val exporter = CSVExporter(withProgress)
+            val tag = if (withProgress) "with_progress" else "without_progress"
+            val name =
+                "${tag}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
+
+            destination(ExportInfo(cards, exporter, name, requireContext()))
+        }
+    }
+
+    private suspend fun startExportShare(exportInfo: ExportInfo) {
+        try {
+            val uri: Uri = saveToLocal(
+                exportInfo.cards,
+                exportInfo.name,
+                exportInfo.exporter,
+                exportInfo.context
+            )
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/*"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                flags =
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            }
+            val chooser = Intent.createChooser(intent, "Share")
+            startActivity(chooser)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(exportInfo.context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
-        val request = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            exportToFile(lastExportChoice)
+    private suspend fun startExportToFile(exportInfo: ExportInfo) {
+        try {
+            tryExportToFile(exportInfo)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(exportInfo.context, "File saved", Toast.LENGTH_SHORT).show()
+            }
+
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(exportInfo.context, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
+    }
 
+    private fun tryExportToFile(exportInfo: ExportInfo) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            exportToStorage(exportInfo)
+            return
+        }
+        if (ContextCompat.checkSelfPermission(
+                exportInfo.context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            exportToStorage(exportInfo)
+            return
+        }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            exportToStorage(exportInfo)
+        }
+            .launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
         findPreference<MaterialSliderPreference>("miss_multiplier")!!.apply {
@@ -78,24 +181,31 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<ListPreference>("export_to_file")!!.apply {
-            setOnPreferenceChangeListener { _, newValue ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    exportToFile(newValue as String)
-                } else {
-                    if (ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        exportToFile(newValue as String)
-                    } else {
-                        request.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    }
-                }
+        findPreference<Preference>("export_to_file")!!.apply {
+            setOnPreferenceClickListener {
+                exportAlertDialog.show()
                 true
             }
         }
+
+//        findPreference<ListPreference>("export_to_file")!!.apply {
+//            setOnPreferenceChangeListener { _, newValue ->
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                    exportToFile(newValue as String)
+//                } else {
+//                    if (ContextCompat.checkSelfPermission(
+//                            requireContext(),
+//                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        ) == PackageManager.PERMISSION_GRANTED
+//                    ) {
+//                        exportToFile(newValue as String)
+//                    } else {
+//                        request.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    }
+//                }
+//                true
+//            }
+//        }
 
         findPreference<Preference>("import_from_file")!!.apply {
             setOnPreferenceClickListener {
@@ -117,7 +227,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     .create()
 
                 ad.show()
-                ad.findViewById<TextView>(android.R.id.message).movementMethod = LinkMovementMethod.getInstance()
+                ad.findViewById<TextView>(android.R.id.message).movementMethod =
+                    LinkMovementMethod.getInstance()
                 true
             }
         }

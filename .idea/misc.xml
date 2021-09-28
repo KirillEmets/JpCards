@@ -5,10 +5,13 @@
       <map>
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout-h500dp/fragment_review.xml" value="0.16077898550724637" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/dropdown_list_item.xml" value="0.1721014492753623" />
+        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/export_dialog.xml" value="0.33" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_import.xml" value="0.25" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_my_dictionary.xml" value="0.22" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_review.xml" value="0.5838815789473685" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/xml/file_paths.xml" value="0.1" />
         <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/xml/root_preferences.xml" value="0.2222222222222222" />
       </map>
     </option>
