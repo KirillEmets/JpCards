@@ -3,10 +3,17 @@
 Apllication for learning japanese words with flashcards. Contatins built-in serch page that can add new words.
 
 ### Existing features: 
-- [x] Searching words in the Internet and adding them to your dictionary
+- [x] Search words in the Internet and add them to your dictionary
 - [x] Study and review words
 - [x] Import and export dictionary to/from csv file
 
+### Used technologies:
+- Most of Jetpack libraries: Lifecycle (ViewModel + LiveData), Navigation, Material UI, Room, Hilt.
+- Constraint Layout
+- Recycler View
+- Retroit2 + Moshi
+- MVVM Architecture
+- Espresso (for UI and Integration tests)
 
 ### Screenshots:
 <details>
