@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="Buttons_text_size">14sp</dimen>
-    <dimen name="review_word_text_size">24sp</dimen>
-    <dimen name="review_reading_text_size">16sp</dimen>
+    <dimen name="review_word_text_size">26sp</dimen>
+    <dimen name="review_reading_text_size">18sp</dimen>
 
     <dimen name="answer_button_height">50dp</dimen>
     <dimen name="answer_button_width">100dp</dimen>
