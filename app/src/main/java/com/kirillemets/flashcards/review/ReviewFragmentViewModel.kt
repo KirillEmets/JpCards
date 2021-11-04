@@ -34,9 +34,6 @@ class ReviewFragmentViewModel @Inject constructor(
     val answerShown = MutableLiveData(false)
     var reviewGoing = false
 
-    val fontSizeBig = MutableLiveData(30)
-    val fontSizeSmall = MutableLiveData(30)
-
     val buttonReviewClickable = Transformations.map(reviewCards) {
         it.isNotEmpty()
     }

@@ -30,15 +30,11 @@ class ReviewFragment : Fragment() {
             delayMissMultiplier = preferenceManager.getFloat("miss_multiplier", 0f)
             delayHardMultiplier = preferenceManager.getFloat("hard_multiplier", 1f)
             delayEasyMultiplier = preferenceManager.getFloat("easy_multiplier", 1f)
-
-            val size = preferenceManager.getFloat("review_font_size", 30f).toInt()
-            fontSizeBig.value = (size * resources.displayMetrics.scaledDensity).toInt()
-            fontSizeSmall.value = ((size - 12) * resources.displayMetrics.scaledDensity).toInt()
         }
 
         binding.viewModel = viewModel
 
-        viewModel.currentCard.observe(viewLifecycleOwner, Observer { card ->
+        viewModel.currentCard.observe(viewLifecycleOwner, { card ->
             viewModel.getNewDelay(card.lastDelay, 0).let {
                 binding.missButtonDelay.text = if(it == 0) "discard" else resources.getQuantityString(
                     R.plurals.daysToDelay, it, it
@@ -56,7 +52,7 @@ class ReviewFragment : Fragment() {
             }
         })
 
-        viewModel.onRunOutOfWords.observe(viewLifecycleOwner, Observer {
+        viewModel.onRunOutOfWords.observe(viewLifecycleOwner, {
             if(it) {
                 findNavController().navigateUp()
                 viewModel.onRunOutOfWords.value = false
