@@ -43,6 +43,8 @@ class ReviewFragmentViewModel @Inject constructor(
 
     val onRunOutOfWords = MutableLiveData(false)
 
+    private val today = LocalDate.now().toDateTimeAtStartOfDay()
+
     fun loadCardsToReview() {
         viewModelScope.launch {
             val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
@@ -75,7 +77,7 @@ class ReviewFragmentViewModel @Inject constructor(
         var newDelay: Int = getNewDelay(card.lastDelay, buttonType)
 
         val nextRepeatTime: Long =
-            LocalDate.now().toDateTimeAtStartOfDay().plusDays(newDelay).millis
+            today.plusDays(newDelay).millis
 
         if (newDelay == 0)
             newDelay = 1
