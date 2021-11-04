@@ -2,12 +2,12 @@
 buildscript {
     ext {
         version_android_gradle_plugin = "4.0.1"
-        version_core = '1.6.0'
-        version_constraint_layout = '2.1.0'
+        version_core = '1.7.0'
+        version_constraint_layout = '2.1.1'
         version_glide = "4.8.0"
         version_kotlin = "1.4.32"
         version_kotlin_coroutines = '1.5.2-native-mt'
-        version_lifecycle_extensions = "2.3.1"
+        version_lifecycle_extensions = "2.4.0"
         version_moshi = '1.12.0'
         version_navigation = '2.3.5'
         version_retrofit = "2.9.0"
@@ -21,8 +21,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
     }
