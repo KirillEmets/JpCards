@@ -1,5 +1,6 @@
 package com.kirillemets.flashcards.myDictionary
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.model.FlashCard
@@ -14,7 +15,7 @@ class MyDictionaryFragmentViewModel @Inject constructor(val flashCardRepository:
         flashCardRepository.getAll()
 
     private val cardsObserver = Observer<List<FlashCard>> { cards ->
-        _displayedCards.postValue(cards)
+        _displayedCards.value = cards
         lastFilter?.let { filterWords(it) }
     }
 
