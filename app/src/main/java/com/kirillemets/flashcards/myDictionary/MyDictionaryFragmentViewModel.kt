@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyDictionaryFragmentViewModel @Inject constructor(val flashCardRepository: FlashCardRepository) :
     ViewModel() {
-    private val allCards: LiveData<List<FlashCard>> =
-        flashCardRepository.getAll()
+    private val allCards: LiveData<List<FlashCard>> = MutableLiveData(emptyList())
+//        flashCardRepository.getAll()
 
     private val cardsObserver = Observer<List<FlashCard>> { cards ->
         _displayedCards.value = cards

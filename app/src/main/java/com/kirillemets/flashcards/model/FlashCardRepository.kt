@@ -1,11 +1,11 @@
 package com.kirillemets.flashcards.model
 
-import androidx.lifecycle.LiveData
 import com.kirillemets.flashcards.addWord.SearchResultCard
 import com.kirillemets.flashcards.model.database.CardDatabaseDao
 import com.kirillemets.flashcards.model.network.JishoApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,7 +16,7 @@ open class FlashCardRepository @Inject constructor(
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    fun getAll(): LiveData<List<FlashCard>> = db.getAll()
+    fun getAll(): Flow<List<FlashCard>> = db.getAll()
 
     suspend fun getAllSuspend(): List<FlashCard> = withContext(coroutineScope.coroutineContext) { db.getAllBlocking() }
 

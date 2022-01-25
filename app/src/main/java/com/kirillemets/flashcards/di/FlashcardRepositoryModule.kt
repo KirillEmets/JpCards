@@ -3,6 +3,10 @@ package com.kirillemets.flashcards.di
 import android.content.Context
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.kirillemets.flashcards.data.AppPreferencesImpl
+import com.kirillemets.flashcards.data.repository.NoteRepositoryImpl
+import com.kirillemets.flashcards.domain.AppPreferences
+import com.kirillemets.flashcards.domain.repository.NoteRepository
 import com.kirillemets.flashcards.model.database.CardDatabase
 import com.kirillemets.flashcards.model.database.CardDatabaseDao
 import com.kirillemets.flashcards.model.network.JishoApiService
@@ -35,6 +39,16 @@ object FlashcardRepositoryModule {
     @Provides
     fun provideCardDatabaseDao(cardDatabase: CardDatabase): CardDatabaseDao {
         return cardDatabase.flashCardsDao()
+    }
+
+    @Provides
+    fun provideNoteRepository(dao: CardDatabaseDao): NoteRepository {
+        return NoteRepositoryImpl(dao)
+    }
+
+    @Provides
+    fun provideAppPreferences(@ApplicationContext app: Context): AppPreferences {
+        return AppPreferencesImpl(app)
     }
 
     @Singleton

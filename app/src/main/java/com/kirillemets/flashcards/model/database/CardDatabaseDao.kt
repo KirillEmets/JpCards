@@ -3,11 +3,12 @@ package com.kirillemets.flashcards.model.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.kirillemets.flashcards.model.FlashCard
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CardDatabaseDao {
     @Query("SELECT * FROM flashcard ORDER BY cardId DESC")
-    fun getAll(): LiveData<List<FlashCard>>
+    fun getAll(): Flow<List<FlashCard>>
 
     @Query("SELECT * FROM flashcard ORDER BY cardId DESC")
     suspend fun getAllBlocking(): List<FlashCard>

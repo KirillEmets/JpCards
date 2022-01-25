@@ -1,134 +1,149 @@
 package com.kirillemets.flashcards.review
 
-import androidx.lifecycle.*
-import com.kirillemets.flashcards.model.FlashCardRepository
-import com.kirillemets.flashcards.model.FlashCard
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.kirillemets.flashcards.domain.model.AnswerType
+import com.kirillemets.flashcards.domain.model.ReviewCard
+import com.kirillemets.flashcards.domain.uselesscase.DeleteCardsWithIndexesUseCase
+import com.kirillemets.flashcards.domain.uselesscase.GetNewDelayInDaysUseCase
+import com.kirillemets.flashcards.domain.uselesscase.LoadCardForReviewUseCase
+import com.kirillemets.flashcards.domain.uselesscase.UpdateCardWithAnswerUseCase
+import com.kirillemets.flashcards.ui.model.ReviewCardUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+data class ReviewUIState(
+    val currentCard: ReviewCardUIState,
+    val showAnswer: Boolean,
+    val currentWordNumber: Int,
+    val wordCount: Int,
+    val missDelay: Int,
+    val easyDelay: Int,
+    val hardDelay: Int,
+)
+
 @HiltViewModel
 class ReviewFragmentViewModel @Inject constructor(
-    val flashCardRepository: FlashCardRepository
+    private val loadCardForReviewUseCase: LoadCardForReviewUseCase,
+    private val updateCardWithAnswerUseCase: UpdateCardWithAnswerUseCase,
+    private val getNewDelayUseCase: GetNewDelayInDaysUseCase,
+    private val deleteCardsWithIndexesUseCase: DeleteCardsWithIndexesUseCase
 ) : ViewModel() {
-    var delayMissMultiplier = 1f
-    var delayEasyMultiplier = 1f
-    var delayHardMultiplier = 1f
 
-    val reviewCards: MutableLiveData<List<ReviewCard>> = MutableLiveData(listOf())
+    val reviewCards = MutableStateFlow(emptyList<ReviewCard>())
+    private var wordCounter = MutableStateFlow<Int>(0)
+    private val currentCard = combine(
+        wordCounter,
+        reviewCards
+    ) { counter, cards ->
+        if (cards.isNotEmpty())
+            cards[counter]
+        else ReviewCard("", "", "", "", false, 0, 0)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        ReviewCard("", "", "", "", false, 0, 0)
+    )
 
-    private var wordCounter = MutableLiveData<Int>()
-    val counterText = Transformations.map(wordCounter) {
-        "${it + 1} / ${reviewCards.value?.size ?: 0}"
-    }
+    private val showAnswer = MutableStateFlow(false)
 
-    val currentCard: LiveData<ReviewCard> = Transformations.map(wordCounter) {
-        reviewCards.value!![it]
-    }
+    val reviewUIState: Flow<ReviewUIState> =
+        combine(currentCard, showAnswer, wordCounter, reviewCards) { card, show, counter, all ->
+            ReviewUIState(
+                ReviewCardUIState.fromReviewCard(card),
+                show,
+                counter + 1,
+                all.size,
+                getNewDelayUseCase(card.lastDelay, AnswerType.Miss),
+                getNewDelayUseCase(card.lastDelay, AnswerType.Easy),
+                getNewDelayUseCase(card.lastDelay, AnswerType.Hard),
+            )
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            ReviewUIState(ReviewCardUIState(), false, 0, 0, 0, 0, 0)
+        )
 
-    val answerShown = MutableLiveData(false)
     var reviewGoing = false
 
-    val buttonReviewClickable = Transformations.map(reviewCards) {
-        it.isNotEmpty()
-    }
+    val buttonReviewClickable = reviewCards.transform { cards -> emit(cards.isNotEmpty()) }.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        false
+    )
 
-    val onRunOutOfWords = MutableLiveData(false)
+    val onRunOutOfWords = MutableStateFlow(false)
 
-    private val today = LocalDate.now().toDateTimeAtStartOfDay()
+    private val today = LocalDate.now().toDateTimeAtStartOfDay().millis
 
     fun loadCardsToReview() {
         viewModelScope.launch {
-            val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
-            val cards = getRelevantCardsFromDatabase(currentTime)
-            val newList = mutableListOf<ReviewCard>()
-            cards.forEach { card ->
-                if (card.nextReviewTime <= currentTime)
-                    newList.add(ReviewCard.fromDataBaseFlashCardDefault(card))
-                if (card.nextReviewTimeReversed <= currentTime)
-                    newList.add(ReviewCard.fromDataBaseFlashCardReversed(card))
-            }
-            reviewCards.value = newList.shuffled()
-            if (newList.isNotEmpty())
-                wordCounter.value = 0
+            reviewCards.value = loadCardForReviewUseCase(DateTime().millis)
+            wordCounter.value = 0
         }
     }
 
-    private suspend fun getRelevantCardsFromDatabase(time: Long): List<FlashCard> =
-        withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
-            flashCardRepository.getRelevantCards(time)
-        }
-
     fun onButtonShowAnswerClick() {
-        answerShown.value = true
+        showAnswer.value = true
     }
 
     fun onButtonAnswerClick(buttonType: Int) {
-        val card: ReviewCard = currentCard.value!!
+        val card: ReviewCard = currentCard.value
 
-        var newDelay: Int = getNewDelay(card.lastDelay, buttonType)
-
-        val nextRepeatTime: Long =
-            today.plusDays(newDelay).millis
-
-        if (newDelay == 0)
-            newDelay = 1
-
-        viewModelScope.launch(Dispatchers.IO) {
-            if (!card.reversed)
-                flashCardRepository.updateRegularDelayAndTime(card.cardId, newDelay, nextRepeatTime)
-            else
-                flashCardRepository.updateReversedDelayAndTime(
-                    card.cardId,
-                    newDelay,
-                    nextRepeatTime
-                )
+        val at = when (buttonType) {
+            0 -> AnswerType.Miss
+            1 -> AnswerType.Easy
+            2 -> AnswerType.Hard
+            else -> AnswerType.Miss
         }
 
-        if (wordCounter.value!! + 1 == reviewCards.value!!.size)
-            return onRunOutOfWords()
+        viewModelScope.launch {
+            updateCardWithAnswerUseCase(card, at, today)
+        }
 
-        wordCounter.value = wordCounter.value?.plus(1)
-        answerShown.value = false
+        showNextCard()
     }
 
-    // 0 - miss, 1 - easy, 2 - hard
-    fun getNewDelay(lastDelay: Int, difficulty: Int): Int =
-        (lastDelay * when (difficulty) {
-            0 -> delayMissMultiplier
-            1 -> delayEasyMultiplier
-            2 -> delayHardMultiplier
-            else -> 1f
-        }).roundToInt()
+    private fun showNextCard() {
+        if (wordCounter.value + 1 == reviewCards.value.size)
+            return onRunOutOfWords()
+
+        wordCounter.value += 1
+        showAnswer.value = false
+    }
 
     fun deleteCurrentCard() {
-        val deleteId = currentCard.value!!.cardId
-        val new = reviewCards.value!!.toMutableList()
-        var wc = wordCounter.value!!
+        val deleteId = currentCard.value.cardId
+        val new = reviewCards.value.toMutableList()
+        var wc = wordCounter.value
 
         if (new.indexOfFirst { card -> card.cardId == deleteId } < wc)
             wc -= 1
 
         new.removeAll { card -> card.cardId == deleteId }
-        reviewCards.postValue(new)
 
         if (new.size <= wc) {
-            runBlocking(Dispatchers.IO) {
-                flashCardRepository.deleteByIndexes(setOf(deleteId))
+            runBlocking {
+                deleteCardsWithIndexesUseCase(deleteId)
             }
             return onRunOutOfWords()
         }
 
-        wordCounter.postValue(wc)
-        answerShown.postValue(false)
+        reviewCards.value = new
 
-        viewModelScope.launch(Dispatchers.IO) {
-            flashCardRepository.deleteByIndexes(setOf(deleteId))
+
+        wordCounter.value = wc
+        showAnswer.value = false
+
+        viewModelScope.launch() {
+            deleteCardsWithIndexesUseCase(deleteId)
         }
     }
 
@@ -137,7 +152,7 @@ class ReviewFragmentViewModel @Inject constructor(
     }
 
     fun endReview() {
-        answerShown.value = false
+        showAnswer.value = false
         reviewGoing = false
     }
 

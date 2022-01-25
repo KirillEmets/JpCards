@@ -3,13 +3,13 @@ package com.kirillemets.flashcards.review
 import com.kirillemets.flashcards.model.FlashCardRepository
 import org.junit.Assert.*
 import org.junit.Test
-import org.mockito.Mockito.mock
 import kotlin.math.roundToInt
 
 class ReviewFragmentViewModelTest {
     private val hardMultiplier = 1.3f
     private val easyMultiplier = 1.8f
-    private val db = mock(FlashCardRepository::class.java)
+//    private val db = mock(FlashCardRepository::class.java)
+    private lateinit var db: FlashCardRepository
     private val viewModel = ReviewFragmentViewModel(db).apply {
         delayEasyMultiplier = easyMultiplier
         delayHardMultiplier = hardMultiplier
