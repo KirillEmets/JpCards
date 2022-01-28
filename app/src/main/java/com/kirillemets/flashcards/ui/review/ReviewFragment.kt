@@ -1,26 +1,23 @@
-package com.kirillemets.flashcards.review
+package com.kirillemets.flashcards.ui.review
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
-import com.kirillemets.flashcards.domain.uselesscase.GetNewDelayInDaysUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ReviewFragment : Fragment() {
     private val viewModel: ReviewFragmentViewModel by viewModels(ownerProducer = { requireActivity() })
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

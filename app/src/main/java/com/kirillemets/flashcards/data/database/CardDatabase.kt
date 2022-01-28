@@ -1,8 +1,8 @@
-package com.kirillemets.flashcards.model.database
+package com.kirillemets.flashcards.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import org.jetbrains.annotations.TestOnly
 
 @Database(entities = [FlashCard::class], version = 1)

@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.importExport
 
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.model.FlashCardRepository
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

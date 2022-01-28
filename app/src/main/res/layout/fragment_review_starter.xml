@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kirillemets.flashcards.review.ReviewFragmentViewModel" />
+            type="com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel" />
         <import type="android.view.View"/>
 
     </data>

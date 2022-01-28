@@ -10,7 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider.getUriForFile
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import java.io.File
 import java.io.OutputStream
 

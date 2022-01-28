@@ -3,7 +3,6 @@ package com.kirillemets.flashcards.preference
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -29,7 +28,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.importExport.*
 import com.kirillemets.flashcards.model.FlashCardRepository
-import com.kirillemets.flashcards.model.FlashCard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

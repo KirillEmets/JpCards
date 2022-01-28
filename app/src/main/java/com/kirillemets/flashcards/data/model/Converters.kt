@@ -1,7 +1,7 @@
 package com.kirillemets.flashcards.model
 
 import com.kirillemets.flashcards.addWord.SearchResultCard
-import com.kirillemets.flashcards.model.network.QueryData
+import com.kirillemets.flashcards.data.apiService.QueryData
 
 fun QueryData.toSearchResultCards(): List<SearchResultCard> {
     val list: MutableList<SearchResultCard> = mutableListOf()

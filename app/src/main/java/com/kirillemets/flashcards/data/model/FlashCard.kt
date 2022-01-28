@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.model
+package com.kirillemets.flashcards.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

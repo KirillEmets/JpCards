@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.review
+package com.kirillemets.flashcards.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,16 +8,13 @@ import com.kirillemets.flashcards.domain.uselesscase.DeleteCardsWithIndexesUseCa
 import com.kirillemets.flashcards.domain.uselesscase.GetNewDelayInDaysUseCase
 import com.kirillemets.flashcards.domain.uselesscase.LoadCardForReviewUseCase
 import com.kirillemets.flashcards.domain.uselesscase.UpdateCardWithAnswerUseCase
-import com.kirillemets.flashcards.ui.model.ReviewCardUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 data class ReviewUIState(
     val currentCard: ReviewCardUIState,

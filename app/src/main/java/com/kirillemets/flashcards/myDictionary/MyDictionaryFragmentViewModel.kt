@@ -1,9 +1,8 @@
 package com.kirillemets.flashcards.myDictionary
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.TimeUtil
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import com.kirillemets.flashcards.model.FlashCardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

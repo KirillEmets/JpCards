@@ -11,7 +11,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.kirillemets.flashcards.review.ReviewFragmentViewModel
+import com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import net.danlew.android.joda.JodaTimeAndroid
 
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        JodaTimeAndroid.init(this)
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
         val theme = preferenceManager.getString("theme", "Auto")
         AppCompatDelegate.setDefaultNightMode(

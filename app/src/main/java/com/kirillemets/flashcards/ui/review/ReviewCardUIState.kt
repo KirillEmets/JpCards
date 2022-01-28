@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.ui.model
+package com.kirillemets.flashcards.ui.review
 
 import com.kirillemets.flashcards.domain.model.ReviewCard
 

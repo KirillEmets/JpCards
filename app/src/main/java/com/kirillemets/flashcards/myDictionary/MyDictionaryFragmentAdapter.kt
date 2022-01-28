@@ -1,11 +1,12 @@
 package com.kirillemets.flashcards.myDictionary
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import com.kirillemets.flashcards.databinding.ItemDictionaryFlashcardBinding
 
 class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {
@@ -13,6 +14,7 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
     var currentTimeMillis: Long = 0
 
     var cards: List<FlashCard> = listOf()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()

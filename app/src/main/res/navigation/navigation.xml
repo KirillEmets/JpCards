@@ -27,7 +27,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/reviewStarterFragment"
-        android:name="com.kirillemets.flashcards.review.ReviewStarterFragment"
+        android:name="com.kirillemets.flashcards.ui.review.ReviewStarterFragment"
         android:label="Review"
         tools:layout="@layout/fragment_review_starter">
         <action
@@ -54,7 +54,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.kirillemets.flashcards.review.ReviewFragment"
+        android:name="com.kirillemets.flashcards.ui.review.ReviewFragment"
         android:label="Review"
         tools:layout="@layout/fragment_review" />
     <fragment

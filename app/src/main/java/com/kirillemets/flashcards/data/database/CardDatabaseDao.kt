@@ -1,8 +1,7 @@
-package com.kirillemets.flashcards.model.database
+package com.kirillemets.flashcards.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 import kotlinx.coroutines.flow.Flow
 
 @Dao

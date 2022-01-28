@@ -1,7 +1,6 @@
 package com.kirillemets.flashcards.data.model
 
 import com.kirillemets.flashcards.domain.model.Note
-import com.kirillemets.flashcards.model.FlashCard
 
 fun FlashCard.toNote() = Note(
     cardId,

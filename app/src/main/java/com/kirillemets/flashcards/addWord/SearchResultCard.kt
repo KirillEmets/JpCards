@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.addWord
 
-import com.kirillemets.flashcards.model.FlashCard
+import com.kirillemets.flashcards.data.model.FlashCard
 
 class SearchResultCard(
     val japanese: String,

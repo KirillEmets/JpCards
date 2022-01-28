@@ -1,8 +1,9 @@
 package com.kirillemets.flashcards.model
 
 import com.kirillemets.flashcards.addWord.SearchResultCard
-import com.kirillemets.flashcards.model.database.CardDatabaseDao
-import com.kirillemets.flashcards.model.network.JishoApiService
+import com.kirillemets.flashcards.data.database.CardDatabaseDao
+import com.kirillemets.flashcards.data.model.FlashCard
+import com.kirillemets.flashcards.data.apiService.JishoApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
