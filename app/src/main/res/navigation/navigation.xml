@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_add_word" />
     <fragment
         android:id="@+id/myDictionaryFragment"
-        android:name="com.kirillemets.flashcards.myDictionary.MyDictionaryFragment"
+        android:name="com.kirillemets.flashcards.ui.myWords.MyDictionaryFragment"
         android:label="My Dictionary"
         tools:layout="@layout/fragment_my_dictionary" />
     <action

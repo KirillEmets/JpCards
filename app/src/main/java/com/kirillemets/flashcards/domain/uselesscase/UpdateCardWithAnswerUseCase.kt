@@ -8,17 +8,17 @@ import javax.inject.Inject
 
 class UpdateCardWithAnswerUseCase @Inject constructor(
     private val noteRepository: NoteRepository,
-    private val getNewDelayInDaysUseCase: GetNewDelayInDaysUseCase
+    private val getNewDelayInDaysUseCase: GetNewDelayInDaysUseCase,
 ) {
     suspend operator fun invoke(
         reviewCard: ReviewCard,
         answerType: AnswerType,
         todayTimeMillis: Long
     ) {
-        var newDelay = getNewDelayInDaysUseCase(reviewCard.lastDelay, answerType)
-        val nextRepeatMillis = DateTime(todayTimeMillis).plusDays(newDelay).millis
+        var nextDelay = getNewDelayInDaysUseCase(reviewCard.lastDelay, answerType)
+        val nextReviewTime = DateTime(todayTimeMillis).plusDays(nextDelay).millis
 
-        if (newDelay == 0) newDelay = 1
+        if (nextDelay == 0) nextDelay = 1
 
         val update =
             if (reviewCard.reversed)
@@ -26,6 +26,6 @@ class UpdateCardWithAnswerUseCase @Inject constructor(
             else
                 noteRepository::updateRegularDelayAndTime
 
-        update(reviewCard.cardId, newDelay, nextRepeatMillis)
+        update(reviewCard.noteId, nextDelay, nextReviewTime)
     }
 }

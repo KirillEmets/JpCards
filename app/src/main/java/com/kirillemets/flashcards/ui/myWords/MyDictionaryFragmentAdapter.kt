@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.myDictionary
+package com.kirillemets.flashcards.ui.myWords
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.data.model.FlashCard
 import com.kirillemets.flashcards.databinding.ItemDictionaryFlashcardBinding
 
-class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {
+class MyDictionaryFragmentAdapter :
+    RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {
 
     var currentTimeMillis: Long = 0
 
-    var cards: List<FlashCard> = listOf()
+    var notes: List<NoteUIState> = listOf()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -58,20 +58,24 @@ class MyDictionaryFragmentAdapter: RecyclerView.Adapter<MyDictionaryFragmentAdap
     }
 
     override fun onBindViewHolder(holder: MyDictionaryFragmentViewHolder, position: Int) {
-        holder.bind(cards[position], checkedCards, currentTimeMillis)
+        holder.bind(notes[position], checkedCards)
     }
 
-    override fun getItemCount(): Int = cards.size
+    override fun getItemCount(): Int = notes.size
 
-    class MyDictionaryFragmentViewHolder(val binding: ItemDictionaryFlashcardBinding):
+    class MyDictionaryFragmentViewHolder(private val binding: ItemDictionaryFlashcardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         var cardId: Int = 0
-        fun bind(card: FlashCard, checkedCards: Set<Int>, currentTimeMillis: Long) {
+
+        @SuppressLint("SetTextI18n")
+        fun bind(card: NoteUIState, checkedCards: Set<Int>) {
             binding.flashCard = card
-            val remainingTime = card.getRemainingTimes(currentTimeMillis)
-            binding.daysRemaining.text =
-                binding.root.resources.getString(R.string.daysRemainingText, remainingTime.first, remainingTime.second)
-            cardId = card.cardId
+            binding.daysRemaining.text = binding.root.resources.getString(
+                R.string.progressInDays,
+                card.lastDelay,
+                card.lastDelayReversed
+            )
+            cardId = card.noteId
             binding.card.isChecked = checkedCards.contains(cardId)
         }
     }

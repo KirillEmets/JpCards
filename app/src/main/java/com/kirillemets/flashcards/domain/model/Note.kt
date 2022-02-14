@@ -1,7 +1,7 @@
 package com.kirillemets.flashcards.domain.model
 
 data class Note(
-    val cardId: Int,
+    val noteId: Int,
     val japanese: String,
     val reading: String,
     val english: String,

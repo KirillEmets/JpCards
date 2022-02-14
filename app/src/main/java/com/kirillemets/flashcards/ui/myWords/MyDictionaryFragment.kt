@@ -1,15 +1,16 @@
-package com.kirillemets.flashcards.myDictionary
+package com.kirillemets.flashcards.ui.myWords
 
 import android.os.Bundle
 import android.view.*
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.TimeUtil
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyDictionaryFragment : Fragment() {
@@ -31,9 +32,12 @@ class MyDictionaryFragment : Fragment() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
 
-        viewModel.displayedCards.observe(viewLifecycleOwner, Observer {
-            adapter.cards = it
-        })
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.myWordsUIState.collect {
+                adapter.notes = it.notes
+            }
+        }
 
         binding.textField.editText?.doAfterTextChanged {
             it?.let {
