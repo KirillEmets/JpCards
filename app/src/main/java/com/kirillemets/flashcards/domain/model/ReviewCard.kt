@@ -1,33 +1,34 @@
 package com.kirillemets.flashcards.domain.model
 
 data class ReviewCard(
+    val noteId: Int,
     val word: String,
     val wordReading: String,
     val answer: String,
     val answerReading: String,
     val reversed: Boolean,
-    val lastDelay: Int,
-    val cardId: Int
+    val lastDelay: Int
 ) {
     companion object {
+        val Empty = ReviewCard(0, "", "", "", "", false, 0)
         fun fromNote(note: Note): ReviewCard = ReviewCard(
+            note.noteId,
             note.japanese,
             note.reading,
             note.english,
             "",
             false,
-            note.lastDelay,
-            note.cardId
+            note.lastDelay
         )
 
         fun fromNoteReversed(note: Note): ReviewCard = ReviewCard(
+            note.noteId,
             note.english,
             "",
             note.japanese,
             note.reading,
             true,
-            note.lastDelayReversed,
-            note.cardId
+            note.lastDelayReversed
         )
     }
 }
