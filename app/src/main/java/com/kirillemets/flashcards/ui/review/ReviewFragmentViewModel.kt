@@ -42,11 +42,11 @@ class ReviewFragmentViewModel @Inject constructor(
     ) { counter, cards ->
         if (cards.isNotEmpty())
             cards[counter]
-        else ReviewCard("", "", "", "", false, 0, 0)
+        else ReviewCard.Empty
     }.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
-        ReviewCard("", "", "", "", false, 0, 0)
+        ReviewCard.Empty
     )
 
     private val showAnswer = MutableStateFlow(false)
@@ -82,7 +82,7 @@ class ReviewFragmentViewModel @Inject constructor(
 
     fun loadCardsToReview() {
         viewModelScope.launch {
-            reviewCards.value = loadCardForReviewUseCase(DateTime().millis)
+            reviewCards.value = loadCardForReviewUseCase(DateTime().millis).sortedByDescending { it.lastDelay }
             wordCounter.value = 0
         }
     }
@@ -117,14 +117,14 @@ class ReviewFragmentViewModel @Inject constructor(
     }
 
     fun deleteCurrentCard() {
-        val deleteId = currentCard.value.cardId
+        val deleteId = currentCard.value.noteId
         val new = reviewCards.value.toMutableList()
         var wc = wordCounter.value
 
-        if (new.indexOfFirst { card -> card.cardId == deleteId } < wc)
+        if (new.indexOfFirst { card -> card.noteId == deleteId } < wc)
             wc -= 1
 
-        new.removeAll { card -> card.cardId == deleteId }
+        new.removeAll { card -> card.noteId == deleteId }
 
         if (new.size <= wc) {
             runBlocking {
