@@ -10,6 +10,8 @@ import com.kirillemets.flashcards.domain.repository.NoteRepository
 import com.kirillemets.flashcards.data.database.CardDatabase
 import com.kirillemets.flashcards.data.database.CardDatabaseDao
 import com.kirillemets.flashcards.data.apiService.JishoApiService
+import com.kirillemets.flashcards.data.service.NoteExporterServiceImpl
+import com.kirillemets.flashcards.domain.service.NoteExporterService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -49,6 +51,11 @@ object FlashcardRepositoryModule {
     @Provides
     fun provideAppPreferences(@ApplicationContext app: Context): AppPreferences {
         return AppPreferencesImpl(app)
+    }
+
+    @Provides
+    fun provideNoteExporterService(@ApplicationContext app: Context) : NoteExporterService {
+        return NoteExporterServiceImpl(app)
     }
 
     @Singleton

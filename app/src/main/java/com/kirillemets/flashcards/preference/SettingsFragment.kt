@@ -15,10 +15,8 @@ import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -26,28 +24,33 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.importExport.*
-import com.kirillemets.flashcards.model.FlashCardRepository
+import com.kirillemets.flashcards.domain.model.ExportDestination
+import com.kirillemets.flashcards.domain.model.ExportInfo
+import com.kirillemets.flashcards.domain.model.ExportSchema
+import com.kirillemets.flashcards.domain.uselesscase.ExportNotesUseCase
+import com.kirillemets.flashcards.registerForSuspendableActivityResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.joda.time.LocalDateTime
 import javax.inject.Inject
 
 @SuppressLint("InflateParams")
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
+
     @Inject
-    lateinit var flashCardRepository: FlashCardRepository
+    @Suppress("RedundantVisibilityModifier")
+    public lateinit var exportNotesUseCase: ExportNotesUseCase
 
     private val exportTypes = mapOf(
         "With progress" to true,
         "Without progress" to false
     )
-    private val exportDestinations = mapOf<String, suspend (ExportInfo) -> Unit>(
-        "Share" to ::startExportShare,
-        "To download folder" to ::startExportToFile
+
+    private val exportTypeMap = mapOf(
+        "Share" to ExportDestination.Share,
+        "To download folder" to ExportDestination.SaveToFile
     )
 
     private val exportAlertDialog by lazy {
@@ -66,7 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val editTextDestination =
             view.findViewById<TextInputLayout>(R.id.textInput_export_destination).editText as AutoCompleteTextView
         (editTextDestination).apply {
-            val items = exportDestinations.keys.toList()
+            val items = exportTypeMap.keys.toList()
             setText(items[0])
 
             val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_list_item, items)
@@ -78,79 +81,39 @@ class SettingsFragment : PreferenceFragmentCompat() {
             .setView(view)
             .setPositiveButton("Export") { _, _ ->
                 val withProgress = exportTypes[editTextType.text.toString()] ?: false
-                startExport(withProgress, exportDestinations[editTextDestination.text.toString()]!!)
+                startExport(withProgress, exportTypeMap[editTextDestination.text.toString()]!!)
             }
             .setNegativeButton("Cancel") { _, _ -> }
             .create()
     }
 
-    private fun startExport(withProgress: Boolean, destination: suspend (ExportInfo) -> Unit) {
-        requireActivity().lifecycleScope.launch(Dispatchers.IO) {
-            val cards = flashCardRepository.getAllSuspend()
-            val exporter = CSVExporter(withProgress)
+    private val launcher = registerForSuspendableActivityResult(ActivityResultContracts.RequestPermission())
+
+    private suspend fun tryStoragePermissions(destination: ExportDestination): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && destination == ExportDestination.SaveToFile) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            }
+            return launcher.launchAndAwait(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        return true
+    }
+
+    private fun startExport(withProgress: Boolean, destination: ExportDestination) {
+        MainScope().launch() {
+
+            if (!tryStoragePermissions(destination))
+                return@launch
+
             val tag = if (withProgress) "with_progress" else "without_progress"
-            val name =
-                "${tag}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
+            val filename = "${tag}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
 
-            destination(ExportInfo(cards, exporter, name, requireContext()))
+            exportNotesUseCase(ExportInfo(destination, withProgress, filename, ExportSchema.CSV))
         }
-    }
-
-    private suspend fun startExportShare(exportInfo: ExportInfo) {
-        try {
-            val uri: Uri = saveToLocal(
-                exportInfo.cards,
-                exportInfo.name,
-                exportInfo.exporter,
-                exportInfo.context
-            )
-
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/*"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                flags =
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            }
-            val chooser = Intent.createChooser(intent, "Share")
-            startActivity(chooser)
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(exportInfo.context, e.message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private suspend fun startExportToFile(exportInfo: ExportInfo) {
-        try {
-            tryExportToFile(exportInfo)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(exportInfo.context, "File saved", Toast.LENGTH_SHORT).show()
-            }
-
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(exportInfo.context, e.message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun tryExportToFile(exportInfo: ExportInfo) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            exportToStorage(exportInfo)
-            return
-        }
-        if (ContextCompat.checkSelfPermission(
-                exportInfo.context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            exportToStorage(exportInfo)
-            return
-        }
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            exportToStorage(exportInfo)
-        }
-            .launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
