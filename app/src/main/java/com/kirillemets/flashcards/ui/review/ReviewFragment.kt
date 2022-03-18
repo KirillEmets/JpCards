@@ -11,6 +11,7 @@ import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.databinding.FragmentReviewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -31,28 +32,32 @@ class ReviewFragment : Fragment() {
 
         lifecycleScope.launchWhenStarted {
 
-            viewModel.reviewUIState.collect { uiState ->
-                binding.uiState = uiState
+            launch {
+                viewModel.reviewUIState.collect { uiState ->
+                    binding.uiState = uiState
 
-                with(uiState) {
-                    binding.missButtonDelay.text =
-                        if (missDelay == 0) "discard" else resources.getQuantityString(
-                            R.plurals.daysToDelay, missDelay, missDelay
+                    with(uiState) {
+                        binding.missButtonDelay.text =
+                            if (missDelay == 0) "discard" else resources.getQuantityString(
+                                R.plurals.daysToDelay, missDelay, missDelay
+                            )
+                        binding.easyButtonDelay.text = resources.getQuantityString(
+                            R.plurals.daysToDelay, easyDelay, easyDelay
                         )
-                    binding.easyButtonDelay.text = resources.getQuantityString(
-                        R.plurals.daysToDelay, easyDelay, easyDelay
-                    )
-                    binding.hardButtonDelay.text = resources.getQuantityString(
-                        R.plurals.daysToDelay, hardDelay, hardDelay
-                    )
-                    binding.textCounter.text = "$currentWordNumber / $wordCount"
+                        binding.hardButtonDelay.text = resources.getQuantityString(
+                            R.plurals.daysToDelay, hardDelay, hardDelay
+                        )
+                        binding.textCounter.text = "$currentWordNumber / $wordCount"
+                    }
                 }
             }
 
-            viewModel.onRunOutOfWords.collect {
-                if (it) {
-                    findNavController().navigateUp()
-                    viewModel.onRunOutOfWords.value = false
+            launch {
+                viewModel.onRunOutOfWords.collect {
+                    if (it) {
+                        findNavController().navigateUp()
+                        viewModel.onRunOutOfWords.value = false
+                    }
                 }
             }
         }

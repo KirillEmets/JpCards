@@ -82,8 +82,8 @@ class ReviewFragmentViewModel @Inject constructor(
 
     fun loadCardsToReview() {
         viewModelScope.launch {
-            reviewCards.value = loadCardForReviewUseCase(DateTime().millis).sortedByDescending { it.lastDelay }
             wordCounter.value = 0
+            reviewCards.value = loadCardForReviewUseCase(DateTime().millis).shuffled().sortedByDescending { it.lastDelay }
         }
     }
 
