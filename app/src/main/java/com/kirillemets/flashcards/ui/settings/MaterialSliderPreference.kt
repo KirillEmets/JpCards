@@ -1,5 +1,6 @@
-package com.kirillemets.flashcards.preference
+package com.kirillemets.flashcards.ui.settings
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -72,6 +73,7 @@ class MaterialSliderPreference(context: Context, attrs: AttributeSet?, defStyleA
         currentValue = currentValue.coerceIn(min, max)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
         currentValue = value
     }

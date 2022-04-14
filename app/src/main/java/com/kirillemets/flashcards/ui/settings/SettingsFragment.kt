@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.preference
+package com.kirillemets.flashcards.ui.settings
 
 import android.Manifest
 import android.annotation.SuppressLint

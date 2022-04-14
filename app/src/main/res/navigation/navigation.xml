@@ -41,7 +41,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.kirillemets.flashcards.preference.SettingsFragment"
+        android:name="com.kirillemets.flashcards.ui.settings.SettingsFragment"
         android:label="Settings" >
         <action
             android:id="@+id/action_settingsFragment_to_importFragment"
