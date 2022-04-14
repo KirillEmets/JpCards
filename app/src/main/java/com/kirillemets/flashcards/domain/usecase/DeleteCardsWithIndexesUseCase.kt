@@ -1,10 +1,7 @@
-package com.kirillemets.flashcards.domain.uselesscase
+package com.kirillemets.flashcards.domain.usecase
 
-import com.kirillemets.flashcards.domain.AppPreferences
-import com.kirillemets.flashcards.domain.model.AnswerType
 import com.kirillemets.flashcards.domain.repository.NoteRepository
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class DeleteCardsWithIndexesUseCase @Inject constructor(private val noteRepository: NoteRepository) {
     suspend operator fun invoke(ids: Iterable<Int>) {

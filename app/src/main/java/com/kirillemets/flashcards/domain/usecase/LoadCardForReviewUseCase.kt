@@ -1,9 +1,7 @@
-package com.kirillemets.flashcards.domain.uselesscase
+package com.kirillemets.flashcards.domain.usecase
 
 import com.kirillemets.flashcards.domain.repository.NoteRepository
 import com.kirillemets.flashcards.domain.model.ReviewCard
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import org.joda.time.LocalDate
 import javax.inject.Inject
 

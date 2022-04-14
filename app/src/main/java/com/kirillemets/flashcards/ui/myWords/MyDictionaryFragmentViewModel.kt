@@ -3,9 +3,9 @@ package com.kirillemets.flashcards.ui.myWords
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kirillemets.flashcards.domain.model.Note
-import com.kirillemets.flashcards.domain.uselesscase.DeleteCardsWithIndexesUseCase
-import com.kirillemets.flashcards.domain.uselesscase.GetAllCardsUseCase
-import com.kirillemets.flashcards.domain.uselesscase.ResetNoteProgressByIdUseCase
+import com.kirillemets.flashcards.domain.usecase.DeleteCardsWithIndexesUseCase
+import com.kirillemets.flashcards.domain.usecase.GetAllCardsUseCase
+import com.kirillemets.flashcards.domain.usecase.ResetNoteProgressByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

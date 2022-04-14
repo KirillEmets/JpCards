@@ -1,7 +1,6 @@
-package com.kirillemets.flashcards.domain.uselesscase
+package com.kirillemets.flashcards.domain.usecase
 
 import com.kirillemets.flashcards.domain.repository.NoteRepository
-import com.kirillemets.flashcards.domain.model.ReviewCard
 import javax.inject.Inject
 
 class ResetNoteProgressByIdUseCase @Inject constructor(

@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.domain.uselesscase
+package com.kirillemets.flashcards.domain.usecase
 
 import com.kirillemets.flashcards.domain.model.Note
 import com.kirillemets.flashcards.domain.repository.NoteRepository
