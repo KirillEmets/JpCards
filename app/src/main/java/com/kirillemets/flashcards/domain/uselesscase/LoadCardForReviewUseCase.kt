@@ -10,7 +10,7 @@ import javax.inject.Inject
 class LoadCardForReviewUseCase @Inject constructor(private val noteRepository: NoteRepository) {
     suspend operator fun invoke(currentTimeMillis: Long): List<ReviewCard> {
         noteRepository.getNotesWithRelevantCards(currentTimeMillis).let { notes ->
-            val currentTime = LocalDate.now().toDateTimeAtStartOfDay().millis
+            val currentTime = LocalDate.now().toDateTimeAtCurrentTime().millis
             val relevantReviewCards = mutableListOf<ReviewCard>()
             notes.forEach { note ->
                 if (note.nextReviewTime <= currentTime)

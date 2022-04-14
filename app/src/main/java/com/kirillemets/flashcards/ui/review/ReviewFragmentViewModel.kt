@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
+import java.util.*
 import javax.inject.Inject
 
 data class ReviewUIState(
@@ -78,12 +79,14 @@ class ReviewFragmentViewModel @Inject constructor(
 
     val onRunOutOfWords = MutableStateFlow(false)
 
-    private val today = LocalDate.now().toDateTimeAtStartOfDay().millis
+    private var today = 0L
 
     fun loadCardsToReview() {
+        today = LocalDate().toDateTimeAtStartOfDay().millis
+        val now = Calendar.getInstance().timeInMillis
         viewModelScope.launch {
             wordCounter.value = 0
-            reviewCards.value = loadCardForReviewUseCase(DateTime().millis).shuffled().sortedByDescending { it.lastDelay }
+            reviewCards.value = loadCardForReviewUseCase(now).shuffled().sortedByDescending { it.lastDelay }
         }
     }
 
