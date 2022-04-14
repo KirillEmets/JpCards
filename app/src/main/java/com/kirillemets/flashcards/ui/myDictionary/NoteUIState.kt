@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.ui.myWords
+package com.kirillemets.flashcards.ui.myDictionary
 
 import com.kirillemets.flashcards.domain.model.Note
 

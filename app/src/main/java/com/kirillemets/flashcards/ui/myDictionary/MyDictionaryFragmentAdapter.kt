@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.ui.myWords
+package com.kirillemets.flashcards.ui.myDictionary
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

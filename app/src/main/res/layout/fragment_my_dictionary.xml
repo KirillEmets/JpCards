@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kirillemets.flashcards.ui.myWords.MyDictionaryFragmentViewModel" />
+            type="com.kirillemets.flashcards.ui.myDictionary.MyDictionaryFragmentViewModel" />
     </data>
 
     <LinearLayout

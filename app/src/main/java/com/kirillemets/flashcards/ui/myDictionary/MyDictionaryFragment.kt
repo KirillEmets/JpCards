@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.ui.myWords
+package com.kirillemets.flashcards.ui.myDictionary
 
 import android.os.Bundle
 import android.view.*
