@@ -35,8 +35,8 @@ class MaterialSliderPreference(context: Context, attrs: AttributeSet?, defStyleA
 
     private var defaultValue = 0f
 
-    override fun onGetDefaultValue(ta: TypedArray?, i: Int): Any {
-        defaultValue = ta!!.getFloat(i, 0F)
+    override fun onGetDefaultValue(a: TypedArray, i: Int): Any {
+        defaultValue = a.getFloat(i, 0F)
         return defaultValue
     }
 
