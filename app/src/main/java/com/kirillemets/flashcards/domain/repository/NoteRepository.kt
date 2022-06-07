@@ -18,11 +18,11 @@ interface NoteRepository {
 
     suspend fun deleteByIndexes(ids: Set<Int>)
 
+    suspend fun insertNew(note: Note): Boolean
 
 //    suspend fun find(english: String, japanese: String, reading: String): List<Note>
 //
 //
-//    suspend fun insertNew(note: Note): Boolean
 //
 //    fun insert(note: Note)
 //

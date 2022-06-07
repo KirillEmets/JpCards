@@ -10,7 +10,9 @@ import com.kirillemets.flashcards.domain.repository.NoteRepository
 import com.kirillemets.flashcards.data.database.CardDatabase
 import com.kirillemets.flashcards.data.database.CardDatabaseDao
 import com.kirillemets.flashcards.data.apiService.JishoApiService
+import com.kirillemets.flashcards.data.repository.DictionaryRepositoryImpl
 import com.kirillemets.flashcards.data.service.NoteExporterServiceImpl
+import com.kirillemets.flashcards.domain.repository.DictionaryRepository
 import com.kirillemets.flashcards.domain.service.NoteExporterService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -46,6 +48,11 @@ object FlashcardRepositoryModule {
     @Provides
     fun provideNoteRepository(dao: CardDatabaseDao): NoteRepository {
         return NoteRepositoryImpl(dao)
+    }
+
+    @Provides
+    fun provideDictionaryRepository(jishoApiService: JishoApiService): DictionaryRepository {
+        return DictionaryRepositoryImpl(jishoApiService)
     }
 
     @Provides

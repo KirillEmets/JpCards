@@ -14,3 +14,14 @@ fun FlashCard.toNote() = Note(
 )
 
 fun List<FlashCard>.toNotes() = this.map { it.toNote() }
+
+fun Note.toNoteEntity(): FlashCard = FlashCard(
+    0,
+    japanese,
+    reading,
+    english,
+    lastDelay,
+    nextReviewTime,
+    lastDelayReversed,
+    nextReviewTimeReversed
+)

@@ -1,13 +1,16 @@
-package com.kirillemets.flashcards.addWord
+package com.kirillemets.flashcards.ui.addWord
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kirillemets.flashcards.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.databinding.ItemSearchedFlashcardBinding
 
 class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallback): RecyclerView.Adapter<AddWordFragmentAdapter.FlashCardViewHolder>() {
-    var searchResultCards: List<SearchResultCard> = listOf()
+    var dictionaryEntries: List<DictionaryEntry> = listOf()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -32,10 +35,10 @@ class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallbac
     }
 
     override fun onBindViewHolder(holder: FlashCardViewHolder, position: Int) {
-        holder.bind(searchResultCards[position])
+        holder.bind(dictionaryEntries[position])
     }
 
-    override fun getItemCount(): Int = searchResultCards.size
+    override fun getItemCount(): Int = dictionaryEntries.size
 
     class FlashCardViewHolder(
         private val binding: ItemSearchedFlashcardBinding,
@@ -43,17 +46,17 @@ class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallbac
 
         var visible: Boolean = false
 
-        fun bind(flashCard: SearchResultCard) {
+        fun bind(flashCard: DictionaryEntry) {
             binding.resultCard = flashCard
             visible = false
             val expandableAdapter = (binding.expandable.adapter as FlashcardExpandableAdapter)
             expandableAdapter.definitions = flashCard.englishMeanings
-            expandableAdapter.searchResultCard = flashCard
+            expandableAdapter.dictionaryEntry = flashCard
             binding.expandable.visibility = View.GONE
         }
     }
 
-    class AddWordFragmentAdapterCallback(private val cb: (SearchResultCard, Int) -> Unit) {
-        fun call(card: SearchResultCard, definitionId: Int) = cb(card, definitionId)
+    class AddWordFragmentAdapterCallback(private val cb: (DictionaryEntry, Int) -> Unit) {
+        fun call(card: DictionaryEntry, definitionId: Int) = cb(card, definitionId)
     }
 }

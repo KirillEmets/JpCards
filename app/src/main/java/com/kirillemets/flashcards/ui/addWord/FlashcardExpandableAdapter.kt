@@ -1,15 +1,16 @@
-package com.kirillemets.flashcards.addWord
+package com.kirillemets.flashcards.ui.addWord
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kirillemets.flashcards.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.databinding.ItemWordDefinitionBinding
 
 class FlashcardExpandableAdapter(
     private val callback: AddWordFragmentAdapter.AddWordFragmentAdapterCallback):
     RecyclerView.Adapter<FlashcardExpandableAdapter.ExpandableViewHolder>() {
 
-    lateinit var searchResultCard: SearchResultCard
+    lateinit var dictionaryEntry: DictionaryEntry
     var definitions: List<String> = listOf()
         set(value) {
             field = value
@@ -23,22 +24,22 @@ class FlashcardExpandableAdapter(
     }
 
     override fun onBindViewHolder(holder: ExpandableViewHolder, position: Int) {
-        holder.bind(position, searchResultCard, callback)
+        holder.bind(position, dictionaryEntry, callback)
     }
 
     override fun getItemCount(): Int = definitions.size
 
     class ExpandableViewHolder(private val binding: ItemWordDefinitionBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            index: Int, searchResultCard: SearchResultCard,
+            index: Int, dictionaryEntry: DictionaryEntry,
             callback:AddWordFragmentAdapter.AddWordFragmentAdapterCallback
         ) {
             binding.definitionId = index
-            binding.searchResult = searchResultCard
+            binding.searchResult = dictionaryEntry
 
             binding.buttonAddWord.setOnClickListener {
                 binding.buttonAddWord.isClickable = false
-                callback.call(searchResultCard, index)
+                callback.call(dictionaryEntry, index)
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.kirillemets.flashcards.model
 
-import com.kirillemets.flashcards.addWord.SearchResultCard
-import com.kirillemets.flashcards.data.apiService.QueryData
+import com.kirillemets.flashcards.domain.model.DictionaryEntry
+import com.kirillemets.flashcards.data.apiService.JishoQueryData
 
-fun QueryData.toSearchResultCards(): List<SearchResultCard> {
-    val list: MutableList<SearchResultCard> = mutableListOf()
+fun JishoQueryData.toDictionaryEntries(): List<DictionaryEntry> {
+    val list: MutableList<DictionaryEntry> = mutableListOf()
     var japanese: String
     var reading: String
     var englishMeanings: List<String>
@@ -20,7 +20,7 @@ fun QueryData.toSearchResultCards(): List<SearchResultCard> {
         } ?: listOf()
 
         list.add(
-            SearchResultCard(
+            DictionaryEntry(
                 japanese,
                 reading,
                 englishMeanings

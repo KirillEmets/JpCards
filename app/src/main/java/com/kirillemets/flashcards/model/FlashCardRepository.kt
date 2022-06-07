@@ -1,9 +1,9 @@
 package com.kirillemets.flashcards.model
 
-import com.kirillemets.flashcards.addWord.SearchResultCard
+import com.kirillemets.flashcards.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.data.database.CardDatabaseDao
-import com.kirillemets.flashcards.data.model.FlashCard
 import com.kirillemets.flashcards.data.apiService.JishoApiService
+import com.kirillemets.flashcards.data.model.FlashCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -45,12 +45,12 @@ open class FlashCardRepository @Inject constructor(
     fun updateReversedDelayAndTime(id: Int, delay: Int, time: Long) =
         coroutineScope.launch { db.updateReversedDelayAndTime(id, delay, time) }
 
-    suspend fun insertNew(flashCard: FlashCard): Boolean =
+    suspend fun insertNew(noteEntity: FlashCard): Boolean =
         withContext(coroutineScope.coroutineContext) {
-            if (find(flashCard.english, flashCard.japanese, flashCard.reading).isNotEmpty()) {
+            if (find(noteEntity.english, noteEntity.japanese, noteEntity.reading).isNotEmpty()) {
                 return@withContext false
             }
-            insertSuspend(flashCard)
+            insertSuspend(noteEntity)
             return@withContext true
         }
 
@@ -66,9 +66,9 @@ open class FlashCardRepository @Inject constructor(
     fun deleteAll() =
         coroutineScope.launch { db.deleteAll() }
 
-    suspend fun searchWordsJisho(query: String): List<SearchResultCard> =
+    suspend fun searchWordsJisho(query: String): List<DictionaryEntry> =
         withContext(coroutineScope.coroutineContext) {
-            jisho.getDataObjectAsync(query).await().toSearchResultCards()
+            jisho.getQueryData(query).toDictionaryEntries()
         }
 
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addWordFragment"
-        android:name="com.kirillemets.flashcards.addWord.AddWordFragment"
+        android:name="com.kirillemets.flashcards.ui.addWord.AddWordFragment"
         android:label="Search Online"
         tools:layout="@layout/fragment_add_word" />
     <fragment
