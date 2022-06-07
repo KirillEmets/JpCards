@@ -15,10 +15,8 @@ class UpdateCardWithAnswerUseCase @Inject constructor(
         answerType: AnswerType,
         todayTimeMillis: Long
     ) {
-        var nextDelay = getNewDelayInDaysUseCase(reviewCard.lastDelay, answerType)
+        val nextDelay = getNewDelayInDaysUseCase(reviewCard.lastDelay, answerType)
         val nextReviewTime = DateTime(todayTimeMillis).plusDays(nextDelay).millis
-
-        if (nextDelay == 0) nextDelay = 1
 
         val update =
             if (reviewCard.reversed)
