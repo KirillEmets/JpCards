@@ -9,6 +9,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
+import org.joda.time.LocalDate
 
 class SuspendableActivityResultLauncher<I, O>(
     private val sharedFlow: SharedFlow<O>,
@@ -28,4 +29,11 @@ fun <I, O> Fragment.registerForSuspendableActivityResult(contract: ActivityResul
         Log.d("kek", "tryEmit: ${mutableSharedFlow.tryEmit(result)}")
     }
     return SuspendableActivityResultLauncher(mutableSharedFlow, launcher)
+}
+
+class TimeUtil {
+    companion object {
+        val todayMillis: Long
+            get() = LocalDate.now().toDateTimeAtStartOfDay().millis
+    }
 }
