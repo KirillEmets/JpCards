@@ -1,16 +1,12 @@
 package com.kirillemets.flashcards.ui.settings
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.model.FlashCardRepository
-import com.kirillemets.flashcards.data.model.FlashCard
-import com.kirillemets.flashcards.data.model.toNotes
 import com.kirillemets.flashcards.domain.model.ExportInfo
 import com.kirillemets.flashcards.domain.model.Note
 import com.kirillemets.flashcards.domain.usecase.AddNotesUseCase
 import com.kirillemets.flashcards.domain.usecase.DeleteAllNotesUseCase
 import com.kirillemets.flashcards.domain.usecase.ExportNotesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
