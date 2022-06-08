@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.ui.importWords
+package com.kirillemets.flashcards.ui.settings
 
 import com.kirillemets.flashcards.data.model.FlashCard
 import java.io.InputStream
@@ -51,6 +51,8 @@ class CSVImporter : Importer() {
         rawStrings.forEach { rawCard ->
             cards += csvToCard(rawCard)
         }
+
+        inputStream.close()
 
         return cards
     }

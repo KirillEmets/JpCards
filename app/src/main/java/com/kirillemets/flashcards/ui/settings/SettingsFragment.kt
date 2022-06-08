@@ -11,13 +11,15 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -27,33 +29,29 @@ import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.domain.model.ExportDestination
 import com.kirillemets.flashcards.domain.model.ExportInfo
 import com.kirillemets.flashcards.domain.model.ExportSchema
-import com.kirillemets.flashcards.domain.usecase.ExportNotesUseCase
 import com.kirillemets.flashcards.registerForSuspendableActivityResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.joda.time.LocalDateTime
-import javax.inject.Inject
 
 @SuppressLint("InflateParams")
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    @Inject
-    @Suppress("RedundantVisibilityModifier")
-    public lateinit var exportNotesUseCase: ExportNotesUseCase
-
-    private val exportTypes = mapOf(
-        "With progress" to true,
-        "Without progress" to false
-    )
-
-    private val exportTypeMap = mapOf(
-        "Share" to ExportDestination.Share,
-        "To download folder" to ExportDestination.SaveToFile
-    )
+    val viewModel: SettingsFragmentViewModel by viewModels()
 
     private val exportAlertDialog by lazy {
+        val exportTypes = mapOf(
+            "With progress" to true,
+            "Without progress" to false
+        )
+
+        val exportTypeMap = mapOf(
+            "Share" to ExportDestination.Share,
+            "To download folder" to ExportDestination.SaveToFile
+        )
+
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.export_dialog, null)
 
         val editTextType =
@@ -87,7 +85,64 @@ class SettingsFragment : PreferenceFragmentCompat() {
             .create()
     }
 
-    private val launcher = registerForSuspendableActivityResult(ActivityResultContracts.RequestPermission())
+    private val overwriteAlertDialog by lazy {
+        AlertDialog
+            .Builder(context)
+            .setTitle("Override cards")
+            .setMessage("This option will delete all your cards and replace them with the cards from the chosen file.")
+            .setPositiveButton("Ok") { _, _ ->
+                viewModel.overrideCards()
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+
+            }
+            .create()
+    }
+
+    private val addAlertDialog by lazy {
+        AlertDialog
+            .Builder(context)
+            .setTitle("Add cards")
+            .setMessage("This option will add all the cards from the chosen file to your dictionary. Existing cards will remain.")
+            .setPositiveButton("Ok") { _, _ ->
+                viewModel.addCards()
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+
+            }
+            .create()
+    }
+
+    private val requestPermissionLauncher =
+        registerForSuspendableActivityResult(ActivityResultContracts.RequestPermission())
+
+    private val openImportedDocumentLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            it?.let onDocument@{ uri ->
+                context?.contentResolver?.openInputStream(uri)?.let { inputStream ->
+                    try {
+                        viewModel.setImportedCards(CSVImporter().import(inputStream))
+
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Import ${viewModel.importedCards.value?.size}")
+                            .setItems(arrayOf("Add", "Overwrite")) { di, i ->
+                                when (i) {
+                                    0 -> addAlertDialog.show()
+                                    1 -> overwriteAlertDialog.show()
+                                }
+                            }
+                            .setNegativeButton("Cancel") { _, _ -> }
+                            .create()
+                            .show()
+
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to load", Toast.LENGTH_SHORT).show()
+                        Log.e("ImportFragment", e.message ?: "")
+                        return@onDocument
+                    }
+                }
+            }
+        }
 
     private suspend fun tryStoragePermissions(destination: ExportDestination): Boolean {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P && destination == ExportDestination.SaveToFile) {
@@ -98,7 +153,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             ) {
                 return true
             }
-            return launcher.launchAndAwait(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            return requestPermissionLauncher.launchAndAwait(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         return true
     }
@@ -112,12 +167,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val tag = if (withProgress) "with_progress" else "without_progress"
             val filename = "${tag}-${LocalDateTime.now().toString("yyyy-MM-dd-HH_mm")}"
 
-            exportNotesUseCase(ExportInfo(destination, withProgress, filename, ExportSchema.CSV))
+            viewModel.exportNotes(ExportInfo(destination, withProgress, filename, ExportSchema.CSV))
         }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+        viewModel.setImportedCards(listOf())
 
         findPreference<MaterialSliderPreference>("miss_multiplier")!!.apply {
             provideFragmentManager(requireActivity().supportFragmentManager)
@@ -149,28 +206,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-//        findPreference<ListPreference>("export_to_file")!!.apply {
-//            setOnPreferenceChangeListener { _, newValue ->
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                    exportToFile(newValue as String)
-//                } else {
-//                    if (ContextCompat.checkSelfPermission(
-//                            requireContext(),
-//                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                        ) == PackageManager.PERMISSION_GRANTED
-//                    ) {
-//                        exportToFile(newValue as String)
-//                    } else {
-//                        request.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                    }
-//                }
-//                true
-//            }
-//        }
-
         findPreference<Preference>("import_from_file")!!.apply {
             setOnPreferenceClickListener {
-                findNavController().navigate(R.id.action_settingsFragment_to_importFragment)
+                openImportedDocumentLauncher.launch(arrayOf("*/*"))
                 true
             }
         }
