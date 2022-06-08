@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.di
+package com.kirillemets.flashcards.data.di
 
 import android.content.Context
 import androidx.room.Room
@@ -27,8 +27,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FlashcardRepositoryModule {
-    private const val BASE_URL = "https://jisho.org/api/v1/search/words/"
+object DatabaseModule {
 
     @Singleton
     @Provides
@@ -43,41 +42,5 @@ object FlashcardRepositoryModule {
     @Provides
     fun provideCardDatabaseDao(cardDatabase: CardDatabase): CardDatabaseDao {
         return cardDatabase.flashCardsDao()
-    }
-
-    @Provides
-    fun provideNoteRepository(dao: CardDatabaseDao): NoteRepository {
-        return NoteRepositoryImpl(dao)
-    }
-
-    @Provides
-    fun provideDictionaryRepository(jishoApiService: JishoApiService): DictionaryRepository {
-        return DictionaryRepositoryImpl(jishoApiService)
-    }
-
-    @Provides
-    fun provideAppPreferences(@ApplicationContext app: Context): AppPreferences {
-        return AppPreferencesImpl(app)
-    }
-
-    @Provides
-    fun provideNoteExporterService(@ApplicationContext app: Context) : NoteExporterService {
-        return NoteExporterServiceImpl(app)
-    }
-
-    @Singleton
-    @Provides
-    fun provideJishoApiService(): JishoApiService {
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .baseUrl(BASE_URL)
-            .build()
-
-        return retrofit.create(JishoApiService::class.java)
     }
 }
