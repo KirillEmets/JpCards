@@ -59,7 +59,7 @@
         tools:layout="@layout/fragment_review" />
     <fragment
         android:id="@+id/importFragment"
-        android:name="com.kirillemets.flashcards.importExport.ImportFragment"
+        android:name="com.kirillemets.flashcards.ui.importWords.ImportFragment"
         android:label="Import"
         tools:layout="@layout/fragment_import" />
 </navigation>

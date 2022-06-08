@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.importExport
+package com.kirillemets.flashcards.ui.importWords
 
 import com.kirillemets.flashcards.data.model.FlashCard
 import java.io.InputStream

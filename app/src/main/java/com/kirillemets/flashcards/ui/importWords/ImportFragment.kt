@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.importExport
+package com.kirillemets.flashcards.ui.importWords
 
 import android.app.AlertDialog
 import android.os.Bundle

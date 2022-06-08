@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards.importExport
+package com.kirillemets.flashcards.ui.importWords
 
 import androidx.lifecycle.*
 import com.kirillemets.flashcards.model.FlashCardRepository

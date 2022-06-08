@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.kirillemets.flashcards.importExport.ImportFragmentViewModel" />
+            type="com.kirillemets.flashcards.ui.importWords.ImportFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
