@@ -1,16 +1,17 @@
 package com.kirillemets.flashcards.ui.settings
 
 import com.kirillemets.flashcards.data.model.FlashCard
+import com.kirillemets.flashcards.domain.model.Note
 import java.io.InputStream
 
 abstract class Importer {
-    abstract fun import(inputStream: InputStream): List<FlashCard>
+    abstract fun import(inputStream: InputStream): List<Note>
 }
 
 class CSVImporter : Importer() {
     private val regex = Regex("^\"|\",\"|\"$")
 
-    private fun csvToCard(csv: String): FlashCard {
+    private fun csvToCard(csv: String): Note {
         val fields = regex.split(csv).let { it.subList(1, it.size - 1) }
         if (fields.size != 3 && fields.size != 7)
             throw Exception("Wrong file format. CSV must have 3 or 7 fields")
@@ -20,7 +21,7 @@ class CSVImporter : Importer() {
         val reading = fields[2]
 
         if (fields.size == 3) {
-            return FlashCard(0, jap, reading, eng)
+            return Note(0, jap, reading, eng, 0, 0, 0, 0)
         } else {
             val lastDelay = fields[3].toIntOrNull()
                 ?: throw Exception("Failed parsing field 4 - lastDelay in $csv")
@@ -31,7 +32,7 @@ class CSVImporter : Importer() {
             val nextTimeReversed = fields[6].toLongOrNull()
                 ?: throw Exception("Failed parsing field 7 - nextTimeReversed in $csv")
 
-            return FlashCard(
+            return Note(
                 0,
                 japanese = jap,
                 reading = reading,
@@ -44,9 +45,9 @@ class CSVImporter : Importer() {
         }
     }
 
-    override fun import(inputStream: InputStream): List<FlashCard> {
+    override fun import(inputStream: InputStream): List<Note> {
         val rawStrings = String(inputStream.readBytes()).splitToSequence("\n")
-        val cards = mutableListOf<FlashCard>()
+        val cards = mutableListOf<Note>()
 
         rawStrings.forEach { rawCard ->
             cards += csvToCard(rawCard)

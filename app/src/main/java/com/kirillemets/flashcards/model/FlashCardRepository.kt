@@ -19,7 +19,7 @@ open class FlashCardRepository @Inject constructor(
 
     fun getAll(): Flow<List<FlashCard>> = db.getAll()
 
-    suspend fun getAllSuspend(): List<FlashCard> = withContext(coroutineScope.coroutineContext) { db.getAllBlocking() }
+    suspend fun getAllSuspend(): List<FlashCard> = withContext(coroutineScope.coroutineContext) { db.getAllSuspend() }
 
     suspend fun get(id: Int): FlashCard? =
         withContext(coroutineScope.coroutineContext) { db.get(id) }

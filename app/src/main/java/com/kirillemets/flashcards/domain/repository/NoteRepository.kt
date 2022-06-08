@@ -17,18 +17,8 @@ interface NoteRepository {
     suspend fun resetDelayByIdsReversed(ids: Set<Int>)
 
     suspend fun deleteByIndexes(ids: Set<Int>)
+    suspend fun deleteAll()
 
     suspend fun insertNew(note: Note): Boolean
-
-//    suspend fun find(english: String, japanese: String, reading: String): List<Note>
-//
-//
-//
-//    fun insert(note: Note)
-//
-//    fun insert(notes: List<Note>)
-//
-//    suspend fun insertSuspend(note: Note)
-//
-//    fun deleteAll()
+    suspend fun insertNew(notes: List<Note>)
 }

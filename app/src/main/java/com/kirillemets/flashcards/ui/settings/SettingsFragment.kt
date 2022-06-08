@@ -123,8 +123,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     try {
                         viewModel.setImportedCards(CSVImporter().import(inputStream))
 
+                        if(viewModel.importedCards.isEmpty())
+                            return@onDocument
+
                         MaterialAlertDialogBuilder(requireContext())
-                            .setTitle("Import ${viewModel.importedCards.value?.size}")
+                            .setTitle("Import ${viewModel.importedCards.size} cards.")
                             .setItems(arrayOf("Add", "Overwrite")) { di, i ->
                                 when (i) {
                                     0 -> addAlertDialog.show()

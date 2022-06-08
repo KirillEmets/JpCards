@@ -10,7 +10,7 @@ interface CardDatabaseDao {
     fun getAll(): Flow<List<FlashCard>>
 
     @Query("SELECT * FROM flashcard ORDER BY cardId DESC")
-    suspend fun getAllBlocking(): List<FlashCard>
+    suspend fun getAllSuspend(): List<FlashCard>
 
     @Query("SELECT * FROM flashcard WHERE cardId = :id")
     suspend fun get(id: Int): FlashCard?

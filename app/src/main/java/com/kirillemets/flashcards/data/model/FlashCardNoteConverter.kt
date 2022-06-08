@@ -15,7 +15,7 @@ fun FlashCard.toNote() = Note(
 
 fun List<FlashCard>.toNotes() = this.map { it.toNote() }
 
-fun Note.toNoteEntity(): FlashCard = FlashCard(
+fun Note.toFlashCard(): FlashCard = FlashCard(
     0,
     japanese,
     reading,
@@ -25,3 +25,5 @@ fun Note.toNoteEntity(): FlashCard = FlashCard(
     lastDelayReversed,
     nextReviewTimeReversed
 )
+
+fun List<Note>.toFlashCards() = this.map { it.toFlashCard() }

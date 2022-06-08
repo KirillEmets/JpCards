@@ -5,10 +5,10 @@ import com.kirillemets.flashcards.data.model.toNotes
 import com.kirillemets.flashcards.domain.model.Note
 import com.kirillemets.flashcards.domain.repository.NoteRepository
 import com.kirillemets.flashcards.data.database.CardDatabaseDao
-import com.kirillemets.flashcards.data.model.toNoteEntity
+import com.kirillemets.flashcards.data.model.toFlashCard
+import com.kirillemets.flashcards.data.model.toFlashCards
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NoteRepositoryImpl @Inject constructor(
@@ -43,8 +43,21 @@ class NoteRepositoryImpl @Inject constructor(
         if (db.find(note.english, note.japanese, note.reading).isNotEmpty()) {
             return false
         }
-        db.insert(note.toNoteEntity())
+        db.insert(note.toFlashCard())
         return true
     }
 
+    override suspend fun insertNew(notes: List<Note>) {
+        val hashesInDb =
+            db.getAllSuspend().map { (it.english + it.japanese + it.reading).hashCode() }
+
+        val toInsert =
+            notes.filterNot { hashesInDb.contains((it.english + it.japanese + it.reading).hashCode()) }
+
+        db.insert(toInsert.toFlashCards())
+    }
+
+    override suspend fun deleteAll() {
+        db.deleteAll()
+    }
 }
