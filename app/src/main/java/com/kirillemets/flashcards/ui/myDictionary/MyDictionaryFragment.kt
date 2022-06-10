@@ -7,10 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.TimeUtil
+import com.kirillemets.flashcards.ui.TimeUtil
 import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyDictionaryFragment : Fragment() {

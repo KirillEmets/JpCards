@@ -3,7 +3,7 @@ package com.kirillemets.flashcards.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kirillemets.flashcards.TimeUtil
+import com.kirillemets.flashcards.ui.TimeUtil
 import org.joda.time.LocalDate
 import java.util.concurrent.TimeUnit
 

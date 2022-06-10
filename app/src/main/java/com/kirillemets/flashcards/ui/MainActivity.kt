@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards
+package com.kirillemets.flashcards.ui
 
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
@@ -11,9 +11,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import net.danlew.android.joda.JodaTimeAndroid
 
 lateinit var bottomNavigation: BottomNavigationView
 

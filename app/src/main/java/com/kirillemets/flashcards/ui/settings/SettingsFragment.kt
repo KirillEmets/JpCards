@@ -29,7 +29,7 @@ import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.domain.model.ExportDestination
 import com.kirillemets.flashcards.domain.model.ExportInfo
 import com.kirillemets.flashcards.domain.model.ExportSchema
-import com.kirillemets.flashcards.registerForSuspendableActivityResult
+import com.kirillemets.flashcards.ui.registerForSuspendableActivityResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

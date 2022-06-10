@@ -1,7 +1,6 @@
-package com.kirillemets.flashcards
+package com.kirillemets.flashcards.ui
 
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment

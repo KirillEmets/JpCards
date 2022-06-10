@@ -1,4 +1,4 @@
-package com.kirillemets.flashcards
+package com.kirillemets.flashcards.ui
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
