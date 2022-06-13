@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/reviewStarterFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/addWordFragment"
@@ -26,26 +26,23 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
     <fragment
-        android:id="@+id/reviewStarterFragment"
-        android:name="com.kirillemets.flashcards.ui.review.ReviewStarterFragment"
+        android:id="@+id/homeFragment"
+        android:name="com.kirillemets.flashcards.ui.home.HomeFragment"
         android:label="Review"
-        tools:layout="@layout/fragment_review_starter">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_reviewStarterFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_reviewStarterFragment"
-        app:destination="@id/reviewStarterFragment"
+        app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kirillemets.flashcards.ui.settings.SettingsFragment"
         android:label="Settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_importFragment"
-            app:destination="@id/importFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_settingsFragment"
@@ -57,9 +54,4 @@
         android:name="com.kirillemets.flashcards.ui.review.ReviewFragment"
         android:label="Review"
         tools:layout="@layout/fragment_review" />
-    <fragment
-        android:id="@+id/importFragment"
-        android:name="com.kirillemets.flashcards.ui.importWords.ImportFragment"
-        android:label="Import"
-        tools:layout="@layout/fragment_import" />
 </navigation>

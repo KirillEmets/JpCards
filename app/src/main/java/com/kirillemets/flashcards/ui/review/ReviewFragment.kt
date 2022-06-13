@@ -2,6 +2,7 @@ package com.kirillemets.flashcards.ui.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ReviewFragment : Fragment() {
-    private val viewModel: ReviewFragmentViewModel by viewModels(ownerProducer = { requireActivity() })
+    private val viewModel: ReviewFragmentViewModel by viewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -24,7 +25,6 @@ class ReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
         val binding = FragmentReviewBinding.inflate(inflater)
 

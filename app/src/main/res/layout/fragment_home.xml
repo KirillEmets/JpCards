@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel" />
+            name="uiState"
+            type="com.kirillemets.flashcards.ui.home.HomeUIState" />
         <import type="android.view.View"/>
 
     </data>
@@ -27,8 +27,9 @@
             android:id="@+id/button_start_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="@{viewModel.buttonReviewClickable}"
-            android:focusable="@{viewModel.buttonReviewClickable}"
+            android:clickable="@{uiState.reviewWordCount > 0 ? true : false}"
+            android:focusable="@{uiState.reviewWordCount > 0 ? true : false}"
+            android:visibility="@{uiState.reviewWordCount > 0 ? View.VISIBLE : View.INVISIBLE}"
             android:text="@string/btn_review"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

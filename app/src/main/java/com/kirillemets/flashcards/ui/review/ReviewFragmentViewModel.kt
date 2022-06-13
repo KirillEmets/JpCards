@@ -8,6 +8,7 @@ import com.kirillemets.flashcards.domain.usecase.DeleteCardsWithIndexesUseCase
 import com.kirillemets.flashcards.domain.usecase.GetNewDelayInDaysUseCase
 import com.kirillemets.flashcards.domain.usecase.LoadCardForReviewUseCase
 import com.kirillemets.flashcards.domain.usecase.UpdateCardWithAnswerUseCase
+import com.kirillemets.flashcards.ui.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,13 +18,13 @@ import java.util.*
 import javax.inject.Inject
 
 data class ReviewUIState(
-    val currentCard: ReviewCardUIState,
-    val showAnswer: Boolean,
-    val currentWordNumber: Int,
-    val wordCount: Int,
-    val missDelay: Int,
-    val easyDelay: Int,
-    val hardDelay: Int,
+    val currentCard: ReviewCardUIState = ReviewCardUIState(),
+    val showAnswer: Boolean = false,
+    val currentWordNumber: Int = 0,
+    val wordCount: Int = 0,
+    val missDelay: Int = 0,
+    val easyDelay: Int = 0,
+    val hardDelay: Int = 0,
 )
 
 @HiltViewModel
@@ -34,8 +35,17 @@ class ReviewFragmentViewModel @Inject constructor(
     private val deleteCardsWithIndexesUseCase: DeleteCardsWithIndexesUseCase
 ) : ViewModel() {
 
-    val reviewCards = MutableStateFlow(emptyList<ReviewCard>())
-    private var wordCounter = MutableStateFlow<Int>(0)
+    private val today = TimeUtil.todayMillis
+    private val reviewCards = MutableStateFlow(emptyList<ReviewCard>())
+
+    init {
+        viewModelScope.launch {
+            reviewCards.value =
+                loadCardForReviewUseCase(today).shuffled().sortedByDescending { it.lastDelay }
+        }
+    }
+
+    private var wordCounter = MutableStateFlow(0)
     private val currentCard = combine(
         wordCounter,
         reviewCards
@@ -65,29 +75,11 @@ class ReviewFragmentViewModel @Inject constructor(
         }.stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            ReviewUIState(ReviewCardUIState(), false, 0, 0, 0, 0, 0)
+            ReviewUIState()
         )
-
-    var reviewGoing = false
-
-    val buttonReviewClickable = reviewCards.transform { cards -> emit(cards.isNotEmpty()) }.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        false
-    )
 
     val onRunOutOfWords = MutableStateFlow(false)
 
-    private var today = 0L
-
-    fun loadCardsToReview() {
-        today = LocalDate().toDateTimeAtStartOfDay().millis
-        val now = Calendar.getInstance().timeInMillis
-        viewModelScope.launch {
-            wordCounter.value = 0
-            reviewCards.value = loadCardForReviewUseCase(now).shuffled().sortedByDescending { it.lastDelay }
-        }
-    }
 
     fun onButtonShowAnswerClick() {
         showAnswer.value = true
@@ -136,8 +128,6 @@ class ReviewFragmentViewModel @Inject constructor(
         }
 
         reviewCards.value = new
-
-
         wordCounter.value = wc
         showAnswer.value = false
 
@@ -146,17 +136,7 @@ class ReviewFragmentViewModel @Inject constructor(
         }
     }
 
-    fun startReview() {
-        reviewGoing = true
-    }
-
-    fun endReview() {
-        showAnswer.value = false
-        reviewGoing = false
-    }
-
     private fun onRunOutOfWords() {
-        endReview()
         onRunOutOfWords.value = true
     }
 }

@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val navController = this.findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.reviewStarterFragment,
+            R.id.homeFragment,
             R.id.addWordFragment,
             R.id.myDictionaryFragment,
             R.id.settingsFragment
@@ -85,22 +85,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
-        onUpNavigation()
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    override fun onBackPressed() {
-        onUpNavigation()
-        super.onBackPressed()
-    }
-
-    private fun onUpNavigation() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        if (navController.currentDestination?.id == R.id.reviewFragment) {
-            if (viewModel.reviewGoing) {
-                viewModel.endReview()
-            }
-        }
-    }
 }
-

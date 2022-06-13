@@ -1,19 +1,19 @@
-package com.kirillemets.flashcards.ui.review
+package com.kirillemets.flashcards.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.databinding.FragmentReviewStarterBinding
+import com.kirillemets.flashcards.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class ReviewStarterFragment : Fragment() {
-    private val viewModel: ReviewFragmentViewModel by viewModels(ownerProducer = { requireActivity() })
+class HomeFragment : Fragment() {
+    private val viewModel: HomeFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,34 +21,25 @@ class ReviewStarterFragment : Fragment() {
     ): View {
         super.onCreate(savedInstanceState)
 
-        val binding = FragmentReviewStarterBinding.inflate(inflater)
-
-        binding.viewModel = viewModel
+        val binding = FragmentHomeBinding.inflate(inflater)
 
         binding.buttonStartReview.setOnClickListener {
-            startReview()
+            navigateToReviewFragment()
         }
 
+        viewModel.loadCardCount()
+
         lifecycleScope.launchWhenStarted {
-            viewModel.reviewCards.collect {
+            viewModel.homeUIState.collect { homeUIState ->
                 binding.countOfCardsTextView.text =
-                    resources.getString(R.string.countOfWordsToReview, it.size)
+                    resources.getString(R.string.countOfWordsToReview, homeUIState.reviewWordCount)
+
+                binding.uiState = homeUIState
             }
         }
 
         binding.lifecycleOwner = this
-
-        if (viewModel.reviewGoing) {
-            navigateToReviewFragment()
-        } else {
-            viewModel.loadCardsToReview()
-        }
         return binding.root
-    }
-
-    private fun startReview() {
-        viewModel.startReview()
-        navigateToReviewFragment()
     }
 
     private fun navigateToReviewFragment() {
