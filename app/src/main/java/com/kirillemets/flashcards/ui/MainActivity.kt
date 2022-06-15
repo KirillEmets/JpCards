@@ -12,28 +12,27 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kirillemets.flashcards.R
+import com.kirillemets.flashcards.domain.AppPreferences
 import com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 lateinit var bottomNavigation: BottomNavigationView
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    lateinit var appBarConfiguration: AppBarConfiguration
-    private val viewModel: ReviewFragmentViewModel by viewModels()
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    @Inject lateinit var appPreferences: AppPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-        val theme = preferenceManager.getString("theme", "Auto")
         AppCompatDelegate.setDefaultNightMode(
-            when (theme) {
-                "Auto" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                "Light" -> AppCompatDelegate.MODE_NIGHT_NO
-                "Black" -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            when (appPreferences.theme) {
+                AppPreferences.Theme.Auto -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                AppPreferences.Theme.Light -> AppCompatDelegate.MODE_NIGHT_NO
+                AppPreferences.Theme.Black -> AppCompatDelegate.MODE_NIGHT_YES
             }
         )
 

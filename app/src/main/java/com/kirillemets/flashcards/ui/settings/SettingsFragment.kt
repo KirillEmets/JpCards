@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
@@ -20,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -123,7 +125,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     try {
                         viewModel.setImportedCards(CSVImporter().import(inputStream))
 
-                        if(viewModel.importedCards.isEmpty())
+                        if (viewModel.importedCards.isEmpty())
                             return@onDocument
 
                         MaterialAlertDialogBuilder(requireContext())
@@ -179,19 +181,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         viewModel.setImportedCards(listOf())
 
-        findPreference<MaterialSliderPreference>("miss_multiplier")!!.apply {
-            provideFragmentManager(requireActivity().supportFragmentManager)
-            setBounds(0.0f, 0.4f, 0.1f)
-        }
+        val multiplierPreferencesIds =
+            listOf("miss_multiplier", "hard_multiplier", "easy_multiplier")
+        multiplierPreferencesIds.forEach { id ->
 
-        findPreference<MaterialSliderPreference>("hard_multiplier")!!.apply {
-            provideFragmentManager(requireActivity().supportFragmentManager)
-            setBounds(0.1f, 5f, 0.1f)
-        }
-
-        findPreference<MaterialSliderPreference>("easy_multiplier")!!.apply {
-            provideFragmentManager(requireActivity().supportFragmentManager)
-            setBounds(0.1f, 5f, 0.1f)
+            findPreference<EditTextPreference>(id)!!.apply {
+                summaryProvider = Preference.SummaryProvider { it: EditTextPreference -> "${it.text} %" }
+                setOnBindEditTextListener { editText ->
+                    editText.inputType = InputType.TYPE_CLASS_NUMBER
+                }
+            }
         }
 
         findPreference<ListPreference>("theme")!!.apply {

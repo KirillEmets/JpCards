@@ -1,7 +1,15 @@
 package com.kirillemets.flashcards.domain
 
 interface AppPreferences {
-    var delayMissMultiplier: Float
-    var delayEasyMultiplier: Float
-    var delayHardMultiplier: Float
+    var delayMissMultiplier: Int
+    var delayEasyMultiplier: Int
+    var delayHardMultiplier: Int
+
+    var theme: Theme
+
+    enum class Theme() {
+        Auto,
+        Light,
+        Black
+    }
 }

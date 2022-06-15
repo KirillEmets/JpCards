@@ -10,13 +10,13 @@ class GetNewDelayInDaysUseCase @Inject constructor(private val appPreferences: A
         lastDelay: Int,
         answerType: AnswerType,
     ): Int {
-        if(lastDelay == 0) return if(answerType == AnswerType.Miss) 0 else 1
+        if (lastDelay == 0) return if (answerType == AnswerType.Miss) 0 else 1
 
         val newDelay = (lastDelay * when (answerType) {
             AnswerType.Miss -> appPreferences.delayMissMultiplier
             AnswerType.Easy -> appPreferences.delayEasyMultiplier
             AnswerType.Hard -> appPreferences.delayHardMultiplier
-        }).roundToInt()
+        } / 100f).roundToInt()
 
         return newDelay
     }

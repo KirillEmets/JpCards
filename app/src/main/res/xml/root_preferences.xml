@@ -1,18 +1,18 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/review_header">
-        <com.kirillemets.flashcards.ui.settings.MaterialSliderPreference
-            app:defaultValue="0.0"
+        <EditTextPreference
+            app:defaultValue="10"
             app:key="miss_multiplier"
             app:title="@string/miss_multiplier" />
 
-        <com.kirillemets.flashcards.ui.settings.MaterialSliderPreference
-            app:defaultValue="0.8"
+        <EditTextPreference
+            app:defaultValue="80"
             app:key="hard_multiplier"
             app:title="@string/hard_multiplier" />
 
-        <com.kirillemets.flashcards.ui.settings.MaterialSliderPreference
-            app:defaultValue="2.2"
+        <EditTextPreference
+            app:defaultValue="200"
             app:key="easy_multiplier"
             app:title="@string/easy_multiplier" />
     </PreferenceCategory>
