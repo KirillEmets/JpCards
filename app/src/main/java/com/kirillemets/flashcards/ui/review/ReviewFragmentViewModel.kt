@@ -1,13 +1,11 @@
 package com.kirillemets.flashcards.ui.review
 
+import android.speech.tts.TextToSpeech
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kirillemets.flashcards.domain.model.AnswerType
 import com.kirillemets.flashcards.domain.model.ReviewCard
-import com.kirillemets.flashcards.domain.usecase.DeleteCardsWithIndexesUseCase
-import com.kirillemets.flashcards.domain.usecase.GetNewDelayInDaysUseCase
-import com.kirillemets.flashcards.domain.usecase.LoadCardForReviewUseCase
-import com.kirillemets.flashcards.domain.usecase.UpdateCardWithAnswerUseCase
+import com.kirillemets.flashcards.domain.usecase.*
 import com.kirillemets.flashcards.ui.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -32,7 +30,8 @@ class ReviewFragmentViewModel @Inject constructor(
     private val loadCardForReviewUseCase: LoadCardForReviewUseCase,
     private val updateCardWithAnswerUseCase: UpdateCardWithAnswerUseCase,
     private val getNewDelayUseCase: GetNewDelayInDaysUseCase,
-    private val deleteCardsWithIndexesUseCase: DeleteCardsWithIndexesUseCase
+    private val deleteCardsWithIndexesUseCase: DeleteCardsWithIndexesUseCase,
+    private val speakTextUseCase: SpeakTextUseCase
 ) : ViewModel() {
 
     private val today = TimeUtil.todayMillis
@@ -83,6 +82,11 @@ class ReviewFragmentViewModel @Inject constructor(
 
     fun onButtonShowAnswerClick() {
         showAnswer.value = true
+
+        with(currentCard.value) {
+            val textToRead = if (reversed) answer else word
+            speakTextUseCase(textToRead)
+        }
     }
 
     fun onButtonAnswerClick(buttonType: Int) {

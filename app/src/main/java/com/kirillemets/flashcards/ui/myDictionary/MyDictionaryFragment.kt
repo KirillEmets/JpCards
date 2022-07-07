@@ -2,6 +2,7 @@ package com.kirillemets.flashcards.ui.myDictionary
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +20,9 @@ class MyDictionaryFragment : Fragment() {
     }
     val viewModel: MyDictionaryFragmentViewModel by viewModels()
     lateinit var binding: FragmentMyDictionaryBinding
-    private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter()
+    private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter {
+        viewModel.onItemClick(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +38,10 @@ class MyDictionaryFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.myWordsUIState.collect {
                 adapter.notes = it.notes
+                if(it.ttsFailed) {
+                    Toast.makeText(context, "Tts service failed", Toast.LENGTH_SHORT).show()
+                    viewModel.resetTtsFailed()
+                }
             }
         }
 

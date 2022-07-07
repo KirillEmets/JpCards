@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="flashCard"
             type="com.kirillemets.flashcards.ui.myDictionary.NoteUIState" />
@@ -29,13 +30,16 @@
 
                 <TextView
                     android:id="@+id/word_japanese"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@{flashCard.japanese}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/tts_image_button"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Japanese" />
@@ -89,6 +93,20 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/word_english" />
+
+                <ImageView
+                    android:id="@+id/tts_image_button"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/word_japanese"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/word_japanese"
+                    app:srcCompat="@drawable/text_to_speech_48px" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </FrameLayout>

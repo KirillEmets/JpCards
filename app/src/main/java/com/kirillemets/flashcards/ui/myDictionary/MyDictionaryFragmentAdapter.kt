@@ -8,7 +8,7 @@ import com.google.android.material.card.MaterialCardView
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.databinding.ItemDictionaryFlashcardBinding
 
-class MyDictionaryFragmentAdapter :
+class MyDictionaryFragmentAdapter(private val onItemClick: (itemId: Int) -> Unit) :
     RecyclerView.Adapter<MyDictionaryFragmentAdapter.MyDictionaryFragmentViewHolder>() {
 
     var currentTimeMillis: Long = 0
@@ -52,6 +52,10 @@ class MyDictionaryFragmentAdapter :
                 if (card.isChecked) checkedCards.add(holder.cardId)
                 else checkedCards.remove(holder.cardId)
             }
+        }
+
+        binding.ttsImageButton.setOnClickListener {
+            onItemClick(holder.cardId)
         }
 
         return holder
