@@ -19,6 +19,9 @@ class TextToSpeechServiceImpl @Inject constructor(appContext: Context) : TextToS
         if (!ready)
             return false
 
-        return tts.speak(text, TextToSpeech.QUEUE_FLUSH, Bundle(), UUID.randomUUID().toString()) == TextToSpeech.SUCCESS
+        val result =
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, Bundle(), UUID.randomUUID().toString())
+        return result == TextToSpeech.SUCCESS
+
     }
 }

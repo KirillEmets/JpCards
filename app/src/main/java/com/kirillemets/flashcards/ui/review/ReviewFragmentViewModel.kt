@@ -8,11 +8,10 @@ import com.kirillemets.flashcards.domain.model.ReviewCard
 import com.kirillemets.flashcards.domain.usecase.*
 import com.kirillemets.flashcards.ui.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.joda.time.LocalDate
-import java.util.*
 import javax.inject.Inject
 
 data class ReviewUIState(
@@ -84,8 +83,12 @@ class ReviewFragmentViewModel @Inject constructor(
         showAnswer.value = true
 
         with(currentCard.value) {
-            val textToRead = if (reversed) answer else word
-            speakTextUseCase(textToRead)
+            val textToRead =
+                if (reversed) answerReading.ifBlank { answer } else wordReading.ifBlank { word }
+            viewModelScope.launch {
+                delay(10)
+                speakTextUseCase(textToRead)
+            }
         }
     }
 
