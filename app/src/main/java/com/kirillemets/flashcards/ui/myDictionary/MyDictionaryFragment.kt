@@ -3,6 +3,8 @@ package com.kirillemets.flashcards.ui.myDictionary
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.compose.material.Text
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +20,7 @@ class MyDictionaryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     val viewModel: MyDictionaryFragmentViewModel by viewModels()
     lateinit var binding: FragmentMyDictionaryBinding
     private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter {
@@ -38,7 +41,7 @@ class MyDictionaryFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.myWordsUIState.collect {
                 adapter.notes = it.notes
-                if(it.ttsFailed) {
+                if (it.ttsFailed) {
                     Toast.makeText(context, "Tts service failed", Toast.LENGTH_SHORT).show()
                     viewModel.resetTtsFailed()
                 }
@@ -52,7 +55,15 @@ class MyDictionaryFragment : Fragment() {
         }
 
         binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        return ComposeView(requireContext())
+//        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view as ComposeView
+        view.setContent {
+            Text("Hello")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,7 +76,7 @@ class MyDictionaryFragment : Fragment() {
     }
 
     private fun onMenuItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.item_remove -> {
                 viewModel.deleteWords(adapter.checkedCards.toSet())
                 adapter.uncheckAllCards()
