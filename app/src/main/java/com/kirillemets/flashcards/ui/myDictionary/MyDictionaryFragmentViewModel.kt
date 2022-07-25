@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MyWordsUIState(
-    val notes: List<NoteUIState>,
-    val ttsFailed: Boolean
+    val notes: List<NoteUIState> = emptyList(),
+    val ttsFailed: Boolean = false,
+    val filter: String = "",
 ) {
     val wordCount: Int
         get() = notes.size
@@ -31,8 +32,9 @@ class MyDictionaryFragmentViewModel @Inject constructor(
 
     private val allNotes: Flow<List<Note>> = getAllCardsUseCase()
     private val filter = MutableStateFlow("")
-
     private val ttsFailed = MutableStateFlow(false)
+    private val selectedNotesIds = MutableStateFlow(setOf<Int>())
+    private val openedNotesIds = MutableStateFlow(setOf<Int>())
 
     private val displayedNotes: StateFlow<List<Note>> = combine(allNotes, filter) { cards, filter ->
         cards.filter { card ->
@@ -44,24 +46,27 @@ class MyDictionaryFragmentViewModel @Inject constructor(
 
     val myWordsUIState = combine(
         displayedNotes,
-        ttsFailed
-    ) { notes, tts ->
+        ttsFailed,
+        filter,
+        selectedNotesIds,
+        openedNotesIds
+    ) { displayedNotes, ttsFailed, filter, selectedNotesIds, openedNotesIds ->
         MyWordsUIState(
-            notes.map {
-                NoteUIState.fromNote(it)
+            displayedNotes.map {
+                NoteUIState.fromNote(
+                    it,
+                    selectedNotesIds.contains(it.noteId),
+                    openedNotesIds.contains(it.noteId)
+                )
             },
-            tts
+            ttsFailed,
+            filter,
         )
     }
 
     val countText: StateFlow<String> = displayedNotes.map {
         "Word count: ${it.size}"
     }.stateIn(viewModelScope, SharingStarted.Lazily, "")
-
-
-    fun filterWords(query: String) {
-        filter.value = query
-    }
 
     fun deleteWords(ids: Set<Int>) {
         viewModelScope.launch {
@@ -75,15 +80,45 @@ class MyDictionaryFragmentViewModel @Inject constructor(
         }
     }
 
-    fun onItemClick(id: Int) {
-        displayedNotes.value.find { it.noteId == id }?.let {
-            val ttsSucceeded = speakTextUseCase(it.japanese)
-            if (!ttsSucceeded)
-                ttsFailed.value = true
+    fun onItemClick(noteId: Int) {
+        if (selectedNotesIds.value.isNotEmpty()) {
+            selectedNotesIds.update {
+                if (it.contains(noteId))
+                    it - noteId
+                else it + noteId
+            }
+            return
+        }
+
+        openedNotesIds.update {
+            if (it.contains(noteId))
+                it - noteId
+            else it + noteId
+        }
+    }
+
+    fun onItemLongClick(noteId: Int) {
+        selectedNotesIds.update {
+            if (it.contains(noteId))
+                it - noteId
+            else it + noteId
         }
     }
 
     fun resetTtsFailed() {
         ttsFailed.value = false
+    }
+
+    fun onTtsClick(id: Int) {
+        displayedNotes.value.find { it.noteId == id }?.let {
+            val textToSpeak = if (it.japanese.length >= 2) it.japanese else it.reading
+            val ttsSucceeded = speakTextUseCase(textToSpeak)
+            if (!ttsSucceeded)
+                ttsFailed.value = true
+        }
+    }
+
+    fun onFilterValueChange(value: String) {
+        filter.value = value
     }
 }

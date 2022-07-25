@@ -2,18 +2,16 @@ package com.kirillemets.flashcards.ui
 
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.preference.PreferenceManager
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kirillemets.flashcards.R
 import com.kirillemets.flashcards.domain.AppPreferences
-import com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -50,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         ).build()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
+        bottomNavigation.setupWithNavController(navController)
 
         bottomNavigation.setOnItemSelectedListener { item ->
             if (bottomNavigation.selectedItemId == item.itemId)
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.action_global_reviewStarterFragment)
                     true
                 }
-                R.id.page_search -> {
+                R.id.addWordFragment -> {
                     navController.navigate(R.id.action_global_addWordFragment)
                     true
                 }

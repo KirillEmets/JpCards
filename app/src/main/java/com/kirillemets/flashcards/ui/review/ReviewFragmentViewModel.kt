@@ -84,7 +84,10 @@ class ReviewFragmentViewModel @Inject constructor(
 
         with(currentCard.value) {
             val textToRead =
-                if (reversed) answerReading.ifBlank { answer } else wordReading.ifBlank { word }
+                if (reversed)
+                    if (answer.length >= 2) answer else answerReading
+                else if (word.length >= 2) word else wordReading
+
             viewModelScope.launch {
                 delay(10)
                 speakTextUseCase(textToRead)

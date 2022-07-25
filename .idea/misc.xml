@@ -3,42 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout-h500dp/fragment_review.xml" value="0.3387096774193548" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout-land/fragment_review.xml" value="0.31040564373897706" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/_fragment_review.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/dropdown_list_item.xml" value="0.2957427536231884" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/fragment_add_word.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/fragment_my_dictionary.xml" value="0.20454545454545456" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/fragment_review.xml" value="0.14643799472295516" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/fragment_review_starter.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/HP16/IdeaProjects/jpCards/app/src/main/res/layout/item_dictionary_flashcard.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/drawable/text_to_speech-48px.xml" value="0.2345" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/drawable/text_to_speech_48px.xml" value="0.2345" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/export_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_add_word.xml" value="0.17604166666666668" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_home.xml" value="0.24048913043478262" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_import.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_review.xml" value="0.1" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_review_starter.xml" value="0.24048913043478262" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_dictionary_flashcard.xml" value="0.26994256541161454" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_searched_flashcard.xml" value="0.17604166666666668" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_word_definition.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/xml/root_preferences.xml" value="0.24048913043478262" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout-h500dp/fragment_review.xml" value="0.16077898550724637" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/dropdown_list_item.xml" value="0.1721014492753623" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/export_dialog.xml" value="0.33" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_import.xml" value="0.25" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_my_dictionary.xml" value="0.22" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/layout/fragment_review.xml" value="0.5838815789473685" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/xml/file_paths.xml" value="0.1" />
-        <entry key="..\:/Users/Kirill/AndroidStudioProjects/flashcards/app/src/main/res/xml/root_preferences.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/activity_main.xml" value="0.5136842105263157" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_my_dictionary.xml" value="0.18478260869565216" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_dictionary_flashcard.xml" value="0.4" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/menu/review_fragment_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

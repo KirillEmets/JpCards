@@ -2,16 +2,12 @@ package com.kirillemets.flashcards.ui.myDictionary
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.kirillemets.flashcards.R
-import com.kirillemets.flashcards.ui.TimeUtil
-import com.kirillemets.flashcards.databinding.FragmentMyDictionaryBinding
+import com.kirillemets.flashcards.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,47 +18,17 @@ class MyDictionaryFragment : Fragment() {
     }
 
     val viewModel: MyDictionaryFragmentViewModel by viewModels()
-    lateinit var binding: FragmentMyDictionaryBinding
-    private val adapter: MyDictionaryFragmentAdapter = MyDictionaryFragmentAdapter {
-        viewModel.onItemClick(it)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMyDictionaryBinding.inflate(layoutInflater)
-        adapter.currentTimeMillis = TimeUtil.todayMillis
-
-        binding.viewModel = viewModel
-        binding.recyclerView.adapter = adapter
-
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.myWordsUIState.collect {
-                adapter.notes = it.notes
-                if (it.ttsFailed) {
-                    Toast.makeText(context, "Tts service failed", Toast.LENGTH_SHORT).show()
-                    viewModel.resetTtsFailed()
-                }
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            AppTheme {
+                MyDictionaryScreen(onButtonAddWordsClick = {
+                    findNavController().navigate(R.id.action_global_addWordFragment)
+                })
             }
-        }
-
-        binding.textField.editText?.doAfterTextChanged {
-            it?.let {
-                viewModel.filterWords(it.toString())
-            }
-        }
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        return ComposeView(requireContext())
-//        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view as ComposeView
-        view.setContent {
-            Text("Hello")
         }
     }
 
@@ -77,16 +43,16 @@ class MyDictionaryFragment : Fragment() {
 
     private fun onMenuItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.item_remove -> {
-                viewModel.deleteWords(adapter.checkedCards.toSet())
-                adapter.uncheckAllCards()
-                true
-            }
-            R.id.item_reset -> {
-                viewModel.resetWords(adapter.checkedCards.toSet())
-                adapter.uncheckAllCards()
-                true
-            }
+//            R.id.item_remove -> {
+//                viewModel.deleteWords(adapter.checkedCards.toSet())
+//                adapter.uncheckAllCards()
+//                true
+//            }
+//            R.id.item_reset -> {
+//                viewModel.resetWords(adapter.checkedCards.toSet())
+//                adapter.uncheckAllCards()
+//                true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }

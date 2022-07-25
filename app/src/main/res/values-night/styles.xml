@@ -1,18 +1,16 @@
 <resources>
-    <style name="AppThemeParent" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">#9b59b6</item>
-        <item name="colorPrimaryDark">#000000</item>
+    <style name="AppThemeParent" parent="Theme.Material3.DayNight">
         <item name="colorAccent">#03DAC5</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorMainText">#D0D0D0</item>
 
-        <item name="backgroundColor">@color/black</item>
-        <item name="colorSurface">@color/black</item>
+        <item name="backgroundColor">#121212</item>
+        <item name="colorSurface">#1f1f1f</item>
         <item name="colorReviewBorder">#4C4C4C</item>
     </style>
 
-    <style name="ReviewButtonParent" parent="Widget.MaterialComponents.Button.OutlinedButton"/>
+    <style name="ReviewButtonParent" parent="Widget.Material3.Button.OutlinedButton"/>
 
     <style name="ReviewButton.Miss" parent="ReviewButton">
         <item name="android:textColor">?attr/colorButtonMiss</item>
@@ -24,7 +22,7 @@
         <item name="android:textColor">?attr/colorButtonEasy</item>
     </style>
 
-    <style name="ShowAnswerButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="ShowAnswerButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
