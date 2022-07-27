@@ -3,9 +3,10 @@
 Application for learning japanese words with flashcards. Contains built-in serch page that can add new words.
 
 ### Existing features: 
-- [x] Search words in the Internet and add them to your dictionary
-- [x] Study and review words
-- [x] Import and export dictionary to/from csv file
+- [x] Search words in the Internet and add them to your dictionary.
+- [x] Study and review words.
+- [x] Import and export dictionary to/from csv file.
+- [x] Use Text-to-speech to pronounce Japanese words.
 
 ### Used technologies:
 - Most of Jetpack libraries: Lifecycle (ViewModel + LiveData), Navigation, Material UI, Room, Hilt.
