@@ -1,6 +1,6 @@
 # JpCards - Japanese Flashcards
 
-A simple application for studying Japanese words using flashcards.
+An application for studying Japanese words using flashcards.
 
 Existing features:
 ---------
