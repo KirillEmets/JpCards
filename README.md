@@ -36,5 +36,5 @@ Used technologies:
 - Constraint Layout
 - Recycler View
 - Jetpack Compose
-- Retroit2 + Moshi
+- Retrofit2 + Moshi
 - MVVM Architecture + Clean Architecture
