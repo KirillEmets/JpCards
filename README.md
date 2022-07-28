@@ -1,12 +1,12 @@
 # JpCards - Japanese Flashcards
 
-Application for learning japanese words with flashcards. Contains built-in serch page that can add new words.
+A simple application for studying Japanese words using flashcards.
 
 Existing features:
 ---------
 - [x] Search words in the Internet and add them to your dictionary.
-- [x] Study and review words.
-- [x] Import and export dictionary to/from csv file.
+- [x] Study and review words offline.
+- [x] Import and export your progress to/from csv file.
 - [x] Night Mode
 - [x] Text-to-speech integration.
 - [ ] Use premade sets of words.
