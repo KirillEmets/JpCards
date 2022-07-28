@@ -24,10 +24,10 @@ interface CardDatabaseDao {
     @Query("DELETE FROM flashcard WHERE cardId IN (:ids)")
     suspend fun deleteByIndexes(ids: Set<Int>)
 
-    @Query("UPDATE flashcard SET last_delay = 1, next_review_time = :time WHERE cardId IN (:ids)")
+    @Query("UPDATE flashcard SET last_delay = 0, next_review_time = :time WHERE cardId IN (:ids)")
     suspend fun resetDelayByIds(ids: Set<Int>, time: Long)
 
-    @Query("UPDATE flashcard SET last_delay_reversed = 1, next_review_time_reversed = :time WHERE cardId IN (:ids)")
+    @Query("UPDATE flashcard SET last_delay_reversed = 0, next_review_time_reversed = :time WHERE cardId IN (:ids)")
     suspend fun resetDelayByIdsReversed(ids: Set<Int>, time: Long)
 
     @Query("UPDATE flashcard SET last_delay = :delay, next_review_time = :time WHERE cardId = :id")

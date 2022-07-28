@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MyWordsUIState(
+    val loading: Boolean = true,
+    val dictionaryEmpty: Boolean = false,
     val notes: List<NoteUIState> = emptyList(),
     val ttsFailed: Boolean = false,
     val filter: String = "",
@@ -30,53 +32,52 @@ class MyDictionaryFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val allNotes: Flow<List<Note>> = getAllCardsUseCase()
+    private val allNotes: StateFlow<List<Note>?> =
+        getAllCardsUseCase().stateIn(viewModelScope, SharingStarted.Eagerly, null)
     private val filter = MutableStateFlow("")
     private val ttsFailed = MutableStateFlow(false)
     private val selectedNotesIds = MutableStateFlow(setOf<Int>())
     private val openedNotesIds = MutableStateFlow(setOf<Int>())
 
-    private val displayedNotes: StateFlow<List<Note>> = combine(allNotes, filter) { cards, filter ->
-        cards.filter { card ->
-            card.english.contains(filter, true)
-                    || card.japanese.contains(filter, true)
-                    || card.reading.contains(filter, true)
-        }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
-
     val myWordsUIState = combine(
-        displayedNotes,
+        allNotes,
         ttsFailed,
         filter,
         selectedNotesIds,
         openedNotesIds
-    ) { displayedNotes, ttsFailed, filter, selectedNotesIds, openedNotesIds ->
+    ) { allNotes, ttsFailed, filter, selectedNotesIds, openedNotesIds ->
         MyWordsUIState(
-            displayedNotes.map {
+            allNotes == null,
+            allNotes?.isEmpty() ?: false,
+            allNotes?.filterVisible(filter)?.map {
                 NoteUIState.fromNote(
                     it,
                     selectedNotesIds.contains(it.noteId),
                     openedNotesIds.contains(it.noteId)
                 )
-            },
+            } ?: emptyList(),
             ttsFailed,
             filter,
         )
     }
 
-    val countText: StateFlow<String> = displayedNotes.map {
-        "Word count: ${it.size}"
-    }.stateIn(viewModelScope, SharingStarted.Lazily, "")
+    private fun List<Note>.filterVisible(filter: String) = filter { card ->
+        card.english.contains(filter, true)
+                || card.japanese.contains(filter, true)
+                || card.reading.contains(filter, true)
+    }
 
-    fun deleteWords(ids: Set<Int>) {
+    fun onDeleteSelectedWords() {
         viewModelScope.launch {
-            deleteCardsWithIndexesUseCase(ids)
+            deleteCardsWithIndexesUseCase(selectedNotesIds.value)
+            selectedNotesIds.value = emptySet()
         }
     }
 
-    fun resetWords(ids: Set<Int>) {
+    fun onResetSelectedWords() {
         viewModelScope.launch {
-            resetNoteProgressByIdUseCase(ids)
+            resetNoteProgressByIdUseCase(selectedNotesIds.value)
+            selectedNotesIds.value = emptySet()
         }
     }
 
@@ -110,7 +111,7 @@ class MyDictionaryFragmentViewModel @Inject constructor(
     }
 
     fun onTtsClick(id: Int) {
-        displayedNotes.value.find { it.noteId == id }?.let {
+        allNotes.value?.find { it.noteId == id }?.let {
             val textToSpeak = if (it.japanese.length >= 2) it.japanese else it.reading
             val ttsSucceeded = speakTextUseCase(textToSpeak)
             if (!ttsSucceeded)

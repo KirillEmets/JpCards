@@ -1,12 +1,13 @@
 package com.kirillemets.flashcards.ui.addWord
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kirillemets.flashcards.R
@@ -33,10 +34,13 @@ class AddWordFragment : Fragment() {
         binding.lifecycleOwner = this
 
         lifecycleScope.launchWhenStarted {
-
             launch {
                 viewModel.entries.collect { list ->
                     adapter.dictionaryEntries = list
+
+                    binding.hintTextView.visibility =
+                        if (list.isEmpty() && binding.textField.editText?.text.isNullOrBlank()) View.VISIBLE else View.INVISIBLE
+
                 }
             }
 
@@ -58,6 +62,8 @@ class AddWordFragment : Fragment() {
         binding.textField.editText?.doAfterTextChanged {
             if (!it.isNullOrBlank())
                 viewModel.startSearch(it.toString())
+            else
+                viewModel.clearList()
         }
 
         return binding.root

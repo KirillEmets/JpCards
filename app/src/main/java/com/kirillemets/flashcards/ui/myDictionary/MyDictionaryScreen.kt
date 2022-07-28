@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -26,12 +27,22 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun MyDictionaryScreen(onButtonAddWordsClick: () -> Unit) {
-    val myDictionaryViewModel: MyDictionaryFragmentViewModel = viewModel()
+fun MyDictionaryScreen(
+    myDictionaryViewModel: MyDictionaryFragmentViewModel = viewModel(),
+    onButtonAddWordsClick: () -> Unit
+) {
     val myWordsUIState by myDictionaryViewModel.myWordsUIState.collectAsState(MyWordsUIState())
 
-    if (myWordsUIState.wordCount < 0)
-        MyDictionaryScreenContent(
+    when {
+        myWordsUIState.loading -> {
+            Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        myWordsUIState.dictionaryEmpty -> MyDictionaryScreenNoWords(onButtonAddWordsClick)
+
+        else -> MyDictionaryScreenContent(
             myWordsUIState = myWordsUIState,
             onNoteClick = {
                 myDictionaryViewModel.onItemClick(it)
@@ -46,8 +57,7 @@ fun MyDictionaryScreen(onButtonAddWordsClick: () -> Unit) {
                 myDictionaryViewModel.onFilterValueChange(it)
             }
         )
-    else
-        MyDictionaryScreenNoWords(onButtonAddWordsClick)
+    }
 }
 
 @Composable
@@ -57,10 +67,10 @@ fun MyDictionaryScreenNoWords(onButtonAddWordsClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("You currently have no words in your list.")
+        Text("You currently have no words in your list.", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onButtonAddWordsClick) {
-            Text("Add new words.")
+            Text("Add new words")
         }
     }
 }

@@ -50,4 +50,9 @@ class AddWordFragmentViewModel @Inject constructor(
             _insertionResult.value = noteRepository.insertNew(dictionaryEntry.toNote(id))
         }
     }
+
+    fun clearList() {
+        _entries.value = emptyList()
+        searchJob.cancel(CancellationException())
+    }
 }

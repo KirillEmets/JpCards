@@ -43,16 +43,14 @@ class MyDictionaryFragment : Fragment() {
 
     private fun onMenuItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-//            R.id.item_remove -> {
-//                viewModel.deleteWords(adapter.checkedCards.toSet())
-//                adapter.uncheckAllCards()
-//                true
-//            }
-//            R.id.item_reset -> {
-//                viewModel.resetWords(adapter.checkedCards.toSet())
-//                adapter.uncheckAllCards()
-//                true
-//            }
+            R.id.item_remove -> {
+                viewModel.onDeleteSelectedWords()
+                true
+            }
+            R.id.item_reset -> {
+                viewModel.onResetSelectedWords()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

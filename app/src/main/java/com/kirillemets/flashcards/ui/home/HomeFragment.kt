@@ -23,16 +23,25 @@ class HomeFragment : Fragment() {
 
         val binding = FragmentHomeBinding.inflate(inflater)
 
-        binding.buttonStartReview.setOnClickListener {
-            navigateToReviewFragment()
-        }
-
         viewModel.loadCardCount()
 
         lifecycleScope.launchWhenStarted {
             viewModel.homeUIState.collect { homeUIState ->
                 binding.countOfCardsTextView.text =
                     resources.getString(R.string.countOfWordsToReview, homeUIState.reviewWordCount)
+
+                if(homeUIState.reviewWordCount == 0) {
+                    binding.buttonStartReview.text = "Add new words"
+                    binding.buttonStartReview.setOnClickListener {
+                        navigateToAddWordsFragment()
+                    }
+                }
+                else {
+                    binding.buttonStartReview.text = "Review"
+                    binding.buttonStartReview.setOnClickListener {
+                        navigateToReviewFragment()
+                    }
+                }
 
                 binding.uiState = homeUIState
             }
@@ -44,5 +53,9 @@ class HomeFragment : Fragment() {
 
     private fun navigateToReviewFragment() {
         findNavController().navigate(R.id.action_reviewStarterFragment_to_reviewFragment)
+    }
+
+    private fun navigateToAddWordsFragment() {
+        findNavController().navigate(R.id.action_global_addWordFragment)
     }
 }
