@@ -15,8 +15,6 @@ import com.kirillemets.flashcards.domain.AppPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-lateinit var bottomNavigation: BottomNavigationView
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        bottomNavigation = findViewById(R.id.bottom_navigation)
+        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
         val navController = this.findNavController(R.id.nav_host_fragment)
 
