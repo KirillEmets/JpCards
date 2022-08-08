@@ -8,7 +8,10 @@
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_add_word.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_my_dictionary.xml" value="0.18478260869565216" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/fragment_review.xml" value="0.1" />
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_dictionary_flashcard.xml" value="0.4" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_searched_flashcard.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/layout/item_word_definition.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HPKR/AndroidStudioProjects/JpCards/app/src/main/res/menu/review_fragment_menu.xml" value="0.36666666666666664" />
       </map>

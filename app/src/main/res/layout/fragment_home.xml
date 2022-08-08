@@ -6,7 +6,7 @@
     <data>
         <variable
             name="uiState"
-            type="com.kirillemets.flashcards.ui.home.HomeUIState" />
+            type="com.kirillemets.flashcards.android.ui.home.HomeUIState" />
         <import type="android.view.View"/>
 
     </data>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="resultCard"
-            type="com.kirillemets.flashcards.domain.model.DictionaryEntry"/>
+            type="com.kirillemets.flashcards.android.domain.model.DictionaryEntry"/>
     </data>
 
     <FrameLayout

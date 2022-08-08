@@ -7,7 +7,7 @@
 
         <variable
             name="flashCard"
-            type="com.kirillemets.flashcards.ui.myDictionary.NoteUIState" />
+            type="com.kirillemets.flashcards.android.ui.myDictionary.NoteUIState" />
     </data>
 
     <FrameLayout

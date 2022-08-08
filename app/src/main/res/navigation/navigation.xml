@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/addWordFragment"
-        android:name="com.kirillemets.flashcards.ui.addWord.AddWordFragment"
+        android:name="com.kirillemets.flashcards.android.ui.addWord.AddWordFragment"
         android:label="Search Online"
         tools:layout="@layout/fragment_add_word" />
     <fragment
         android:id="@+id/myDictionaryFragment"
-        android:name="com.kirillemets.flashcards.ui.myDictionary.MyDictionaryFragment"
+        android:name="com.kirillemets.flashcards.android.ui.myDictionary.MyDictionaryFragment"
         android:label="My Dictionary"
         tools:layout="@layout/fragment_my_dictionary" />
     <action
@@ -27,7 +27,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.kirillemets.flashcards.ui.home.HomeFragment"
+        android:name="com.kirillemets.flashcards.android.ui.home.HomeFragment"
         android:label="Review"
         tools:layout="@layout/fragment_home">
         <action
@@ -41,7 +41,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.kirillemets.flashcards.ui.settings.SettingsFragment"
+        android:name="com.kirillemets.flashcards.android.ui.settings.SettingsFragment"
         android:label="Settings" >
     </fragment>
     <action
@@ -51,7 +51,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.kirillemets.flashcards.ui.review.ReviewFragment"
+        android:name="com.kirillemets.flashcards.android.ui.review.ReviewFragment"
         android:label="Review"
         tools:layout="@layout/fragment_review" />
 </navigation>

@@ -6,11 +6,11 @@
     <data>
         <variable
             name="searchResult"
-            type="com.kirillemets.flashcards.domain.model.DictionaryEntry" />
+            type="com.kirillemets.flashcards.android.domain.model.DictionaryEntry" />
 
         <variable
             name="callback"
-            type="com.kirillemets.flashcards.ui.addWord.AddWordFragmentAdapter.AddWordFragmentAdapterCallback" />
+            type="com.kirillemets.flashcards.android.ui.addWord.AddWordFragmentAdapter.AddWordFragmentAdapterCallback" />
 
         <variable
             name="definitionId"

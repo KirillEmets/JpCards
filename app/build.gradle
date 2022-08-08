@@ -18,13 +18,13 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kirillemets.flashcards"
+        applicationId "com.kirillemets.flashcards.android"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 5
         versionName "1.1.1"
 
-        testInstrumentationRunner = "com.kirillemets.flashcards.CustomTestRunner"
+        testInstrumentationRunner = "com.kirillemets.flashcards.android.CustomTestRunner"
     }
 
     buildTypes {

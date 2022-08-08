@@ -15,7 +15,7 @@ Install
 ---------
 <div style="display:flex;">
 
-<a href="https://play.google.com/store/apps/details?id=com.kirillemets.flashcards">
+<a href="https://play.google.com/store/apps/details?id=android">
     <img alt="Get it on Google Play" height="80"
         src="https://github.com/ankidroid/Anki-Android/raw/main/docs/graphics/logos/google-badge.png" />
         

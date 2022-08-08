@@ -6,11 +6,11 @@
     <data>
         <variable
             name="uiState"
-            type="com.kirillemets.flashcards.ui.review.ReviewUIState" />
+            type="com.kirillemets.flashcards.android.ui.review.ReviewUIState" />
 
         <variable
             name="viewModel"
-            type="com.kirillemets.flashcards.ui.review.ReviewFragmentViewModel" />
+            type="com.kirillemets.flashcards.android.ui.review.ReviewFragmentViewModel" />
         <import type="android.view.View"/>
     </data>
 
