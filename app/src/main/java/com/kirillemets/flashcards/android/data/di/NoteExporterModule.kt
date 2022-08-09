@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.android.data.di
 
 import android.content.Context
 import com.kirillemets.flashcards.android.data.service.NoteExporterServiceImpl
-import com.kirillemets.flashcards.android.domain.service.NoteExporterService
+import com.kirillemets.flashcards.shared.domain.service.NoteExporterService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

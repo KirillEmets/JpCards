@@ -3,7 +3,7 @@ package com.kirillemets.flashcards.android.ui.addWord
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.kirillemets.flashcards.android.domain.model.DictionaryEntry
+import com.kirillemets.flashcards.shared.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.android.databinding.ItemWordDefinitionBinding
 
 class FlashcardExpandableAdapter(

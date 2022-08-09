@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.android.data
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.kirillemets.flashcards.android.domain.AppPreferences
+import com.kirillemets.flashcards.shared.domain.AppPreferences
 
 class AppPreferencesImpl(appContext: Context) : AppPreferences {
     private val prefs = PreferenceManager.getDefaultSharedPreferences(appContext)

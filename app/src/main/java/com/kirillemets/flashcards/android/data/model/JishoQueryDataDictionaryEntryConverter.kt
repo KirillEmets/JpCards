@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.android.model
 
-import com.kirillemets.flashcards.android.domain.model.DictionaryEntry
+import com.kirillemets.flashcards.shared.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.android.data.apiService.JishoQueryData
 
 fun JishoQueryData.toDictionaryEntries(): List<DictionaryEntry> {

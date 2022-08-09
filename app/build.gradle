@@ -47,6 +47,7 @@ android {
 dependencies {
 
     // Kotlin
+    implementation project(':shared')
 
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"

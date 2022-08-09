@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.android.ui.settings
 
-import com.kirillemets.flashcards.android.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.model.Note
 import java.io.InputStream
 
 abstract class Importer {

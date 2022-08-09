@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.android.ui.myDictionary
 
-import com.kirillemets.flashcards.android.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.model.Note
 
 data class NoteUIState(
     val noteId: Int = -1,

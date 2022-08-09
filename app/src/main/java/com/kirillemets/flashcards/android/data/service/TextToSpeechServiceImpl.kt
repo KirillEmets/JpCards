@@ -3,7 +3,7 @@ package com.kirillemets.flashcards.android.data.service
 import android.content.Context
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import com.kirillemets.flashcards.android.domain.service.TextToSpeechService
+import com.kirillemets.flashcards.shared.domain.service.TextToSpeechService
 import java.util.*
 import javax.inject.Inject
 

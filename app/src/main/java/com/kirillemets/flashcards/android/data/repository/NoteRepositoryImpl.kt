@@ -2,8 +2,8 @@ package com.kirillemets.flashcards.android.data.repository
 
 import com.kirillemets.flashcards.android.data.model.toNote
 import com.kirillemets.flashcards.android.data.model.toNotes
-import com.kirillemets.flashcards.android.domain.model.Note
-import com.kirillemets.flashcards.android.domain.repository.NoteRepository
+import com.kirillemets.flashcards.shared.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.repository.NoteRepository
 import com.kirillemets.flashcards.android.data.database.CardDatabaseDao
 import com.kirillemets.flashcards.android.data.model.toFlashCard
 import com.kirillemets.flashcards.android.data.model.toFlashCards

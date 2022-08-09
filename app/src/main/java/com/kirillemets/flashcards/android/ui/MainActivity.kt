@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kirillemets.flashcards.android.R
-import com.kirillemets.flashcards.android.domain.AppPreferences
+import com.kirillemets.flashcards.shared.domain.AppPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.android.ui.review
 
-import com.kirillemets.flashcards.android.domain.model.ReviewCard
+import com.kirillemets.flashcards.shared.domain.model.ReviewCard
 
 data class ReviewCardUIState(
     val word: String = "",

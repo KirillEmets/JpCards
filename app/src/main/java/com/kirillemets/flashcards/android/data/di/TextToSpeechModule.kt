@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.android.data.di
 
 import android.content.Context
 import com.kirillemets.flashcards.android.data.service.TextToSpeechServiceImpl
-import com.kirillemets.flashcards.android.domain.service.TextToSpeechService
+import com.kirillemets.flashcards.shared.domain.service.TextToSpeechService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

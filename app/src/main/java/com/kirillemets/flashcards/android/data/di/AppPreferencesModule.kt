@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.android.data.di
 
 import android.content.Context
 import com.kirillemets.flashcards.android.data.AppPreferencesImpl
-import com.kirillemets.flashcards.android.domain.AppPreferences
+import com.kirillemets.flashcards.shared.domain.AppPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

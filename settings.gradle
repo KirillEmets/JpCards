@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = "JpCards"
 include ':app'
-rootProject.name = "flashcards.android"
+include ':shared'

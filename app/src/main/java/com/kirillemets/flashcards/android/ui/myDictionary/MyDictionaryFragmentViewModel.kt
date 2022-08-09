@@ -2,11 +2,11 @@ package com.kirillemets.flashcards.android.ui.myDictionary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kirillemets.flashcards.android.domain.model.Note
-import com.kirillemets.flashcards.android.domain.usecase.DeleteCardsWithIndexesUseCase
-import com.kirillemets.flashcards.android.domain.usecase.GetAllCardsUseCase
-import com.kirillemets.flashcards.android.domain.usecase.ResetNoteProgressByIdUseCase
-import com.kirillemets.flashcards.android.domain.usecase.SpeakTextUseCase
+import com.kirillemets.flashcards.shared.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.usecase.DeleteCardsWithIndexesUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.GetAllCardsUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.ResetNoteProgressByIdUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.SpeakTextUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

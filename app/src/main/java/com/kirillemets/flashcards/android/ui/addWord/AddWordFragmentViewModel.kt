@@ -1,10 +1,10 @@
 package com.kirillemets.flashcards.android.ui.addWord
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.android.domain.model.DictionaryEntry
-import com.kirillemets.flashcards.android.domain.model.toNote
-import com.kirillemets.flashcards.android.domain.repository.NoteRepository
-import com.kirillemets.flashcards.android.domain.usecase.FindWordsInDictionaryUseCase
+import com.kirillemets.flashcards.shared.domain.model.DictionaryEntry
+import com.kirillemets.flashcards.shared.domain.model.toNote
+import com.kirillemets.flashcards.shared.domain.repository.NoteRepository
+import com.kirillemets.flashcards.shared.domain.usecase.FindWordsInDictionaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow

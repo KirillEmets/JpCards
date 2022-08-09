@@ -11,8 +11,8 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.kirillemets.flashcards.android.domain.model.ExportInfo
-import com.kirillemets.flashcards.android.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.model.ExportInfo
+import com.kirillemets.flashcards.shared.domain.model.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File

@@ -2,7 +2,7 @@ package com.kirillemets.flashcards.android.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kirillemets.flashcards.android.domain.usecase.LoadCardForReviewUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.LoadCardForReviewUseCase
 import com.kirillemets.flashcards.android.ui.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*

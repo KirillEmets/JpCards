@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.kirillemets.flashcards.android.domain.model.DictionaryEntry
+import com.kirillemets.flashcards.shared.domain.model.DictionaryEntry
 import com.kirillemets.flashcards.android.databinding.ItemSearchedFlashcardBinding
 
 class AddWordFragmentAdapter(private val callback: AddWordFragmentAdapterCallback): RecyclerView.Adapter<AddWordFragmentAdapter.FlashCardViewHolder>() {

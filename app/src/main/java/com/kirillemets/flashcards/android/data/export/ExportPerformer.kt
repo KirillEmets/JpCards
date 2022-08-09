@@ -1,7 +1,7 @@
 package com.kirillemets.flashcards.android.data.export
 
-import com.kirillemets.flashcards.android.domain.model.ExportInfo
-import com.kirillemets.flashcards.android.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.model.ExportInfo
+import com.kirillemets.flashcards.shared.domain.model.Note
 import java.io.OutputStream
 
 abstract class ExportPerformer {

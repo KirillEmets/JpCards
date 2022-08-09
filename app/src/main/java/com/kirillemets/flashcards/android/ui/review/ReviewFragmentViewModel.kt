@@ -2,9 +2,9 @@ package com.kirillemets.flashcards.android.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kirillemets.flashcards.android.domain.model.AnswerType
-import com.kirillemets.flashcards.android.domain.model.ReviewCard
-import com.kirillemets.flashcards.android.domain.usecase.*
+import com.kirillemets.flashcards.shared.domain.model.AnswerType
+import com.kirillemets.flashcards.shared.domain.model.ReviewCard
+import com.kirillemets.flashcards.shared.domain.usecase.*
 import com.kirillemets.flashcards.android.ui.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

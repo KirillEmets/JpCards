@@ -3,10 +3,10 @@ package com.kirillemets.flashcards.android.data.service
 import android.content.Context
 import com.kirillemets.flashcards.android.data.export.ShareExportPerformer
 import com.kirillemets.flashcards.android.data.export.ToFileExportPerformer
-import com.kirillemets.flashcards.android.domain.model.ExportDestination
-import com.kirillemets.flashcards.android.domain.model.ExportInfo
-import com.kirillemets.flashcards.android.domain.model.Note
-import com.kirillemets.flashcards.android.domain.service.NoteExporterService
+import com.kirillemets.flashcards.shared.domain.model.ExportDestination
+import com.kirillemets.flashcards.shared.domain.model.ExportInfo
+import com.kirillemets.flashcards.shared.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.service.NoteExporterService
 import javax.inject.Inject
 
 class NoteExporterServiceImpl @Inject constructor(

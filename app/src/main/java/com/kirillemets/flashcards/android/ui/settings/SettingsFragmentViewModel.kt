@@ -1,11 +1,11 @@
 package com.kirillemets.flashcards.android.ui.settings
 
 import androidx.lifecycle.*
-import com.kirillemets.flashcards.android.domain.model.ExportInfo
-import com.kirillemets.flashcards.android.domain.model.Note
-import com.kirillemets.flashcards.android.domain.usecase.AddNotesUseCase
-import com.kirillemets.flashcards.android.domain.usecase.DeleteAllNotesUseCase
-import com.kirillemets.flashcards.android.domain.usecase.ExportNotesUseCase
+import com.kirillemets.flashcards.shared.domain.model.ExportInfo
+import com.kirillemets.flashcards.shared.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.usecase.AddNotesUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.DeleteAllNotesUseCase
+import com.kirillemets.flashcards.shared.domain.usecase.ExportNotesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

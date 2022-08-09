@@ -1,11 +1,11 @@
 package com.kirillemets.flashcards.android.data.di
 
 import com.kirillemets.flashcards.android.data.repository.NoteRepositoryImpl
-import com.kirillemets.flashcards.android.domain.repository.NoteRepository
+import com.kirillemets.flashcards.shared.domain.repository.NoteRepository
 import com.kirillemets.flashcards.android.data.database.CardDatabaseDao
 import com.kirillemets.flashcards.android.data.apiService.JishoApiService
 import com.kirillemets.flashcards.android.data.repository.DictionaryRepositoryImpl
-import com.kirillemets.flashcards.android.domain.repository.DictionaryRepository
+import com.kirillemets.flashcards.shared.domain.repository.DictionaryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

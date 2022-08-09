@@ -1,6 +1,6 @@
 package com.kirillemets.flashcards.android.data.model
 
-import com.kirillemets.flashcards.android.domain.model.Note
+import com.kirillemets.flashcards.shared.domain.model.Note
 
 fun FlashCard.toNote() = Note(
     cardId,

@@ -28,9 +28,9 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.kirillemets.flashcards.android.R
-import com.kirillemets.flashcards.android.domain.model.ExportDestination
-import com.kirillemets.flashcards.android.domain.model.ExportInfo
-import com.kirillemets.flashcards.android.domain.model.ExportSchema
+import com.kirillemets.flashcards.shared.domain.model.ExportDestination
+import com.kirillemets.flashcards.shared.domain.model.ExportInfo
+import com.kirillemets.flashcards.shared.domain.model.ExportSchema
 import com.kirillemets.flashcards.android.ui.registerForSuspendableActivityResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
