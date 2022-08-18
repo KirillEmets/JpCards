@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kirillemets.flashcards.android"
+        applicationId "com.kirillemets.flashcards"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 5
