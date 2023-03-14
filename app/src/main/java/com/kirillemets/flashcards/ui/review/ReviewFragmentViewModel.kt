@@ -39,7 +39,7 @@ class ReviewFragmentViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             reviewCards.value =
-                loadCardForReviewUseCase(today).shuffled().sortedByDescending { it.lastDelay }
+                loadCardForReviewUseCase(today).shuffled().sortedByDescending { card -> card.overdue.toFloat() / (card.lastDelay.takeIf { it != 0 } ?: 1f).toFloat() }
         }
     }
 

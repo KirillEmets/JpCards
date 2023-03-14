@@ -13,11 +13,11 @@ class LoadCardForReviewUseCase @Inject constructor(private val noteRepository: N
             notes.forEach { note ->
                 if (note.nextReviewTime <= currentTime)
                     relevantReviewCards.add(
-                        ReviewCard.fromNote(note)
+                        ReviewCard.fromNote(note, currentTime)
                     )
                 if (note.nextReviewTimeReversed <= currentTime)
                     relevantReviewCards.add(
-                        ReviewCard.fromNoteReversed(note)
+                        ReviewCard.fromNoteReversed(note, currentTime)
                     )
             }
 

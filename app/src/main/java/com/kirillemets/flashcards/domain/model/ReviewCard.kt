@@ -7,28 +7,31 @@ data class ReviewCard(
     val answer: String,
     val answerReading: String,
     val reversed: Boolean,
-    val lastDelay: Int
+    val lastDelay: Int,
+    val overdue: Long
 ) {
     companion object {
-        val Empty = ReviewCard(0, "", "", "", "", false, 0)
-        fun fromNote(note: Note): ReviewCard = ReviewCard(
+        val Empty = ReviewCard(0, "", "", "", "", false, 0, 0)
+        fun fromNote(note: Note, currentTimeMillis: Long): ReviewCard = ReviewCard(
             note.noteId,
             note.japanese,
             note.reading,
             note.english,
             "",
             false,
-            note.lastDelay
+            note.lastDelay,
+            currentTimeMillis - note.nextReviewTime
         )
 
-        fun fromNoteReversed(note: Note): ReviewCard = ReviewCard(
+        fun fromNoteReversed(note: Note, currentTimeMillis: Long): ReviewCard = ReviewCard(
             note.noteId,
             note.english,
             "",
             note.japanese,
             note.reading,
             true,
-            note.lastDelayReversed
+            note.lastDelayReversed,
+            currentTimeMillis - note.nextReviewTimeReversed
         )
     }
 }
